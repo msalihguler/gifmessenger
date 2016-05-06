@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -11,48 +12,30 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
-
-    LoginButton loginButton;
-    CallbackManager callbackManager;
+    @BindView(R.id.logout)Button logout;
+    @OnClick(R.id.logout)
+    public void onClick(){
+        LoginManager.getInstance().logOut();
+        Intent intent = new Intent(this,WelcomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        setContentView(R.layout.login_page);
-        loginButton = (LoginButton)findViewById(R.id.login_button);
-        callbackManager=CallbackManager.Factory.create();
-        AppEventsLogger.activateApp(this);
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Toast.makeText(MainActivity.this,"Login Successful",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancel() {
-                Toast.makeText(MainActivity.this,"Login Cancelled",Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Toast.makeText(MainActivity.this,"Login Failed:"+error,Toast.LENGTH_SHORT).show();
-
-            }
-        });
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
+
 
 }
