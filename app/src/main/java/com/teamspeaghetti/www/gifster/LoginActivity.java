@@ -2,30 +2,39 @@ package com.teamspeaghetti.www.gifster;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.widget.Toast;
-
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
+import com.github.paolorotolo.appintro.AppIntro;
+import com.github.paolorotolo.appintro.AppIntroFragment;
+import java.util.Arrays;
+
 
 /**
  * Created by Salih on 6.05.2016.
  */
-public class LoginActivity extends AppCompatActivity {
-
-    LoginButton loginButton;
+public class LoginActivity extends AppIntro {
     CallbackManager callbackManager;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_page);
-        loginButton = (LoginButton)findViewById(R.id.login_button);
+    public void init(@Nullable Bundle savedInstanceState) {
+        getSupportActionBar().hide();
         callbackManager=CallbackManager.Factory.create();
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        addSlide(AppIntroFragment.newInstance("","Gifster yakın çevredekilerle GIF'ler aracılığıyla konuşmanı sağlar.",R.drawable.foto,getResources().getColor(R.color.colorPrimaryDark)));
+        addSlide(AppIntroFragment.newInstance("","Eğlenceli yüzünü karşındakine göster ve adını öğrenmeye ikna et",R.drawable.chat,getResources().getColor(R.color.colorPrimaryDark)));
+        addSlide(AppIntroFragment.newInstance("","Kayıt olmak için Facebook ile giriş yapman gerekiyor.",R.drawable.facebook,getResources().getColor(R.color.colorPrimaryDark)));
+        addSlide(AppIntroFragment.newInstance("","Hazır mısın?\nHadi Giriş Yap!",R.drawable.thumbup,getResources().getColor(R.color.colorPrimaryDark)));
+        setDoneText("Kayıt Ol!");
+        showSkipButton(false);
+    }
+    @Override
+    public void onDonePressed() {
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends"));
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Toast.makeText(LoginActivity.this,"Login Successful",Toast.LENGTH_SHORT).show();
@@ -36,14 +45,14 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                Toast.makeText(LoginActivity.this,"Login Cancelled",Toast.LENGTH_SHORT).show();
-
+                Snackbar snackbar = Snackbar.make(pager,"Login Cancelled",Snackbar.LENGTH_SHORT);
+                snackbar.show();
             }
 
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(LoginActivity.this,"Login Failed:"+error,Toast.LENGTH_SHORT).show();
-
+                Snackbar snackbar = Snackbar.make(pager,"Login Error: "+error,Snackbar.LENGTH_SHORT);
+                snackbar.show();
             }
         });
     }
@@ -53,4 +62,11 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+
+    @Override
+    public void onSkipPressed() {}
+    @Override
+    public void onNextPressed() {}
+    @Override
+    public void onSlideChanged() {}
 }
