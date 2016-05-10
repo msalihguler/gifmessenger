@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements IMockRetrievedInf
     public void userInformation(JSONObject retrievedInformation) {
         userInfo = retrievedInformation;
         try {
-            details.setText(userInfo.getString("name"));
+            details.setText(userInfo.getString("first_name"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
