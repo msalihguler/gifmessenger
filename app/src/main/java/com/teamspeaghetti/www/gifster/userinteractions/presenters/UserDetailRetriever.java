@@ -1,13 +1,12 @@
-package com.teamspeaghetti.www.gifster;
+package com.teamspeaghetti.www.gifster.userinteractions.presenters;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
+import com.teamspeaghetti.www.gifster.userinteractions.interfaces.IMockRetrievedInformation;
+import com.teamspeaghetti.www.gifster.userinteractions.interfaces.IRetrieveUserInformation;
 
 import org.json.JSONObject;
 
@@ -34,7 +33,7 @@ public class UserDetailRetriever implements IRetrieveUserInformation {
                     }
                 });
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,link,first_name");
+        parameters.putString("fields", "id,name,link,first_name,picture.type(large)");
         request.setParameters(parameters);
         request.executeAsync();
     }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_account_circle_black_36dp"
+            android:title="Profile" />
+        <item
+            android:id="@+id/nav_messages"
+            android:icon="@drawable/ic_chat_black"
+            android:title="Messages" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_info_outline_black_36dp"
+            android:title="About" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_exit_to_app_black_36dp"
+            android:title="Log Out" />
+    </group>
+</menu>

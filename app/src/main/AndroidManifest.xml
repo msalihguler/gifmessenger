@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme.New">
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
-        <activity android:name=".WelcomeActivity">
+        <activity android:name=".userinteractions.activities.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,8 +23,8 @@
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name" />
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".interiorapplication.activities.MainActivity"></activity>
+        <activity android:name=".userinteractions.activities.LoginActivity"></activity>
     </application>
 
 </manifest>

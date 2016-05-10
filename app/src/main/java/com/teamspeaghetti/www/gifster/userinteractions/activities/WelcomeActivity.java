@@ -1,4 +1,4 @@
-package com.teamspeaghetti.www.gifster;
+package com.teamspeaghetti.www.gifster.userinteractions.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.teamspeaghetti.www.gifster.interiorapplication.activities.MainActivity;
 
 /**
  * Created by Salih on 6.05.2016.
