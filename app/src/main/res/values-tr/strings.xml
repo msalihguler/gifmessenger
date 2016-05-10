@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="application_definiton">GIFler aracılığı ile yabancılarla konuş.</string>
+    <string name="encourege_definiton">Karşındakinin adını öğrenmek için eğlenceli yüzünü göster.</string>
+    <string name="facebook_definition">Kayıt Yok! Facebook hesabınla giriş yapman yeterli.</string>
+    <string name="ready_definition">Herşey Hazır!\n Giriş Yap!</string>
+    <string name="login">Giriş Yap!</string>
+</resources>

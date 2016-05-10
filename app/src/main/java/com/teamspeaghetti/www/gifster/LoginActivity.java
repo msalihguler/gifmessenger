@@ -24,11 +24,11 @@ public class LoginActivity extends AppIntro {
     public void init(@Nullable Bundle savedInstanceState) {
         getSupportActionBar().hide();
         callbackManager=CallbackManager.Factory.create();
-        addSlide(AppIntroFragment.newInstance("","Gifster yakın çevredekilerle GIF'ler aracılığıyla konuşmanı sağlar.",R.drawable.foto,getResources().getColor(R.color.colorPrimaryDark)));
-        addSlide(AppIntroFragment.newInstance("","Eğlenceli yüzünü karşındakine göster ve adını öğrenmeye ikna et",R.drawable.chat,getResources().getColor(R.color.colorPrimaryDark)));
-        addSlide(AppIntroFragment.newInstance("","Kayıt olmak için Facebook ile giriş yapman gerekiyor.",R.drawable.facebook,getResources().getColor(R.color.colorPrimaryDark)));
-        addSlide(AppIntroFragment.newInstance("","Hazır mısın?\nHadi Giriş Yap!",R.drawable.thumbup,getResources().getColor(R.color.colorPrimaryDark)));
-        setDoneText("Kayıt Ol!");
+        addSlide(AppIntroFragment.newInstance("",getResources().getString(R.string.application_definiton),R.drawable.foto,getResources().getColor(R.color.colorPrimaryDark)));
+        addSlide(AppIntroFragment.newInstance("",getResources().getString(R.string.encourege_definiton),R.drawable.chat,getResources().getColor(R.color.colorPrimaryDark)));
+        addSlide(AppIntroFragment.newInstance("",getResources().getString(R.string.facebook_definition),R.drawable.facebook,getResources().getColor(R.color.colorPrimaryDark)));
+        addSlide(AppIntroFragment.newInstance("",getResources().getString(R.string.ready_definition),R.drawable.thumbup,getResources().getColor(R.color.colorPrimaryDark)));
+        setDoneText(getResources().getString(R.string.login));
         showSkipButton(false);
     }
     @Override
