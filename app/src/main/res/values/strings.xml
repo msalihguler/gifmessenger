@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">GIFster</string>
+    <string name="facebook_app_id">1742342752707809</string>
+    <string name="giphy_key">dc6zaTOxFJmzC</string>
     <string name="application_definiton">Talk to strangers with GIFs.</string>
     <string name="encourege_definiton">Show your awesome side and convince your mate to learn \n his/her name.</string>
     <string name="facebook_definition">No Registration! Just login with your Facebook account!</string>

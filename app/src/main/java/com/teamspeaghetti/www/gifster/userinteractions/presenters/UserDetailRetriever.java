@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.teamspeaghetti.www.gifster.userinteractions.interfaces.IMockRetrievedInformation;
+import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IMockRetrievedInformation;
 import com.teamspeaghetti.www.gifster.userinteractions.interfaces.IRetrieveUserInformation;
 
 import org.json.JSONObject;

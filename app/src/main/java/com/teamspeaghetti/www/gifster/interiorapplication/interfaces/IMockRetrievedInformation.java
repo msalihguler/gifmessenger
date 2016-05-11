@@ -1,4 +1,4 @@
-package com.teamspeaghetti.www.gifster.userinteractions.interfaces;
+package com.teamspeaghetti.www.gifster.interiorapplication.interfaces;
 
 import org.json.JSONObject;
 
