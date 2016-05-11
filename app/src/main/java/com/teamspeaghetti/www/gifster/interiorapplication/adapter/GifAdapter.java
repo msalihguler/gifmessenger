@@ -2,6 +2,7 @@ package com.teamspeaghetti.www.gifster.interiorapplication.adapter;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,7 +33,14 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
         }
         @Override
         public void onClick(View view) {
-            Log.d("day", "onClick " + getPosition());
+            Snackbar snackbar = Snackbar.make(view,String.valueOf(getPosition()),
+                    Snackbar.LENGTH_SHORT).setAction("ADD TO FAVOURITES", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e("view added","added");
+                }
+            });
+            snackbar.show();
         }
     }
     public GifAdapter(List<Gifs> retrievedList){
