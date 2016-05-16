@@ -25,54 +25,19 @@ import java.util.List;
  * Created by Salih on 11.05.2016.
  */
 public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
+
     List<Gifs> gifsList;
     Context _context;
+    Snackbar snackbar;
     AskingGIFProcess askingGIFProcess;
     public static int VIEW_TYPE_FOOTER=1;
     public static int VIEW_TYPE_CELL=0;
-    public class VHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        ImageView gif_single;
-        Button loadmore;
-        ProgressBar pBar;
-        public VHolder(View itemView,int viewtype) {
-            super(itemView);
-            if(viewtype==VIEW_TYPE_FOOTER) {
-                loadmore = (Button) itemView.findViewById(R.id.loadmorebutton);
-                pBar = (ProgressBar)itemView.findViewById(R.id.loadmoreprogress);
 
-                loadmore.setOnClickListener(this);
-            }else if(viewtype==VIEW_TYPE_CELL) {
-                gif_single = (ImageView) itemView.findViewById(R.id.gif_single);
-                gif_single.setOnClickListener(this);
-            }
-
-        }
-        @Override
-        public void onClick(View view) {
-            switch(view.getId()) {
-                case R.id.gif_single:
-                Snackbar snackbar = Snackbar.make(view, String.valueOf(getPosition()),
-                        Snackbar.LENGTH_INDEFINITE).setAction("ADD TO FAVOURITES", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
-                snackbar.show();
-                    break;
-                case R.id.loadmorebutton:
-                    view.setVisibility(View.GONE);
-                    pBar.setVisibility(View.VISIBLE);
-                    askingGIFProcess.getGIFS("whatever",gifsList,false);
-                    break;
-            }
-
-        }
-    }
     public GifAdapter(List<Gifs> retrievedList, AskingGIFProcess askingGIFProcess){
         this.gifsList=retrievedList;
         this.askingGIFProcess = askingGIFProcess;
     }
+
     @Override
     public int getItemViewType(int position) {
         return (position == gifsList.size()&&position!=0) ? VIEW_TYPE_FOOTER : VIEW_TYPE_CELL;
@@ -98,10 +63,9 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
             if(position==gifsList.size()){
                 holder.loadmore.setVisibility(View.VISIBLE);
                 holder.pBar.setVisibility(View.GONE);
-                holder.loadmore.setText("Al sana numara");
+                holder.loadmore.setText("LOAD MORE...");
             }else{
                 String url = gifsList.get(position).getUrl();
-                Log.e("url", url);
                 Glide.with(_context)
                         .load(Uri.parse(url))
                         .asGif().placeholder(R.drawable.rotate_animation).crossFade()
@@ -118,5 +82,43 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
             return gifsList.size()+1;
     }
 
+    public class VHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        ImageView gif_single;
+        Button loadmore;
+        ProgressBar pBar;
+        public VHolder(View itemView,int viewtype) {
+            super(itemView);
+            if(viewtype==VIEW_TYPE_FOOTER) {
+                loadmore = (Button) itemView.findViewById(R.id.loadmorebutton);
+                pBar = (ProgressBar)itemView.findViewById(R.id.loadmoreprogress);
+                loadmore.setOnClickListener(this);
+            }else if(viewtype==VIEW_TYPE_CELL) {
+                gif_single = (ImageView) itemView.findViewById(R.id.gif_single);
+                gif_single.setOnClickListener(this);
+            }
+
+        }
+        @Override
+        public void onClick(View view) {
+            switch(view.getId()) {
+                case R.id.gif_single:
+                    snackbar = Snackbar.make(view, String.valueOf(getPosition()),
+                            Snackbar.LENGTH_INDEFINITE).setAction("ADD TO FAVOURITES", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snackbar.setText("Tıklandı");
+                        }
+                    });
+                    snackbar.show();
+                    break;
+                case R.id.loadmorebutton:
+                    view.setVisibility(View.GONE);
+                    pBar.setVisibility(View.VISIBLE);
+                    askingGIFProcess.getGIFS("whatever",gifsList,false);
+                    break;
+            }
+
+        }
+    }
 
 }
