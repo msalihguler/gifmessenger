@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.adapter.GifAdapter;
+import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrieveGIFs;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.AskingGIFProcess;
@@ -37,19 +38,20 @@ public class GIFFragment extends Fragment implements IRetrieveGIFs {
     List<Gifs> real_gif_list = new ArrayList<Gifs>();
     GifAdapter adapter;
     AskingGIFProcess askingGIFProcess;
-
+    LinearLayoutManager linearLayoutManager;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.gif_content,null);
+        final View rootView = inflater.inflate(R.layout.gif_content,null);
         gifsearch = (EditText)rootView.findViewById(R.id.gif_search);
         giflogo = (ImageView)rootView.findViewById(R.id.giflogo);
         gifholder = (RecyclerView)rootView.findViewById(R.id.gif_holder);
         progressBar = (ProgressBar)rootView.findViewById(R.id.progress_bar);
-        adapter = new GifAdapter(real_gif_list);
-        gifholder.setLayoutManager(new LinearLayoutManager(getContext()));
-        gifholder.setAdapter(adapter);
         askingGIFProcess = new AskingGIFProcess(this);
+        adapter = new GifAdapter(real_gif_list,askingGIFProcess);
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        gifholder.setLayoutManager(linearLayoutManager);
+        gifholder.setAdapter(adapter);
         gifsearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

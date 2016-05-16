@@ -1,6 +1,8 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.presenters;
 
 
+import android.util.Log;
+
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.activities.MainActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.GIFFragment;
@@ -27,23 +29,28 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Salih on 11.05.2016.
  */
 public class AskingGIFProcess implements IAskForGIFS {
-    JSONObject jsonObject;
     GIFFragment mainActivity;
+    String lastsearch;
     public AskingGIFProcess(GIFFragment activityInstance){
         this.mainActivity=activityInstance;
     }
     @Override
     public void getGIFS(String keywords, final List<Gifs> list,boolean newsearch) {
         final List<Gifs> tempList;
+        int limit = 0;
         if(newsearch){
             tempList = new ArrayList<Gifs>();
+            limit=10;
+            lastsearch=keywords;
         }else{
-            tempList = new ArrayList<Gifs>(list);
+            tempList = new ArrayList<Gifs>();
+            limit = list.size()+10;
+            Log.e("eski",lastsearch);
         }
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://api.giphy.com").addConverterFactory(GsonConverterFactory.create()).build();
         IRequestInterface requestInterface =retrofit.create(IRequestInterface.class);
-        Call<ResponseBody> call = requestInterface.makesearch(keywords,mainActivity.getString(R.string.giphy_key));
+        Call<ResponseBody> call = requestInterface.makesearch(lastsearch,mainActivity.getString(R.string.giphy_key),String.valueOf(limit));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

@@ -15,6 +15,6 @@ import retrofit2.http.Query;
  * Created by Salih on 11.05.2016.
  */
 public interface IRequestInterface {
-    @GET("/v1/gifs/search?limit=10")
-    Call<ResponseBody> makesearch(@Query("q")String query, @Query("api_key") String apikey);
+    @GET("/v1/gifs/search")
+    Call<ResponseBody> makesearch(@Query("q")String query, @Query("api_key") String apikey,@Query("limit")String limit);
 }
