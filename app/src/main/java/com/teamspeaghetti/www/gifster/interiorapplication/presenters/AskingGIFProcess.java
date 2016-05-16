@@ -1,10 +1,9 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.presenters;
 
-import android.util.Log;
 
-import com.google.gson.Gson;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.activities.MainActivity;
+import com.teamspeaghetti.www.gifster.interiorapplication.fragments.GIFFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IAskForGIFS;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRequestInterface;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
@@ -15,7 +14,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -30,8 +28,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class AskingGIFProcess implements IAskForGIFS {
     JSONObject jsonObject;
-    MainActivity mainActivity;
-    public AskingGIFProcess(MainActivity activityInstance){
+    GIFFragment mainActivity;
+    public AskingGIFProcess(GIFFragment activityInstance){
         this.mainActivity=activityInstance;
     }
     @Override
