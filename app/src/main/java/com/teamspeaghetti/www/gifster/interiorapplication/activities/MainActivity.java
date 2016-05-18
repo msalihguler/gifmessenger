@@ -18,6 +18,7 @@ import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.CircleTr
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.GIFFragment;
+import com.teamspeaghetti.www.gifster.interiorapplication.fragments.ProfileFragment;
 import com.teamspeaghetti.www.gifster.userinteractions.activities.WelcomeActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IMockRetrievedInformation;
 import com.teamspeaghetti.www.gifster.userinteractions.presenters.UserDetailRetriever;
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id){
             case R.id.nav_profile:
-                Utils.createSnackBar(drawer,"profile clicked");
+                Utils.startFragment(new ProfileFragment(),getSupportFragmentManager());
                 break;
             case R.id.nav_messages:
                 Utils.createSnackBar(drawer,"messages clicked");

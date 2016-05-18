@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;

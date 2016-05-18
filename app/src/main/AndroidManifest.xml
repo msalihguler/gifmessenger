@@ -24,7 +24,8 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name" />
         <activity android:name=".interiorapplication.activities.MainActivity"></activity>
-        <activity android:name=".userinteractions.activities.LoginActivity"></activity>
+        <activity android:name=".userinteractions.activities.LoginActivity"
+            ></activity>
     </application>
 
 </manifest>
