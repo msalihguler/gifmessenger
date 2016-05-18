@@ -1,4 +1,4 @@
-package com.teamspeaghetti.www.gifster;
+package com.teamspeaghetti.www.gifster.interiorapplication.commonclasses;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;

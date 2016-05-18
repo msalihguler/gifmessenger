@@ -14,11 +14,26 @@ import android.widget.ProgressBar;
 import android.widget.Switch;
 
 import com.bumptech.glide.Glide;
+import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
+import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IGetPersonalPreferences;
+import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRequestInterface;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.AskingGIFProcess;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -106,7 +121,7 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
                             Snackbar.LENGTH_INDEFINITE).setAction("ADD TO FAVOURITES", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            snackbar.setText("Tıklandı");
+                            addToKeyBoard(gifsList.get(getPosition()).getUrl());
                         }
                     });
                     snackbar.show();
@@ -120,5 +135,29 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
 
         }
     }
+    public void addToKeyBoard(String url){
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.166:3000").addConverterFactory(GsonConverterFactory.create()).build();
+        IGetPersonalPreferences requestInterface =retrofit.create(IGetPersonalPreferences.class);
+        Call<ResponseBody> call = requestInterface.addToKeyBoard(url, Profile.getCurrentProfile().getId());
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    if(!jsonObject.getBoolean("error")){
 
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
 }

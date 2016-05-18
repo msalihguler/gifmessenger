@@ -48,6 +48,11 @@ public class AskingGIFProcess implements IAskForGIFS {
             Log.e("eski",lastsearch);
         }
 
+        makeRequestToGetGifs(tempList,limit);
+    }
+
+    public void makeRequestToGetGifs(List<Gifs> temp,int limit){
+        final List<Gifs> tempList = temp;
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://api.giphy.com").addConverterFactory(GsonConverterFactory.create()).build();
         IRequestInterface requestInterface =retrofit.create(IRequestInterface.class);
         Call<ResponseBody> call = requestInterface.makesearch(lastsearch,mainActivity.getString(R.string.giphy_key),String.valueOf(limit));
@@ -74,6 +79,7 @@ public class AskingGIFProcess implements IAskForGIFS {
 
             }
         });
+
 
     }
 }

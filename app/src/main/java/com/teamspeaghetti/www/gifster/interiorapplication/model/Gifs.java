@@ -10,6 +10,9 @@ public class Gifs {
     String url;
     String id;
     String name;
+    public Gifs(){
+
+    }
     public Gifs(String url){
         setUrl(url);
     }

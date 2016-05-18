@@ -1,38 +1,23 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
-import com.teamspeaghetti.www.gifster.CircleTransform;
+import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.CircleTransform;
 import com.teamspeaghetti.www.gifster.R;
-import com.teamspeaghetti.www.gifster.interiorapplication.adapter.GifAdapter;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.GIFFragment;
-import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrieveGIFs;
-import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
-import com.teamspeaghetti.www.gifster.interiorapplication.presenters.AskingGIFProcess;
 import com.teamspeaghetti.www.gifster.userinteractions.activities.WelcomeActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IMockRetrievedInformation;
 import com.teamspeaghetti.www.gifster.userinteractions.presenters.UserDetailRetriever;
@@ -40,14 +25,8 @@ import com.teamspeaghetti.www.gifster.userinteractions.presenters.UserDetailRetr
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnEditorAction;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,IMockRetrievedInformation {
 
