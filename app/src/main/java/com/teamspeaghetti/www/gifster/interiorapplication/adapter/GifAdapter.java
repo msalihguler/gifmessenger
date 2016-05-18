@@ -16,6 +16,7 @@ import android.widget.Switch;
 import com.bumptech.glide.Glide;
 import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
+import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IGetPersonalPreferences;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRequestInterface;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
@@ -117,11 +118,12 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
         public void onClick(View view) {
             switch(view.getId()) {
                 case R.id.gif_single:
+                    final View v_send = view;
                     snackbar = Snackbar.make(view, String.valueOf(getPosition()),
                             Snackbar.LENGTH_INDEFINITE).setAction("ADD TO FAVOURITES", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            addToKeyBoard(gifsList.get(getPosition()).getUrl());
+                            addToKeyBoard(gifsList.get(getPosition()).getUrl(),v_send);
                         }
                     });
                     snackbar.show();
@@ -135,7 +137,7 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
 
         }
     }
-    public void addToKeyBoard(String url){
+    public void addToKeyBoard(String url, final View view){
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.166:3000").addConverterFactory(GsonConverterFactory.create()).build();
         IGetPersonalPreferences requestInterface =retrofit.create(IGetPersonalPreferences.class);
         Call<ResponseBody> call = requestInterface.addToKeyBoard(url, Profile.getCurrentProfile().getId());
@@ -145,7 +147,9 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
                 try {
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     if(!jsonObject.getBoolean("error")){
-
+                        Utils.createSnackBar(view,jsonObject.getString("message"));
+                    }else{
+                        Utils.createSnackBar(view,jsonObject.getString("message"));
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
