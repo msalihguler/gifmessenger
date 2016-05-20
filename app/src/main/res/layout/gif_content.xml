@@ -17,6 +17,7 @@
         android:inputType="text"
         android:singleLine="true"
         android:imeOptions="actionSearch"
+        android:hint="@string/searchgif"
         android:id="@+id/gif_search" />
 
 

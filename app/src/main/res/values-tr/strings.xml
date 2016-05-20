@@ -5,4 +5,15 @@
     <string name="facebook_definition">Kayıt Yok! Facebook hesabınla giriş yapman yeterli.</string>
     <string name="ready_definition">Herşey Hazır!\n Giriş Yap!</string>
     <string name="login">Giriş Yap!</string>
+
+    <string name="loadmore">Daha Fazla GIF!</string>
+    <string name="tofavourites">GIFboard\'a ekle</string>
+    <string name="notifications">BİLDİRİMLER</string>
+    <string name="gifboard">GIFBOARD</string>
+    <string name="searchgif">GIF Ara...</string>
+    <string name="profile">Profil</string>
+    <string name="message">Mesajlar</string>
+    <string name="gifs">GIF Ara</string>
+    <string name="about">Hakkında</string>
+    <string name="logut">Çıkış Yap</string>
 </resources>

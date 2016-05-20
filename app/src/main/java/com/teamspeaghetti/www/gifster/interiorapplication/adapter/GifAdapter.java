@@ -79,7 +79,7 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
             if(position==gifsList.size()){
                 holder.loadmore.setVisibility(View.VISIBLE);
                 holder.pBar.setVisibility(View.GONE);
-                holder.loadmore.setText("LOAD MORE...");
+                holder.loadmore.setText(_context.getResources().getString(R.string.loadmore));
             }else{
                 String url = gifsList.get(position).getUrl();
                 Glide.with(_context)
@@ -119,8 +119,8 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
             switch(view.getId()) {
                 case R.id.gif_single:
                     final View v_send = view;
-                    snackbar = Snackbar.make(view, String.valueOf(getPosition()),
-                            Snackbar.LENGTH_INDEFINITE).setAction("ADD TO FAVOURITES", new View.OnClickListener() {
+                    snackbar = Snackbar.make(view, "",
+                            Snackbar.LENGTH_INDEFINITE).setAction(_context.getResources().getString(R.string.tofavourites), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             addToKeyBoard(gifsList.get(getPosition()).getUrl(),v_send);
@@ -131,7 +131,7 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
                 case R.id.loadmorebutton:
                     view.setVisibility(View.GONE);
                     pBar.setVisibility(View.VISIBLE);
-                    askingGIFProcess.getGIFS("whatever",gifsList,false);
+                    askingGIFProcess.getGIFS("",gifsList,false);
                     break;
             }
 

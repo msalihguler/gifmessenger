@@ -25,7 +25,7 @@ public class ProfileFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.profile_page,null);
         profileTabs = (TabLayout)rootView.findViewById(R.id.profiletabs);
         profileFragmentHolder = (ViewPager)rootView.findViewById(R.id.fragment_holder_profile);
-        profileFragmentHolder.setAdapter(new ProfileViewPagerAdapter(getChildFragmentManager(),fragment_count));
+        profileFragmentHolder.setAdapter(new ProfileViewPagerAdapter(getChildFragmentManager(),fragment_count,getContext()));
         profileTabs.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         profileTabs.setTabTextColors(getResources().getColor(R.color.whitefaded),getResources().getColor(R.color.white));
         profileTabs.post(new Runnable() {

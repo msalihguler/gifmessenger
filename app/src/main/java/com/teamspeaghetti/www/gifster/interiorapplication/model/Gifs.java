@@ -10,11 +10,28 @@ public class Gifs {
     String url;
     String id;
     String name;
+    String slug;
+
+
+
     public Gifs(){
 
     }
+    public Gifs(String url,String slug)
+    {
+        setUrl(url);
+        setSlug(slug);
+    }
+
     public Gifs(String url){
         setUrl(url);
+    }
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
     public String getUrl() {
         return url;

@@ -45,7 +45,6 @@ public class AskingGIFProcess implements IAskForGIFS {
         }else{
             tempList = new ArrayList<Gifs>();
             limit = list.size()+10;
-            Log.e("eski",lastsearch);
         }
 
         makeRequestToGetGifs(tempList,limit);

@@ -9,4 +9,16 @@
     <string name="login">Log In!</string>
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>
+
+    <string name="loadmore">Load More GIF!</string>
+    <string name="tofavourites">Add to GIFboard</string>
+    <string name="notifications">NOTIFICATIONS</string>
+    <string name="gifboard">GIFBOARD</string>
+    <string name="searchgif">Search GIFs...</string>
+    <string name="profile">Profile</string>
+    <string name="message">Messages</string>
+    <string name="gifs">GIF Search</string>
+    <string name="about">About</string>
+    <string name="logut">Log Out</string>
+
 </resources>
