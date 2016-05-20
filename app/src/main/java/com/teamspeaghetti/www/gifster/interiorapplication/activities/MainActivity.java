@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
-        navigationView.setCheckedItem(R.id.nav_searchgif);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Utils.startFragment(new GIFFragment(),getSupportFragmentManager());
                 break;
             case R.id.nav_about:
-                Utils.createSnackBar(drawer,"Dialog clicked");
+                Utils.createAlert(this);
                 break;
             case R.id.nav_logout:
                 LoginManager.getInstance().logOut();
