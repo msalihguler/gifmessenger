@@ -60,6 +60,20 @@ app.post("/savegif",function(req,res){
               }
           });
 });
+app.get("/getgifs",function(req,res){
+    var person_id = req.query.id;
+    gifsaving.findOne({"userid":person_id},function(err,data){
+        if(err){
+        response = {"error" : true,"message" : "Error fetching data"};
+        res.send(JSON.stringify(response));
+        }else{
+        var tempString = data.gif_urls;
+        res.send(tempString);
+        }
+
+    });
+
+});
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });

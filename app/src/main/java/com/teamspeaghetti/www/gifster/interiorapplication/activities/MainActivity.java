@@ -65,8 +65,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0 ){
+
+                getSupportFragmentManager().popBackStack();
+            } else {
+                super.onBackPressed();
+            }
         }
+
     }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -83,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Utils.startFragment(new GIFFragment(),getSupportFragmentManager());
                 break;
             case R.id.nav_about:
-                Utils.createSnackBar(drawer,"about clicked");
+                Utils.createSnackBar(drawer,"Dialog clicked");
                 break;
             case R.id.nav_logout:
                 LoginManager.getInstance().logOut();
@@ -110,4 +116,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             e.printStackTrace();
         }
     }
+
 }
