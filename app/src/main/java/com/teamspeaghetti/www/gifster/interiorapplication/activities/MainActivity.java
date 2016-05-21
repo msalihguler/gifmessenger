@@ -19,6 +19,7 @@ import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.GIFFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.ProfileFragment;
+import com.teamspeaghetti.www.gifster.interiorapplication.fragments.SearchPeopleFragment;
 import com.teamspeaghetti.www.gifster.userinteractions.activities.WelcomeActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IMockRetrievedInformation;
 import com.teamspeaghetti.www.gifster.userinteractions.presenters.UserDetailRetriever;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        Utils.startFragment(new SearchPeopleFragment(),getSupportFragmentManager());
     }
 
     @Override
