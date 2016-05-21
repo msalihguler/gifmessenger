@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.CircleTransform;
@@ -20,6 +22,7 @@ import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.GIFFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.ProfileFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.SearchPeopleFragment;
+import com.teamspeaghetti.www.gifster.interiorapplication.presenters.UserProcesses;
 import com.teamspeaghetti.www.gifster.userinteractions.activities.WelcomeActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IMockRetrievedInformation;
 import com.teamspeaghetti.www.gifster.userinteractions.presenters.UserDetailRetriever;
@@ -27,8 +30,6 @@ import com.teamspeaghetti.www.gifster.userinteractions.presenters.UserDetailRetr
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,IMockRetrievedInformation {
 
@@ -37,14 +38,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView details;
     JSONObject userInfo;
     View header_holder;
-    @BindView(R.id.custom_toolbar)Toolbar toolbar;
-    @BindView(R.id.drawer_layout)DrawerLayout drawer;
-    @BindView(R.id.nav_view)NavigationView navigationView;
+    Toolbar toolbar;
+    DrawerLayout drawer;
+    NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        initViews();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                registerUserToGIFsterServer();
+            }
+
+        }).run();
+        Utils.startFragment(new SearchPeopleFragment(),getSupportFragmentManager());
+    }
+
+    private void registerUserToGIFsterServer() {
+        new UserProcesses().sendRequest(Profile.getCurrentProfile().getId());
+    }
+
+    public void initViews(){
+        toolbar = (Toolbar)findViewById(R.id.custom_toolbar);
+        drawer= (DrawerLayout)findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView)findViewById(R.id.nav_view);
         header_holder = navigationView.getHeaderView(0);
         detailRetriever= new UserDetailRetriever(this);
         details=(TextView)header_holder.findViewById(R.id.name);
@@ -57,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        Utils.startFragment(new SearchPeopleFragment(),getSupportFragmentManager());
     }
 
     @Override
@@ -66,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0 ){
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
 
                 getSupportFragmentManager().popBackStack();
             } else {
@@ -75,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -104,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     @Override
     public void userInformation(JSONObject retrievedInformation) {

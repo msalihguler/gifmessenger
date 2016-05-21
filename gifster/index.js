@@ -5,6 +5,8 @@ var app = express();
 var http = require('http').Server(app);
 var bodyParser  =   require("body-parser");
 var gifsaving     =   require("./model/gifs");
+var users     =   require("./model/users");
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
 
@@ -74,6 +76,35 @@ app.get("/getgifs",function(req,res){
     });
 
 });
+app.post("/registeruser",function(req,res){
+    var person_id = req.query.id;
+    users.find({"userid":person_id},function(err,data){
+        if(err){
+          response = {"error" : true,"message" : "Error fetching data"};
+          res.send(JSON.stringify(response));
+        }else{
+          if(data){
+            response = {"error" : true,"message" : "User exists"};
+            res.send(JSON.stringify(response));
+          }else{
+           var db = new users();
+           db.userid = person_id;
+           db.likes = "{}";
+           db.dislikes = "{}";
+           db.save(function(err,user){
+              if(err) {
+                  response = {"error" : true,"message" : "Error adding data"};
+                } else {
+                 response = {"error" : false,"message" : "Added to keyboard"};
+              }
+              res.send(JSON.stringify(response));
+           });
+          }
+        }
+
+    });
+});
+
 app.get("/deletegif",function(req,res){
     var person_id = req.query.id;
     var url = req.query.url;
