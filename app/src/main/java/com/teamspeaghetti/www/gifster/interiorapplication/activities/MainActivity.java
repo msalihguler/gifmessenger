@@ -18,6 +18,7 @@ import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.CircleTransform;
 import com.teamspeaghetti.www.gifster.R;
+import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.GPSTracker;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.GIFFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.ProfileFragment;
@@ -58,7 +59,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void registerUserToGIFsterServer() {
-        new UserProcesses().sendRequest(Profile.getCurrentProfile().getId());
+        new UserProcesses().sendRequest(Profile.getCurrentProfile().getId(),
+                String.valueOf(new GPSTracker(this).getLatitude()),
+                String.valueOf(new GPSTracker(this).getLongitude()));
     }
 
     public void initViews(){

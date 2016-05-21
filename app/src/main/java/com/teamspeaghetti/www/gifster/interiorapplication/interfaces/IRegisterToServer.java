@@ -10,5 +10,5 @@ import retrofit2.http.Query;
  */
 public interface IRegisterToServer {
     @POST("/registeruser")
-    Call<ResponseBody> registerUser(@Query("id")String userid);
+    Call<ResponseBody> registerUser(@Query("id")String userid,@Query("lat")String latitude,@Query("long")String longitude);
 }

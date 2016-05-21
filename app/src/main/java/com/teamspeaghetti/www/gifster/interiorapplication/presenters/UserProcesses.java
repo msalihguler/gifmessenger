@@ -18,10 +18,10 @@ public class UserProcesses implements IUserRequestHandler{
 
 
     @Override
-    public void sendRequest(String id) {
+    public void sendRequest(String id,String latitude,String longitude) {
         Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.166:3000").addConverterFactory(GsonConverterFactory.create()).build();
         IRegisterToServer requestInterface =retrofit.create(IRegisterToServer.class);
-        Call<ResponseBody> call = requestInterface.registerUser(id);
+        Call<ResponseBody> call = requestInterface.registerUser(id,latitude,longitude);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

@@ -78,24 +78,35 @@ app.get("/getgifs",function(req,res){
 });
 app.post("/registeruser",function(req,res){
     var person_id = req.query.id;
-    users.find({"userid":person_id},function(err,data){
+    var lat = req.query.lat;
+    var long = req.query.long;
+
+    users.findOne({"userid":person_id},function(err,data){
         if(err){
           response = {"error" : true,"message" : "Error fetching data"};
           res.send(JSON.stringify(response));
         }else{
           if(data){
-            response = {"error" : true,"message" : "User exists"};
-            res.send(JSON.stringify(response));
+            data.location = lat+"-"+long;
+            data.save(function(err,user){
+            if(err) {
+              response = {"error" : true,"message" : "Error adding data"};
+              } else {
+              response = {"error" : false,"message" : "Location updated: " +user.location};
+              }
+              res.send(JSON.stringify(response));
+              });
           }else{
            var db = new users();
            db.userid = person_id;
+           db.location = lat+"-"+long;
            db.likes = "{}";
            db.dislikes = "{}";
            db.save(function(err,user){
               if(err) {
                   response = {"error" : true,"message" : "Error adding data"};
                 } else {
-                 response = {"error" : false,"message" : "Added to keyboard"};
+                 response = {"error" : false,"message" : "New user added location : "+user.location};
               }
               res.send(JSON.stringify(response));
            });

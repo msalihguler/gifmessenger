@@ -3,6 +3,7 @@ var mongoSchema =   mongoose.Schema;
 
 var users = {
 	"userid":String,
+	"location":String,
     "likes":String,
     "dislikes":String
 }
