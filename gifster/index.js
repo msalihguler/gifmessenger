@@ -74,6 +74,36 @@ app.get("/getgifs",function(req,res){
     });
 
 });
+app.get("/deletegif",function(req,res){
+    var person_id = req.query.id;
+    var url = req.query.url;
+
+    gifsaving.findOne({"userid":person_id},function(err,data){
+        if(err){
+          response = {"error" : true,"message" : "Error fetching data"};
+          res.send(JSON.stringify(response));
+        }else{
+          var tempString = data.gif_urls;
+          var tempArray = JSON.parse(tempString);
+          var index =tempArray["urlist"].indexOf(url);
+          if(index != -1)
+              tempArray["urlist"].splice(index,1);
+          data.gif_urls=JSON.stringify(tempArray);
+          data.save(function(err,user){
+              if(err) {
+                response = {"error" : true,"message" : "Error adding data"};
+              } else {
+                response = {"error" : false,"message" : "Deleted from GIFBoard"};
+              }
+              res.send(JSON.stringify(response));
+          });
+        }
+    });
+
+
+});
+
+
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });

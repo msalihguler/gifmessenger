@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.teamspeaghetti.www.gifster.R;
+import com.teamspeaghetti.www.gifster.interiorapplication.fragments.FullScreenGIFsFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
 
 import java.util.List;
@@ -40,7 +41,6 @@ public class ViewPagerAdapter extends PagerAdapter {
                 .crossFade()
                 .into(image);
         container.addView(view);
-        Log.e("list",list.get(position).getUrl());
         return view;
     }
     @Override
