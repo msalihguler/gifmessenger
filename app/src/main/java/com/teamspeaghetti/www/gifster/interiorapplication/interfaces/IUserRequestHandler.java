@@ -6,4 +6,5 @@ package com.teamspeaghetti.www.gifster.interiorapplication.interfaces;
 public interface IUserRequestHandler {
 
     public void sendRequest(String id,String latitude,String longitude);
+    public void getPeople(String id);
 }

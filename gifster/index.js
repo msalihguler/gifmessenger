@@ -62,6 +62,31 @@ app.post("/savegif",function(req,res){
               }
           });
 });
+app.get("/getpeople",function(req,res){
+    var person_id = req.query.id;
+    users.findOne({"userid":person_id},function(err,data){
+        if(err){
+                    res.send("error");
+        }else{
+        if(data){
+                var templikes = JSON.parse(data.likes);
+                var tempdislikes = JSON.parse(data.dislikes);
+                var finalArray = templikes.concat(tempdislikes);
+                console.log(finalArray);
+               users.find({"userid":{"$nin":finalArray}},function(e,d){
+                    if(err){
+
+                    }else{
+                        console.log(d);
+                    }
+
+               });
+        }
+        }
+
+    });
+
+});
 app.get("/getgifs",function(req,res){
     var person_id = req.query.id;
     gifsaving.findOne({"userid":person_id},function(err,data){
@@ -102,8 +127,8 @@ app.post("/registeruser",function(req,res){
            var db = new users();
            db.userid = person_id;
            db.location = lat+"-"+long;
-           db.likes = "{}";
-           db.dislikes = "{}";
+           db.likes = "[]";
+           db.dislikes = "[]";
            db.save(function(err,user){
               if(err) {
                   response = {"error" : true,"message" : "Error adding data"};

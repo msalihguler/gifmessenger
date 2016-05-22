@@ -48,8 +48,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-        registerUserToGIFsterServer();
-
         Utils.startFragment(new SearchPeopleFragment(),getSupportFragmentManager());
     }
 
@@ -130,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             details.setText(userInfo.getString("first_name"));
             String imageUrl = userInfo.getJSONObject("picture").getJSONObject("data").getString("url");
             Picasso.with(this).load(imageUrl).transform(new CircleTransform()).into(profile_picture);
+            registerUserToGIFsterServer();
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -41,4 +41,23 @@ public class UserProcesses implements IUserRequestHandler{
             public void onFailure(Call<ResponseBody> call, Throwable t) {}
         });
     }
+
+    @Override
+    public void getPeople(String id) {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
+        IRegisterToServer requestInterface =retrofit.create(IRegisterToServer.class);
+        Call<ResponseBody> call = requestInterface.getUsers(id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    Log.e("response",response.body().string());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {}
+        });
+    }
 }
