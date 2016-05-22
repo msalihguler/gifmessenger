@@ -138,7 +138,7 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
         }
     }
     public void addToKeyBoard(String url, final View view){
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.166:3000").addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
         IGetPersonalPreferences requestInterface =retrofit.create(IGetPersonalPreferences.class);
         Call<ResponseBody> call = requestInterface.addToKeyBoard(url, Profile.getCurrentProfile().getId());
         call.enqueue(new Callback<ResponseBody>() {

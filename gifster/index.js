@@ -69,8 +69,10 @@ app.get("/getgifs",function(req,res){
         response = {"error" : true,"message" : "Error fetching data"};
         res.send(JSON.stringify(response));
         }else{
+        if(data){
         var tempString = data.gif_urls;
         res.send(tempString);
+        }
         }
 
     });

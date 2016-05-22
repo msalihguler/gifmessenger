@@ -48,18 +48,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                registerUserToGIFsterServer();
-            }
+        registerUserToGIFsterServer();
 
-        }).run();
         Utils.startFragment(new SearchPeopleFragment(),getSupportFragmentManager());
     }
 
     private void registerUserToGIFsterServer() {
-        new UserProcesses().sendRequest(Profile.getCurrentProfile().getId(),
+        new UserProcesses(this).sendRequest(Profile.getCurrentProfile().getId(),
                 String.valueOf(new GPSTracker(this).getLatitude()),
                 String.valueOf(new GPSTracker(this).getLongitude()));
     }

@@ -52,7 +52,7 @@ public class AskingGIFProcess implements IAskForGIFS {
 
     public void makeRequestToGetGifs(List<Gifs> temp,int limit){
         final List<Gifs> tempList = temp;
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://api.giphy.com").addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(mainActivity.getResources().getString(R.string.giphyurl)).addConverterFactory(GsonConverterFactory.create()).build();
         IRequestInterface requestInterface =retrofit.create(IRequestInterface.class);
         Call<ResponseBody> call = requestInterface.makesearch(lastsearch,mainActivity.getString(R.string.giphy_key),String.valueOf(limit));
         call.enqueue(new Callback<ResponseBody>() {

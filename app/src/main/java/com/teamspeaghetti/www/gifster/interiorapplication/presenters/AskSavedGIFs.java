@@ -3,6 +3,7 @@ package com.teamspeaghetti.www.gifster.interiorapplication.presenters;
 import android.content.Context;
 
 import com.facebook.Profile;
+import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.FullScreenGIFsFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.KeyboardFragment;
@@ -45,7 +46,7 @@ public class AskSavedGIFs implements IRetrieveGIFs,IDeleteGIF {
     }
     @Override
     public void retrieveGIFs(List<Gifs> gifsList) {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.166:3000").addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
         IRESTRequestForGifs requestInterface =retrofit.create(IRESTRequestForGifs.class);
         Call<ResponseBody> call = requestInterface.getGIFS(Profile.getCurrentProfile().getId());
         call.enqueue(new Callback<ResponseBody>() {
@@ -76,7 +77,7 @@ public class AskSavedGIFs implements IRetrieveGIFs,IDeleteGIF {
     public void deleteGIF(String url, List<Gifs> gifsList, final int pos) {
         tempList.clear();
         tempList = gifsList;
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.166:3000").addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(_context2.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
         IDeleteGIFRequest requestInterface =retrofit.create(IDeleteGIFRequest.class);
         Call<ResponseBody> call = requestInterface.sendDeleteRequest(url,Profile.getCurrentProfile().getId());
         call.enqueue(new Callback<ResponseBody>() {

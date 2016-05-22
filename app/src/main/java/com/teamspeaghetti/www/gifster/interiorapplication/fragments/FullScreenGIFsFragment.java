@@ -23,6 +23,7 @@ import java.util.List;
 /**
  * Created by Salih on 20.05.2016.
  */
+@SuppressLint("ValidFragment")
 public class FullScreenGIFsFragment extends Fragment implements View.OnClickListener,IRetrieveGIFs {
     ViewPager viewpager;
     ViewPagerAdapter adapter;
@@ -55,16 +56,16 @@ public class FullScreenGIFsFragment extends Fragment implements View.OnClickList
         switch(v.getId()){
             case R.id.delete:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Delete");
-                builder.setMessage("Are you sure you want to delete this from your GIFBoard?");
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                builder.setTitle(getResources().getString(R.string.deletetitle));
+                builder.setMessage(getResources().getString(R.string.deletemessage));
+                builder.setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         int position = viewpager.getCurrentItem();
                      new AskSavedGIFs(FullScreenGIFsFragment.this).deleteGIF(list.get(position).getUrl(),list,position);
                     }
                 });
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
