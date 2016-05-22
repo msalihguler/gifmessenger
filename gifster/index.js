@@ -66,18 +66,24 @@ app.get("/getpeople",function(req,res){
     var person_id = req.query.id;
     users.findOne({"userid":person_id},function(err,data){
         if(err){
-                    res.send("error");
+        response = {"error" : true,"message" : "Error adding data"};
+        res.send(JSON.stringify(response));
         }else{
         if(data){
                 var templikes = JSON.parse(data.likes);
                 var tempdislikes = JSON.parse(data.dislikes);
                 var finalArray = templikes.concat(tempdislikes);
+                finalArray.push(person_id);
                 console.log(finalArray);
                users.find({"userid":{"$nin":finalArray}},function(e,d){
                     if(err){
-
+                        response = {"error" : true,"message" : "Error adding data"};
+                        res.send(JSON.stringify(response));
                     }else{
-                        console.log(d);
+                      if(d){
+                        response = {"error" : false,"message" : JSON.stringify(d)};
+                        res.send(JSON.stringify(response));
+                        }
                     }
 
                });
