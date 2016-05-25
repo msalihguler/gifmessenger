@@ -8,11 +8,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
@@ -48,11 +50,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
+        registerUserToGIFsterServer();
         Utils.startFragment(new SearchPeopleFragment(),getSupportFragmentManager());
     }
 
     private void registerUserToGIFsterServer() {
-        new UserProcesses(this).sendRequest(Profile.getCurrentProfile().getId(),
+        new UserProcesses(this).sendRequest(AccessToken.getCurrentAccessToken().getUserId(),
                 String.valueOf(new GPSTracker(this).getLatitude()),
                 String.valueOf(new GPSTracker(this).getLongitude()));
     }
@@ -128,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             details.setText(userInfo.getString("first_name"));
             String imageUrl = userInfo.getJSONObject("picture").getJSONObject("data").getString("url");
             Picasso.with(this).load(imageUrl).transform(new CircleTransform()).into(profile_picture);
-            registerUserToGIFsterServer();
         } catch (JSONException e) {
             e.printStackTrace();
         }

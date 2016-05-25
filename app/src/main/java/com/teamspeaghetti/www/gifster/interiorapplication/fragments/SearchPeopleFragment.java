@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.facebook.AccessToken;
 import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrievePeople;
@@ -35,7 +37,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.searchpeople,null);
-        new UserProcesses(getContext()).getPeople(Profile.getCurrentProfile().getId());
+            new UserProcesses(getContext()).getPeople(AccessToken.getCurrentAccessToken().getUserId());
         return init(rootView);
     }
 
