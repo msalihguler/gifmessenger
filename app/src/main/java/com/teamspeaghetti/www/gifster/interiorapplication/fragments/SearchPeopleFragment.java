@@ -14,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
@@ -29,19 +31,24 @@ import java.util.List;
  * Created by Salih on 21.05.2016.
  */
 public class SearchPeopleFragment extends Fragment implements View.OnClickListener,IRetrievePeople {
-    ImageView thumbup,thumbdown;
+    ImageView thumbup,thumbdown,profile_pic;
+    TextView name;
     CardView holder;
     List<People> peoples;
+    UserProcesses user_instance;
     int lastPosition=0;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.searchpeople,null);
-            new UserProcesses(getContext()).getPeople(AccessToken.getCurrentAccessToken().getUserId());
+        user_instance = new UserProcesses(getContext(),this);
+        user_instance.getPeople(AccessToken.getCurrentAccessToken().getUserId());
         return init(rootView);
     }
 
     public View init(View rootView){
+        profile_pic = (ImageView)rootView.findViewById(R.id.profilepicture);
+        name = (TextView)rootView.findViewById(R.id.name);
         thumbup = (ImageView)rootView.findViewById(R.id.thumbsup);
         thumbdown = (ImageView)rootView.findViewById(R.id.thumbsdown);
         thumbdown.setOnClickListener(this);
@@ -61,8 +68,8 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.thumbsup:
-                if(lastPosition==peoples.size()) {
-
+                if(lastPosition>peoples.size()) {
+                    lastPosition=0;
                 }else{
                     holder.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.move_right));
                     lastPosition++;
@@ -72,7 +79,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                 break;
             case R.id.thumbsdown:
                 if(lastPosition==peoples.size()) {
-
+                    lastPosition=0;
                 }else {
                     holder.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.move_left));
                     lastPosition++;
@@ -84,7 +91,17 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     @Override
     public void getRetrievedPeople(List<People> peopleList) {
             peoples= (peopleList);
-            new UserProcesses().getInformation(peoples.get(0).getId());
+            user_instance.getInformation(peoples.get(0).getId());
 
+    }
+
+    @Override
+    public void createList(List<People> peopleList) {
+        People people = peopleList.get(0);
+        name.setText(people.getName());
+        Glide.with(getContext()).load(people.getProfile_url())
+                .thumbnail(0.5f)
+                .crossFade()
+                .into(profile_pic);
     }
 }

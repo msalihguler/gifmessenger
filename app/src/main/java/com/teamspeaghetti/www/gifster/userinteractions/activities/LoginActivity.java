@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -69,6 +70,7 @@ public class LoginActivity extends AppIntro {
             public void onError(FacebookException error) {
                 Snackbar snackbar = Snackbar.make(pager,"Login Error: "+error,Snackbar.LENGTH_SHORT);
                 snackbar.show();
+                error.printStackTrace();
             }
         });
     }

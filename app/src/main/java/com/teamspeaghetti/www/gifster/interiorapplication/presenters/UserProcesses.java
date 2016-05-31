@@ -17,6 +17,7 @@ import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IUserReques
 import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -36,10 +37,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformationRetriever{
     Context _context;
     List<People> peopleList = new ArrayList<People>();
+    SearchPeopleFragment _fragment;
     public UserProcesses(){}
     public UserProcesses(Context context){
         this._context=context;
     }
+    public UserProcesses(Context context,SearchPeopleFragment fragment){
+        this._context=context; this._fragment=fragment;
+    }
+
     @Override
     public void sendRequest(String id,String latitude,String longitude) {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
@@ -73,7 +79,7 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                     JSONArray jsonObject1 = new JSONArray(temp);
                     String id = ((JSONObject)jsonObject1.get(0)).getString("userid");
                     peopleList.add(new People(id));
-                    new SearchPeopleFragment().getRetrievedPeople(peopleList);
+                    _fragment.createList(peopleList);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -84,12 +90,22 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
     }
 
     @Override
-    public void getInformation(String id) {
-
+    public void getInformation(final String id) {
         GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + id, null, HttpMethod.GET, new GraphRequest.Callback() {
             @Override
             public void onCompleted(GraphResponse response) {
-                Log.e("err",response.getRawResponse());
+                try {
+                    Log.e("lo",response.getRawResponse());
+                    JSONObject object = new JSONObject(response.getRawResponse());
+                    People people = new People();
+                    people.setId(object.getString("id"));
+                    people.setName(object.getString("name"));
+                    people.setProfile_url(((JSONObject)((JSONObject)object.get("picture")).get("data")).getString("url"));
+                    peopleList.add(people);
+                    _fragment.createList(peopleList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
         Bundle parameters = new Bundle();

@@ -6,11 +6,32 @@ package com.teamspeaghetti.www.gifster.interiorapplication.model;
 public class People {
     public String id;
     public String likes;
-    public String location;
     public String dislikes;
+    public String name;
+    public String profile_url;
+    public String location;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProfile_url() {
+        return profile_url;
+    }
+
+    public void setProfile_url(String profile_url) {
+        this.profile_url = profile_url;
+    }
+    public People() {
+    }
     public People(String id) {
         setId(id);
     }
+
     public People(String id, String likes, String location) {
         this.id = id;
         this.likes = likes;
