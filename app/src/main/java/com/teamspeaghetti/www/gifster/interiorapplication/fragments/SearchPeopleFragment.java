@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -35,6 +36,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     CardView holder;
     List<People> peoples;
     UserProcesses user_instance;
+    ProgressBar pbar;
     int lastPosition=0;
     @Nullable
     @Override
@@ -50,10 +52,13 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         name = (TextView)rootView.findViewById(R.id.name);
         thumbup = (ImageView)rootView.findViewById(R.id.thumbsup);
         thumbdown = (ImageView)rootView.findViewById(R.id.thumbsdown);
+        pbar = (ProgressBar)rootView.findViewById(R.id.pbar);
+        holder=(CardView)rootView.findViewById(R.id.profilecard);
+        peoples = new ArrayList<People>();
         thumbdown.setOnClickListener(this);
         thumbup.setOnClickListener(this);
-        peoples = new ArrayList<People>();
-        holder=(CardView)rootView.findViewById(R.id.profilecard);
+        holder.setVisibility(View.GONE);
+        pbar.setVisibility(View.VISIBLE);
         Drawable mDrawable = getActivity().getResources().getDrawable(R.drawable.thumbup);
         mDrawable.setColorFilter(new
                 PorterDuffColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.MULTIPLY));
@@ -67,22 +72,22 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.thumbsup:
-                Log.e("response",String.valueOf(peoples.size()));
                 if(lastPosition>=peoples.size()) {
                     lastPosition=0;
                 }else{
-                    Log.e("pos",String.valueOf(lastPosition));
+                    user_instance.sendLikeStatus(AccessToken.getCurrentAccessToken().getUserId(),peoples.get(lastPosition).getId(),"like");
                     holder.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.move_right));
                     user_instance.getInformation(peoples.get(lastPosition).getId());
                     lastPosition++;
                 }
                 break;
             case R.id.thumbsdown:
-                Log.e("response",String.valueOf(peoples.size()));
                 if(lastPosition>=peoples.size()) {
                     lastPosition=0;
                 }else {
+                    user_instance.sendLikeStatus(AccessToken.getCurrentAccessToken().getUserId(),peoples.get(lastPosition).getId(),"dislike");
                     holder.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.move_left));
+                    user_instance.getInformation(peoples.get(lastPosition).getId());
                     lastPosition++;
                 }
                 break;
@@ -99,10 +104,16 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void createList(People people) {
-            name.setText(people.getName());
-            Glide.with(getContext()).load(people.getProfile_url())
-                    .crossFade()
-                    .into(profile_pic);
+            if(people.getName()!=null) {
+                name.setText(people.getName());
+                Glide.with(getContext()).load(people.getProfile_url())
+                        .crossFade()
+                        .into(profile_pic);
+                if(pbar.isShown()) {
+                    pbar.setVisibility(View.GONE);
+                    holder.setVisibility(View.VISIBLE);
+                }
+            }
         }
 
 }

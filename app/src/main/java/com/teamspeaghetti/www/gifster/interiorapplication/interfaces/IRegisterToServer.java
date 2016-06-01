@@ -14,5 +14,7 @@ public interface IRegisterToServer {
     Call<ResponseBody> registerUser(@Query("id")String userid,@Query("lat")String latitude,@Query("long")String longitude);
     @GET("/getpeople")
     Call<ResponseBody> getUsers(@Query("id")String userid);
+    @GET("/sendlikestatus")
+    Call<ResponseBody> sendLikeStatus(@Query("m_id")String my_id,@Query("o_id")String userid,@Query("type")String type);
 
 }

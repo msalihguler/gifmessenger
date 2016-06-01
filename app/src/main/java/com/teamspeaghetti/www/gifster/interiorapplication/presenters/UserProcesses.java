@@ -9,7 +9,6 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.teamspeaghetti.www.gifster.R;
-import com.teamspeaghetti.www.gifster.interiorapplication.activities.MainActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.SearchPeopleFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IOtherPeopleInformationRetriever;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRegisterToServer;
@@ -38,18 +37,20 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
     Context _context;
     List<People> peopleList = new ArrayList<People>();
     SearchPeopleFragment _fragment;
+    Retrofit retrofit;
+    IRegisterToServer requestInterface;
     public UserProcesses(){}
     public UserProcesses(Context context){
         this._context=context;
     }
     public UserProcesses(Context context,SearchPeopleFragment fragment){
         this._context=context; this._fragment=fragment;
+        retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
+        requestInterface =retrofit.create(IRegisterToServer.class);
     }
 
     @Override
     public void sendRequest(String id,String latitude,String longitude) {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
-        IRegisterToServer requestInterface =retrofit.create(IRegisterToServer.class);
         Call<ResponseBody> call = requestInterface.registerUser(id,latitude,longitude);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -67,8 +68,6 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
 
     @Override
     public void getPeople(String id) {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
-        IRegisterToServer requestInterface =retrofit.create(IRegisterToServer.class);
         Call<ResponseBody> call = requestInterface.getUsers(id);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -80,8 +79,6 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                     for(int i=0;i<jsonObject1.length();i++) {
                         String id = ((JSONObject) jsonObject1.get(i)).getString("userid");
                         peopleList.add(new People(id));
-                        Log.e("response",id);
-
                     }
                     _fragment.getRetrievedPeople(peopleList);
                 } catch (Exception e) {
@@ -93,6 +90,22 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
         });
     }
 
+    @Override
+    public void sendLikeStatus(String m_id, String o_id,String type) {
+        Call<ResponseBody> call = requestInterface.sendLikeStatus(m_id,o_id,type);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+
+    }
     @Override
     public void getInformation(final String id) {
         GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + id, null, HttpMethod.GET, new GraphRequest.Callback() {
