@@ -67,15 +67,19 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.thumbsup:
-                if(lastPosition>peoples.size()) {
+                Log.e("response",String.valueOf(peoples.size()));
+                if(lastPosition>=peoples.size()) {
                     lastPosition=0;
                 }else{
+                    Log.e("pos",String.valueOf(lastPosition));
                     holder.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.move_right));
+                    user_instance.getInformation(peoples.get(lastPosition).getId());
                     lastPosition++;
                 }
                 break;
             case R.id.thumbsdown:
-                if(lastPosition==peoples.size()) {
+                Log.e("response",String.valueOf(peoples.size()));
+                if(lastPosition>=peoples.size()) {
                     lastPosition=0;
                 }else {
                     holder.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.move_left));
@@ -87,17 +91,18 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void getRetrievedPeople(List<People> peopleList) {
-            peoples= (peopleList);
-            user_instance.getInformation(peoples.get(0).getId());
-
+            peoples.clear();
+            peoples.addAll(peopleList);
+        user_instance.getInformation(peoples.get(0).getId());
+        lastPosition=1;
     }
 
     @Override
-    public void createList(List<People> peopleList) {
-        People people = peopleList.get(lastPosition);
-        name.setText(people.getName());
-        Glide.with(getContext()).load(people.getProfile_url())
-                .crossFade()
-                .into(profile_pic);
-    }
+    public void createList(People people) {
+            name.setText(people.getName());
+            Glide.with(getContext()).load(people.getProfile_url())
+                    .crossFade()
+                    .into(profile_pic);
+        }
+
 }

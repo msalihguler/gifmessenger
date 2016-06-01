@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface IRetrievePeople {
     public void getRetrievedPeople(List<People> peopleList);
-    public void createList(List<People> peopleList);
+    public void createList(People people);
 }
