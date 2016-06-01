@@ -79,7 +79,7 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                     JSONArray jsonObject1 = new JSONArray(temp);
                     String id = ((JSONObject)jsonObject1.get(0)).getString("userid");
                     peopleList.add(new People(id));
-                    _fragment.createList(peopleList);
+                    _fragment.getRetrievedPeople(peopleList);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -95,12 +95,14 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
             @Override
             public void onCompleted(GraphResponse response) {
                 try {
+                    peopleList.clear();
                     Log.e("lo",response.getRawResponse());
                     JSONObject object = new JSONObject(response.getRawResponse());
+                    String url =((JSONObject)((JSONObject)object.get("picture")).get("data")).getString("url");
                     People people = new People();
                     people.setId(object.getString("id"));
                     people.setName(object.getString("name"));
-                    people.setProfile_url(((JSONObject)((JSONObject)object.get("picture")).get("data")).getString("url"));
+                    people.setProfile_url(url);
                     peopleList.add(people);
                     _fragment.createList(peopleList);
                 } catch (JSONException e) {

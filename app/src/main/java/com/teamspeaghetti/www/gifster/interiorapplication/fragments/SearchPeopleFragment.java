@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
-import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrievePeople;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
@@ -74,8 +73,6 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                     holder.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.move_right));
                     lastPosition++;
                 }
-
-
                 break;
             case R.id.thumbsdown:
                 if(lastPosition==peoples.size()) {
@@ -97,10 +94,9 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void createList(List<People> peopleList) {
-        People people = peopleList.get(0);
+        People people = peopleList.get(lastPosition);
         name.setText(people.getName());
         Glide.with(getContext()).load(people.getProfile_url())
-                .thumbnail(0.5f)
                 .crossFade()
                 .into(profile_pic);
     }
