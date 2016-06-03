@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.teamspeaghetti.www.gifster.R;
+import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrievePeople;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.UserProcesses;
@@ -84,6 +84,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
             case R.id.thumbsdown:
                 if(lastPosition>=peoples.size()) {
                     lastPosition=0;
+
                 }else {
                     user_instance.sendLikeStatus(AccessToken.getCurrentAccessToken().getUserId(),peoples.get(lastPosition).getId(),"dislike");
                     holder.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.move_left));
@@ -98,8 +99,13 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     public void getRetrievedPeople(List<People> peopleList) {
             peoples.clear();
             peoples.addAll(peopleList);
-        user_instance.getInformation(peoples.get(0).getId());
-        lastPosition=1;
+        if(peoples.size()>0) {
+            user_instance.getInformation(peoples.get(0).getId());
+            lastPosition = 1;
+        }else{
+            pbar.setVisibility(View.GONE);
+            Utils.createSnackBar(getView(),"There is no one new");
+        }
     }
 
     @Override
@@ -109,9 +115,10 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                 Glide.with(getContext()).load(people.getProfile_url())
                         .crossFade()
                         .into(profile_pic);
+                holder.setVisibility(View.VISIBLE);
                 if(pbar.isShown()) {
                     pbar.setVisibility(View.GONE);
-                    holder.setVisibility(View.VISIBLE);
+
                 }
             }
         }

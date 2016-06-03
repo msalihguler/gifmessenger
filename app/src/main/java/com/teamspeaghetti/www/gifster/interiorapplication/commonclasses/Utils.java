@@ -27,7 +27,7 @@ public class Utils {
         fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.flContent, fragment).commit();
     }
     public static void createSnackBar(View view, String message){
-        Snackbar snackbar = Snackbar.make(view,message,Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make(view,message,Snackbar.LENGTH_LONG);
         snackbar.show();
     }
     public static void createAlert(Context context){
