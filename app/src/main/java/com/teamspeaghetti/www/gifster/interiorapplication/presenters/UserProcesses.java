@@ -9,6 +9,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.teamspeaghetti.www.gifster.R;
+import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.SearchPeopleFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IOtherPeopleInformationRetriever;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRegisterToServer;
@@ -99,12 +100,17 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    Log.e("response",response.body().string());
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    Boolean match = jsonObject.getBoolean("match");
+                    if (match){
+                        Log.e("match","yes");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
