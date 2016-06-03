@@ -149,13 +149,13 @@ app.get("/getpeople",function(req,res){
                 var tempdislikes = JSON.parse(data.dislikes);
                 var finalArray = templikes.concat(tempdislikes);
                 finalArray.push(person_id);
-                console.log(finalArray);
                 users.find({"userid":{"$nin":finalArray}},function(e,d){
                     if(err){
                         response = {"error" : true,"message" : "Error adding data"};
                         res.send(JSON.stringify(response));
                     }else{
                       if(d){
+                        console.log(d);
                         response = {"error" : false,"message" : JSON.stringify(d)};
                         res.send(JSON.stringify(response));
                         }

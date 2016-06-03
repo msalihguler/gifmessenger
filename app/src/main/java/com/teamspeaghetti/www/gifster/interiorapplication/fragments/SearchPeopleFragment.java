@@ -1,6 +1,5 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.fragments;
 
-import android.animation.Animator;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -8,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +16,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.teamspeaghetti.www.gifster.R;
@@ -24,7 +23,6 @@ import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrievePeople;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.UserProcesses;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,30 +69,26 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     }
     @Override
     public void onClick(View v) {
+        Log.e("count",String.valueOf(lastPosition));
         switch (v.getId()){
             case R.id.thumbsup:
-                if(lastPosition>=peoples.size()) {
+                if(lastPosition>=peoples.size()-1) {
+                    holder.startAnimation(createAnimationForLastElement("like"));
                     lastPosition=0;
-                    Animation animation =AnimationUtils.loadAnimation(getContext(), R.anim.move_right);
-                    animation.setFillAfter(true);
-                    holder.startAnimation(animation);
-
+                    Utils.createSnackBar(getView(),"There is no one new");
                 }else{
-                    user_instance.sendLikeStatus(AccessToken.getCurrentAccessToken().getUserId(),peoples.get(lastPosition).getId(),"like");
-                    holder.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.move_right));
+                    holder.startAnimation(createAnimationForTopElements("like"));
                     user_instance.getInformation(peoples.get(lastPosition).getId());
-                    lastPosition++;
                 }
                 break;
             case R.id.thumbsdown:
-                if(lastPosition>=peoples.size()) {
+                if(lastPosition>=peoples.size()-1) {
+                    holder.startAnimation(createAnimationForLastElement("dislike"));
                     lastPosition=0;
-
+                    Utils.createSnackBar(getView(),"There is no one new");
                 }else {
-                    user_instance.sendLikeStatus(AccessToken.getCurrentAccessToken().getUserId(),peoples.get(lastPosition).getId(),"dislike");
-                    holder.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.move_left));
+                    holder.startAnimation(createAnimationForTopElements("dislike"));
                     user_instance.getInformation(peoples.get(lastPosition).getId());
-                    lastPosition++;
                 }
                 break;
         }
@@ -106,7 +100,6 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
             peoples.addAll(peopleList);
         if(peoples.size()>0) {
             user_instance.getInformation(peoples.get(0).getId());
-            lastPosition = 1;
         }else{
             pbar.setVisibility(View.GONE);
             Utils.createSnackBar(getView(),"There is no one new");
@@ -127,5 +120,24 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                 }
             }
         }
-
+    public Animation createAnimationForLastElement(String type){
+        user_instance.sendLikeStatus(AccessToken.getCurrentAccessToken().getUserId(), peoples.get(peoples.size()-1).getId(), type);
+        Animation animation = null;
+        if(type.equals("dislike"))
+            animation = AnimationUtils.loadAnimation(getContext(), R.anim.move_left);
+        else
+            animation = AnimationUtils.loadAnimation(getContext(), R.anim.move_right);
+        animation.setFillAfter(true);
+        return animation;
+    }
+    public Animation createAnimationForTopElements(String type) {
+        user_instance.sendLikeStatus(AccessToken.getCurrentAccessToken().getUserId(), peoples.get(lastPosition).getId(), type);
+        lastPosition++;
+        Animation animation = null;
+        if(type.equals("dislike"))
+            animation =  AnimationUtils.loadAnimation(getContext(), R.anim.move_left);
+        else
+            animation = AnimationUtils.loadAnimation(getContext(), R.anim.move_right);
+        return animation;
+    }
 }
