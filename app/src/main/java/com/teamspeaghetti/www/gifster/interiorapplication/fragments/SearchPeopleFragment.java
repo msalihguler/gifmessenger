@@ -11,6 +11,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -74,6 +75,10 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
             case R.id.thumbsup:
                 if(lastPosition>=peoples.size()) {
                     lastPosition=0;
+                    Animation animation =AnimationUtils.loadAnimation(getContext(), R.anim.move_right);
+                    animation.setFillAfter(true);
+                    holder.startAnimation(animation);
+
                 }else{
                     user_instance.sendLikeStatus(AccessToken.getCurrentAccessToken().getUserId(),peoples.get(lastPosition).getId(),"like");
                     holder.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.move_right));
