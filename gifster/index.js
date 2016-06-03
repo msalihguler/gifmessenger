@@ -177,31 +177,32 @@ app.get("/sendlikestatus",function(req,res){
                  response = {"error" : true,"message" : "Error fetching data"};
                  res.send(JSON.stringify(response));
                }else{
-                    var tempArray = JSON.parse(data.likes);
-                    if(tempArray.indexOf(m_id)>-1){
-                        match = true;
-                    });
-                    users.findOne({"userid":my_id},function(error,d){
-                    if(error){
-                     response = {"error" : true,"message" : "Error fetching data"};
-                     res.send(JSON.stringify(response));
-                    }else{
-                        var tempLikes = JSON.parse(d.likes);
-                        templikes.push(o_id);
-                        d.likes = JSON.stringify(templikes);
-                        d.save(function(err,user){
-                        if(err) {
-                           response = {"match" : false,"message" : "Error adding data"};
-                           } else {
-                           response = {"match" : match,"message" : "likes updated: " +user.likes};
-                           }
-                           res.send(JSON.stringify(response));
-                        });
-                    }
+                var tempArray = JSON.parse(data.likes);
+                if(tempArray.indexOf(m_id)>-1){
+                   match = true;
+                }
+                  users.findOne({"userid":my_id},function(error,d){
+                                   if(error){
+                                      response = {"error" : true,"message" : "Error fetching data"};
+                                       res.send(JSON.stringify(response));
+                                      }else{
+                                      var tempLikes = JSON.parse(d.likes);
+                                      templikes.push(o_id);
+                                      d.likes = JSON.stringify(templikes);
+                                      d.save(function(err,user){
+                                      if(err) {
+                                         response = {"match" : false,"message" : "Error adding data"};
+                                      } else {
+                                         response = {"match" : match,"message" : "likes updated: " +user.likes};
+                                      }
+                                         res.send(JSON.stringify(response));
+                                      });
+                                      }
 
-                    });
-               }
-               });
+                                });
+              }
+
+    });
     }else if(type=="dislike"){
          users.findOne({"userid":my_id},function(error,d){
                             if(error){
