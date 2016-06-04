@@ -12,7 +12,9 @@ import android.widget.ProgressBar;
 
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.adapter.ChatAdapter;
+import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrieveMatches;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
+import com.teamspeaghetti.www.gifster.interiorapplication.presenters.ChatProcesses;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +22,13 @@ import java.util.List;
 /**
  * Created by Salih on 3.06.2016.
  */
-public class MessageFragment extends Fragment {
+public class MessageFragment extends Fragment implements IRetrieveMatches {
     RecyclerView chat_holder;
     ChatAdapter chatAdapter;
     ProgressBar progressBar;
     LinearLayoutManager layoutManager;
     List<People> matches = new ArrayList<>();
+    ChatProcesses chatInstance;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,10 +36,19 @@ public class MessageFragment extends Fragment {
         chat_holder = (RecyclerView)rootView.findViewById(R.id.chat_holder);
         progressBar = (ProgressBar)rootView.findViewById(R.id.progressChat);
         chatAdapter=new ChatAdapter(getContext(),matches);
+        chatInstance = new ChatProcesses(MessageFragment.this,getContext());
         layoutManager = new LinearLayoutManager(getContext());
         chat_holder.setLayoutManager(layoutManager);
         chat_holder.setAdapter(chatAdapter);
-
+        chatInstance.getMatches();
         return rootView;
+    }
+
+
+    @Override
+    public void getRetrievedMatches(List<People> list) {
+        matches.clear();
+        matches.addAll(list);
+        chatAdapter.notifyDataSetChanged();
     }
 }

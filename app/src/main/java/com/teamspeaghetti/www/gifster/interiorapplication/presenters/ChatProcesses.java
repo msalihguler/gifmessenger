@@ -8,10 +8,7 @@ import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.MessageFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IChatMethods;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IChatRequests;
-import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRegisterToServer;
-
 import java.io.IOException;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;

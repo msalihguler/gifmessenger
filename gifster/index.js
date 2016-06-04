@@ -167,6 +167,18 @@ app.get("/getpeople",function(req,res){
         }
     });
 });
+app.get("/getmatches",function(req,res){
+    var userid = req.query.id;
+    users.findOne({"userid":userid},function(err,data){
+            if(err){
+            response = {"error" : true,"message" : "Error adding data"};
+            res.send(JSON.stringify(response));
+            }else{
+            response = {"error" : false,"matches" : data.matches};
+            res.send(JSON.stringify(response));
+            }
+    });
+});
 app.get("/sendlikestatus",function(req,res){
     var my_id = req.query.m_id;
     var o_id = req.query.o_id;
