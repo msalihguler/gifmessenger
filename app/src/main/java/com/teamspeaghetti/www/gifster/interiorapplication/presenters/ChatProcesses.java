@@ -2,7 +2,6 @@ package com.teamspeaghetti.www.gifster.interiorapplication.presenters;
 
 import android.content.Context;
 import android.util.Log;
-
 import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.MessageFragment;
@@ -44,4 +43,5 @@ public class ChatProcesses implements IChatMethods{
             public void onFailure(Call<ResponseBody> call, Throwable t) {}
         });
     }
+
 }
