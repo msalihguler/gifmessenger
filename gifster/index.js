@@ -125,6 +125,7 @@ app.post("/registeruser",function(req,res){
            db.location = lat+"-"+long;
            db.likes = "[]";
            db.dislikes = "[]";
+           db.matches = "[]";
            db.save(function(err,user){
               if(err) {
                   response = {"error" : true,"message" : "Error adding data"};
@@ -178,17 +179,29 @@ app.get("/sendlikestatus",function(req,res){
                  res.send(JSON.stringify(response));
                }else{
                 var tempArray = JSON.parse(data.likes);
-                if(tempArray.indexOf(my_id)>-1){
-                   match = true;
-                }
+
                   users.findOne({"userid":my_id},function(error,d){
                    if(error){
                       response = {"error" : true,"message" : "Error fetching data"};
                        res.send(JSON.stringify(response));
                       }else{
+                       if(tempArray.indexOf(my_id)>-1){
+                         match = true;
+                         var matchArray = JSON.parse(data.matches);
+                         matchArray.push(my_id);
+                         data.matches = JSON.stringify(matchArray);
+                         data.save(function(e,c){
+                           if(err) {}
+                           else {}
+                           });
+                          }
+                      }
                       var templikes = JSON.parse(d.likes);
+                      var tempMatches = JSON.parse(d.matches);
+                      tempMatches.push(my_id);
                       templikes.push(o_id);
                       d.likes = JSON.stringify(templikes);
+                      d.matches = JSON.stringify(tempMatches);
                       d.save(function(err,user){
                       if(err) {
                          response = {"match" : false,"message" : "Error adding data"};
@@ -197,7 +210,7 @@ app.get("/sendlikestatus",function(req,res){
                       }
                          res.send(JSON.stringify(response));
                       });
-                      }
+
 
                 });
               }
@@ -222,7 +235,7 @@ app.get("/sendlikestatus",function(req,res){
                     });
                 }
 
-                });
+    });
     }
 });
 

@@ -5,6 +5,7 @@ var users = {
 	"userid":String,
 	"location":String,
     "likes":String,
+    "matches":String,
     "dislikes":String
 }
 module.exports = mongoose.model('users',users);
