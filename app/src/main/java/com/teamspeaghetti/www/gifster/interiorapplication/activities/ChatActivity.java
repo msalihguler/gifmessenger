@@ -1,14 +1,13 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import com.teamspeaghetti.www.gifster.R;
 
@@ -18,7 +17,7 @@ import com.teamspeaghetti.www.gifster.R;
 public class ChatActivity extends AppCompatActivity {
     Button toggle;
     Boolean toogled=true;
-    LinearLayout keyboard;
+    CardView keyboard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +34,7 @@ public class ChatActivity extends AppCompatActivity {
                 R.anim.slide_up);
         slide_up.setFillAfter(true);
         slide_down.setFillAfter(true);
-        keyboard = (LinearLayout)findViewById(R.id.keyboard);
+        keyboard = (CardView)findViewById(R.id.keyboard);
         toggle = (Button)findViewById(R.id.toggle);
         toggle.setOnClickListener(new View.OnClickListener() {
             @Override
