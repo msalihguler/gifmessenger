@@ -1,10 +1,14 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.presenters;
 
+
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
-import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
+import com.teamspeaghetti.www.gifster.interiorapplication.activities.ChatActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.FullScreenGIFsFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.KeyboardFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IDeleteGIF;
@@ -32,18 +36,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Salih on 20.05.2016.
  */
 public class AskSavedGIFs implements IRetrieveGIFs,IDeleteGIF {
-    KeyboardFragment _context;
-    FullScreenGIFsFragment _context2;
+    Fragment _fragment_context;
+    Activity _activity_context;
+    Context _context;
     List<Gifs> tempList = new ArrayList<>();
-    public AskSavedGIFs(){
+    public AskSavedGIFs(){}
+    public AskSavedGIFs(Fragment context){
+        this._fragment_context=context;
+        _context = context.getContext();
     }
-    public AskSavedGIFs(FullScreenGIFsFragment context){
-        this._context2=context;
+    public AskSavedGIFs(Activity context){
+        this._activity_context=context;
+        _context = context;
+
     }
 
-    public AskSavedGIFs(KeyboardFragment context){
-        this._context=context;
-    }
     @Override
     public void retrieveGIFs(List<Gifs> gifsList) {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
@@ -58,7 +65,10 @@ public class AskSavedGIFs implements IRetrieveGIFs,IDeleteGIF {
                     for(int i=0;i<jsonArray.length();i++){
                         tempList.add(new Gifs(jsonArray.getString(i)));
                     }
-                    _context.retrieveGIFs(tempList);
+                    if(_fragment_context!=null)
+                        ((KeyboardFragment)_fragment_context).retrieveGIFs(tempList);
+                    if(_activity_context!=null)
+                            ((ChatActivity)_activity_context).retrieveGIFs(tempList);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -77,7 +87,7 @@ public class AskSavedGIFs implements IRetrieveGIFs,IDeleteGIF {
     public void deleteGIF(String url, List<Gifs> gifsList, final int pos) {
         tempList.clear();
         tempList = gifsList;
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(_context2.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
         IDeleteGIFRequest requestInterface =retrofit.create(IDeleteGIFRequest.class);
         Call<ResponseBody> call = requestInterface.sendDeleteRequest(url,Profile.getCurrentProfile().getId());
         call.enqueue(new Callback<ResponseBody>() {
@@ -87,9 +97,9 @@ public class AskSavedGIFs implements IRetrieveGIFs,IDeleteGIF {
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     if(!jsonObject.getBoolean("error")){
                         tempList.remove(pos);
-                        _context2.retrieveGIFs(tempList);
+                        if(_fragment_context!=null)
+                        ((FullScreenGIFsFragment)_fragment_context).retrieveGIFs(tempList);
                     }else{
-
                     }
 
                 } catch (JSONException e) {
