@@ -1,13 +1,23 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.presenters;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.MessageFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IChatMethods;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IChatRequests;
+import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,9 +29,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Salih on 4.06.2016.
  */
 public class ChatProcesses implements IChatMethods{
-    MessageFragment _fragment;
+    Fragment _fragment;
     Context _context;
-    public ChatProcesses(MessageFragment fragment, Context context){
+    public ChatProcesses(Fragment fragment, Context context){
         this._context=context;
         this._fragment=fragment;
     }
@@ -34,8 +44,16 @@ public class ChatProcesses implements IChatMethods{
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    Log.e("response",response.body().string());
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    JSONArray jsonArray = new JSONArray(jsonObject.getString("matches"));
+                    UserProcesses processes = new UserProcesses(_context,_fragment);
+                    for(int i=0;i<jsonArray.length();i++){
+                        processes.getInformation(jsonArray.getString(i));
+                    }
+
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }

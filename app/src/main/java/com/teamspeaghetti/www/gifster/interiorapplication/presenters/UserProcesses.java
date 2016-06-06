@@ -2,6 +2,7 @@ package com.teamspeaghetti.www.gifster.interiorapplication.presenters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.facebook.AccessToken;
@@ -10,6 +11,7 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
+import com.teamspeaghetti.www.gifster.interiorapplication.fragments.MessageFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.SearchPeopleFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IOtherPeopleInformationRetriever;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRegisterToServer;
@@ -37,14 +39,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformationRetriever{
     Context _context;
     List<People> peopleList = new ArrayList<People>();
-    SearchPeopleFragment _fragment;
+    Fragment _fragment;
     Retrofit retrofit;
     IRegisterToServer requestInterface;
     public UserProcesses(){}
     public UserProcesses(Context context){
         this._context=context;
     }
-    public UserProcesses(Context context,SearchPeopleFragment fragment){
+    public UserProcesses(Context context,Fragment fragment){
         this._context=context; this._fragment=fragment;
         retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
         requestInterface =retrofit.create(IRegisterToServer.class);
@@ -83,7 +85,8 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                         String id = ((JSONObject) jsonObject1.get(i)).getString("userid");
                         peopleList.add(new People(id));
                     }
-                    _fragment.getRetrievedPeople(peopleList);
+                    if(_fragment instanceof SearchPeopleFragment)
+                        ((SearchPeopleFragment)_fragment).getRetrievedPeople(peopleList);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -130,7 +133,10 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                     people.setId(object.getString("id"));
                     people.setName(object.getString("name"));
                     people.setProfile_url(url);
-                    _fragment.createList(people);
+                    if(_fragment instanceof SearchPeopleFragment)
+                        ((SearchPeopleFragment)_fragment).createList(people);
+                    if(_fragment instanceof MessageFragment)
+                        ((MessageFragment)_fragment).createList(people);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

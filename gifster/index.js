@@ -202,6 +202,9 @@ app.get("/sendlikestatus",function(req,res){
                          var matchArray = JSON.parse(data.matches);
                          matchArray.push(my_id);
                          data.matches = JSON.stringify(matchArray);
+                         var tempMatches = JSON.parse(d.matches);
+                         tempMatches.push(o_id);
+                         d.matches = JSON.stringify(tempMatches);
                          data.save(function(e,c){
                            if(err) {}
                            else {}
@@ -209,11 +212,8 @@ app.get("/sendlikestatus",function(req,res){
                           }
                       }
                       var templikes = JSON.parse(d.likes);
-                      var tempMatches = JSON.parse(d.matches);
-                      tempMatches.push(my_id);
                       templikes.push(o_id);
                       d.likes = JSON.stringify(templikes);
-                      d.matches = JSON.stringify(tempMatches);
                       d.save(function(err,user){
                       if(err) {
                          response = {"match" : false,"message" : "Error adding data"};

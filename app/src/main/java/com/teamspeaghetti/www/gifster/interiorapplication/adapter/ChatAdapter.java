@@ -9,7 +9,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 import com.teamspeaghetti.www.gifster.R;
+import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.CircleTransform;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
 
 import java.util.List;
@@ -44,6 +47,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.VHolder> {
 
     @Override
     public void onBindViewHolder(ChatAdapter.VHolder holder, int position) {
+        holder.name.setText(_matches.get(position).getName());
+        Picasso.with(_context).load(_matches.get(position).getProfile_url()).resize(75,75).transform(new CircleTransform()).into(holder.profile_pic);
 
     }
 
