@@ -1,6 +1,7 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,9 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.teamspeaghetti.www.gifster.R;
+import com.teamspeaghetti.www.gifster.interiorapplication.activities.ChatActivity;
+import com.teamspeaghetti.www.gifster.interiorapplication.activities.MainActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.CircleTransform;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
 
@@ -28,13 +32,22 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.VHolder> {
         this._context=context;
         this._matches=matches;
     }
-    public class VHolder extends RecyclerView.ViewHolder{
+    public class VHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView profile_pic;
         TextView name;
         public VHolder(View itemView,int viewtype) {
             super(itemView);
+            itemView.setOnClickListener(this);
             profile_pic=(ImageView)itemView.findViewById(R.id.mini_profile_photo);
             name = (TextView)itemView.findViewById(R.id.mini_profile_name);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent((MainActivity)_context, ChatActivity.class);
+            intent.putExtra("name",_matches.get(getPosition()).getName());
+            intent.putExtra("id",_matches.get(getPosition()).getId());
+            _context.startActivity(intent);
         }
     }
     @Override

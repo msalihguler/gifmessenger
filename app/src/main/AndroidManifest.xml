@@ -29,6 +29,7 @@
         <activity android:name=".interiorapplication.activities.MainActivity"></activity>
         <activity android:name=".userinteractions.activities.LoginActivity"
             ></activity>
+        <activity android:name=".interiorapplication.activities.ChatActivity"></activity>
     </application>
 
 </manifest>
