@@ -1,2 +1,5 @@
-# gifmessenger
-It is an application to chat with only gifs. Powered by GIPHY.
+# GIFster
+
+It is an application for meeting with new people and learning who they are over GIFs.
+
+Powered by GIPHY
