@@ -35,6 +35,8 @@ public interface IRequestHolder {
     /*
     *       CHAT REQUESTS
     * */
-    @GET("/savemessage")
+    @GET("/sendmessage")
     Call<ResponseBody> saveMessagetoServer(@Query("m_id")String m_id,@Query("o_id")String o_id,@Query("message")String msg);
+    @GET("/getmessage")
+    Call<ResponseBody> getMessages(@Query("m_id")String m_id,@Query("o_id")String o_id);
 }

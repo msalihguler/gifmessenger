@@ -7,12 +7,16 @@ import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IChatMethods;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRequestHolder;
+import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -27,10 +31,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ChatProcesses implements IChatMethods{
     Fragment _fragment;
     Context _context;
+    List<HashMap<String,Gifs>> _list;
     public ChatProcesses(){}
     public ChatProcesses(Fragment fragment, Context context){
         this._context=context;
         this._fragment=fragment;
+        _list = new ArrayList<>();
     }
     @Override
     public void getMatches() {
@@ -63,8 +69,7 @@ public class ChatProcesses implements IChatMethods{
     public void sendMessage(String otherID,String url) {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
         IRequestHolder requestInterface =retrofit.create(IRequestHolder.class);
-        Call<ResponseBody> call = requestInterface.saveMessagetoServer(Profile.getCurrentProfile().getId(),otherID,
-                url);
+        Call<ResponseBody> call = requestInterface.saveMessagetoServer(Profile.getCurrentProfile().getId(),otherID,url);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -83,11 +88,18 @@ public class ChatProcesses implements IChatMethods{
     public void getMessages(String otherID) {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
         IRequestHolder requestInterface =retrofit.create(IRequestHolder.class);
-        Call<ResponseBody> call = requestInterface.getMatches(Profile.getCurrentProfile().getId());
+        Call<ResponseBody> call = requestInterface.getMessages(Profile.getCurrentProfile().getId(),otherID);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
+                try {
+                    JSONArray jsonArray = new JSONArray(response.body().string());
+                    Log.e("res", ((JSONObject)jsonArray.get(0)).getString("message"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {}

@@ -180,28 +180,50 @@ app.get("/getmatches",function(req,res){
     });
 });
 app.get("/getmessage",function(req,res){
-
+    var response = {};
+    var m_id = req.query.m_id;
+    var o_id = req.query.o_id;
+    var merged1 = m_id+"-"+o_id;
+    var merged2 = o_id+"-"+m_id;
+    messages.find({"chat_id":{"$in":[merged1,merged2]}},function(e,d){
+       if(e){
+           response = {"error" : true,"message" : "Error adding data"};
+           res.send(JSON.stringify(response));
+       }else{
+         if(d.length>-1){
+           res.send(JSON.stringify(d));
+         }
+       }
+      });
 });
 app.get("/sendmessage",function(req,res){
     var response = {};
     var s_id = req.query.m_id;
     var r_id = req.query.o_id;
+    var c_id1 =s_id+"-"+r_id;
+    var c_id2 =r_id+"-"+s_id;
     var message = req.query.message;
-    var data = new messages();
-    data.chat_id = s_id+"-"+r_id;
-    data.sender_id = s_id;
-    data.message = message;
-    data.save(function(e,c){
-       if(err) {
-         res = {"error":true};
+    var db = new messages();
+    messages.find({"chat_id":{"$in":[c_id1,c_id2]}}).limit(1).exec(function(e,d){
+       if(e){
+         response = {"error" : true,"message" : "Error adding data"};
          res.send(JSON.stringify(response));
+       }else{
+       if(d.length>0){
+         db.chat_id=d[0].chat_id;
+       }else{
+         db.chat_id = c_id1;
        }
-       else {
-       res = {"error":false};
-       res.send(JSON.stringify(response));
-       }
+       db.sender_id = s_id;
+       db.message = message;
+       db.save(function(err,data){
+           if(err){
+           }else{
+              console.log("no error");
+           }
        });
-     }
+       }
+    });
 });
 app.get("/sendlikestatus",function(req,res){
     var my_id = req.query.m_id;

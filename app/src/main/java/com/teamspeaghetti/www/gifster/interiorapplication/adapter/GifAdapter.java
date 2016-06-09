@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
+import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRequestHolder;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.AskingGIFProcess;
 
@@ -134,7 +135,7 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
     }
     public void addToKeyBoard(String url, final View view){
         Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
-        IGetPersonalPreferences requestInterface =retrofit.create(IGetPersonalPreferences.class);
+        IRequestHolder requestInterface =retrofit.create(IRequestHolder.class);
         Call<ResponseBody> call = requestInterface.addToKeyBoard(url, Profile.getCurrentProfile().getId());
         call.enqueue(new Callback<ResponseBody>() {
             @Override

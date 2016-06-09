@@ -19,7 +19,7 @@
         android:id="@+id/keyboard"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_above="@+id/editText"
+        android:layout_above="@+id/searchGifs"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
         <android.support.v7.widget.RecyclerView
