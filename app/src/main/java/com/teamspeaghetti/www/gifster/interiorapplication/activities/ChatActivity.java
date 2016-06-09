@@ -10,39 +10,50 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.adapter.ChatKeyboardAdapter;
+import com.teamspeaghetti.www.gifster.interiorapplication.adapter.ConversationAdapter;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrieveGIFs;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.AskSavedGIFs;
+import com.teamspeaghetti.www.gifster.interiorapplication.presenters.ChatProcesses;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by Salih on 6.06.2016.
  */
 public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
+
     //Variable declaration
     Animation slide_down,slide_up;
     CardView keyboard;
-    RecyclerView gifList;
+    RecyclerView gifList,conversation;
     Toolbar toolbar;
     ChatKeyboardAdapter adapter;
+    ConversationAdapter conversationAdapter;
     List<Gifs> savedGifs;
-
+    List<HashMap<String,Gifs>> earlyConversations;
+    String otherID,name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chatscreen);
+        otherID = getIntent().getExtras().getString("id");
+        name = getIntent().getExtras().getString("name");
         initViews();
-        getSupportActionBar().setTitle(getIntent().getExtras().getString("name"));
+        makeCallForEarlyConversations(otherID);
+        getSupportActionBar().setTitle(name);
         new AskSavedGIFs(this).retrieveGIFs(savedGifs);
     }
     public void initViews(){
         keyboard = (CardView)findViewById(R.id.keyboard);
         toolbar = (Toolbar) findViewById(R.id.custom_toolbar);
         gifList = (RecyclerView)findViewById(R.id.sendGifs);
+        conversation = (RecyclerView)findViewById(R.id.previousTalks);
         savedGifs = new ArrayList<>();
-        adapter = new ChatKeyboardAdapter(savedGifs,this);
+        earlyConversations = new ArrayList<>();
+        adapter = new ChatKeyboardAdapter(savedGifs,this,otherID);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         slide_down = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_down);
         slide_up = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
@@ -53,6 +64,9 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         gifList.setAdapter(adapter);
     }
 
+    public void makeCallForEarlyConversations(String id){
+        new ChatProcesses(null,this).getMessages(id);
+    }
     @Override
     public void retrieveGIFs(List<Gifs> gifsList) {
         savedGifs.clear();

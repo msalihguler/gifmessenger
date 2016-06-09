@@ -5,4 +5,6 @@ package com.teamspeaghetti.www.gifster.interiorapplication.interfaces;
  */
 public interface IChatMethods {
     public void getMatches();
+    public void sendMessage(String otherID,String url);
+    public void getMessages(String otherID);
 }

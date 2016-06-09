@@ -4,25 +4,20 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Switch;
 
 import com.bumptech.glide.Glide;
 import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
-import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IGetPersonalPreferences;
-import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRequestInterface;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.AskingGIFProcess;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

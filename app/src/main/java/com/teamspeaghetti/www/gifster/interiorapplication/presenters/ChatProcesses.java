@@ -5,18 +5,14 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
-import com.teamspeaghetti.www.gifster.interiorapplication.fragments.MessageFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IChatMethods;
-import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IChatRequests;
-import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
+import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRequestHolder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -31,6 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ChatProcesses implements IChatMethods{
     Fragment _fragment;
     Context _context;
+    public ChatProcesses(){}
     public ChatProcesses(Fragment fragment, Context context){
         this._context=context;
         this._fragment=fragment;
@@ -38,7 +35,7 @@ public class ChatProcesses implements IChatMethods{
     @Override
     public void getMatches() {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
-        IChatRequests requestInterface =retrofit.create(IChatRequests.class);
+        IRequestHolder requestInterface =retrofit.create(IRequestHolder.class);
         Call<ResponseBody> call = requestInterface.getMatches(Profile.getCurrentProfile().getId());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -56,6 +53,41 @@ public class ChatProcesses implements IChatMethods{
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {}
+        });
+    }
+
+    @Override
+    public void sendMessage(String otherID,String url) {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
+        IRequestHolder requestInterface =retrofit.create(IRequestHolder.class);
+        Call<ResponseBody> call = requestInterface.saveMessagetoServer(Profile.getCurrentProfile().getId(),otherID,
+                url);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    Log.e("response",response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {}
+        });
+    }
+
+    @Override
+    public void getMessages(String otherID) {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
+        IRequestHolder requestInterface =retrofit.create(IRequestHolder.class);
+        Call<ResponseBody> call = requestInterface.getMatches(Profile.getCurrentProfile().getId());
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {}

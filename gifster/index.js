@@ -179,8 +179,29 @@ app.get("/getmatches",function(req,res){
             }
     });
 });
-app.get("sendmessage",function(req,res){
+app.get("/getmessage",function(req,res){
 
+});
+app.get("/sendmessage",function(req,res){
+    var response = {};
+    var s_id = req.query.m_id;
+    var r_id = req.query.o_id;
+    var message = req.query.message;
+    var data = new messages();
+    data.chat_id = s_id+"-"+r_id;
+    data.sender_id = s_id;
+    data.message = message;
+    data.save(function(e,c){
+       if(err) {
+         res = {"error":true};
+         res.send(JSON.stringify(response));
+       }
+       else {
+       res = {"error":false};
+       res.send(JSON.stringify(response));
+       }
+       });
+     }
 });
 app.get("/sendlikestatus",function(req,res){
     var my_id = req.query.m_id;

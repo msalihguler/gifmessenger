@@ -10,11 +10,10 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.teamspeaghetti.www.gifster.R;
-import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.MessageFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.SearchPeopleFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IOtherPeopleInformationRetriever;
-import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRegisterToServer;
+import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRequestHolder;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IUserRequestHandler;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
 
@@ -41,7 +40,7 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
     List<People> peopleList = new ArrayList<People>();
     Fragment _fragment;
     Retrofit retrofit;
-    IRegisterToServer requestInterface;
+    IRequestHolder requestInterface;
     public UserProcesses(){}
     public UserProcesses(Context context){
         this._context=context;
@@ -49,13 +48,13 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
     public UserProcesses(Context context,Fragment fragment){
         this._context=context; this._fragment=fragment;
         retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
-        requestInterface =retrofit.create(IRegisterToServer.class);
+        requestInterface =retrofit.create(IRequestHolder.class);
     }
 
     @Override
     public void sendRequest(String id,String latitude,String longitude) {
         retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
-        requestInterface =retrofit.create(IRegisterToServer.class);
+        requestInterface =retrofit.create(IRequestHolder.class);
         Call<ResponseBody> call = requestInterface.registerUser(id,latitude,longitude);
         call.enqueue(new Callback<ResponseBody>() {
             @Override

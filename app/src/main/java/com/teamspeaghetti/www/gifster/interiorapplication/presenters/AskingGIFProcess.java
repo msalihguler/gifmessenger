@@ -1,13 +1,10 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.presenters;
 
 
-import android.util.Log;
-
 import com.teamspeaghetti.www.gifster.R;
-import com.teamspeaghetti.www.gifster.interiorapplication.activities.MainActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.GIFFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IAskForGIFS;
-import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRequestInterface;
+import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRequestHolder;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
 
 import org.json.JSONArray;
@@ -53,7 +50,7 @@ public class AskingGIFProcess implements IAskForGIFS {
     public void makeRequestToGetGifs(List<Gifs> temp,int limit){
         final List<Gifs> tempList = temp;
         Retrofit retrofit = new Retrofit.Builder().baseUrl(mainActivity.getResources().getString(R.string.giphyurl)).addConverterFactory(GsonConverterFactory.create()).build();
-        IRequestInterface requestInterface =retrofit.create(IRequestInterface.class);
+        IRequestHolder requestInterface =retrofit.create(IRequestHolder.class);
         Call<ResponseBody> call = requestInterface.makesearch(lastsearch,mainActivity.getString(R.string.giphy_key),String.valueOf(limit));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
