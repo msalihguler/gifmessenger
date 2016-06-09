@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.adapter.ChatKeyboardAdapter;
@@ -23,14 +24,14 @@ import java.util.List;
 /**
  * Created by Salih on 6.06.2016.
  */
-public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs {
+public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
     Animation slide_down,slide_up;
     CardView keyboard;
-    Boolean toogled=false;
     RecyclerView gifList;
     Toolbar toolbar;
     ChatKeyboardAdapter adapter;
     List<Gifs> savedGifs;
+    ImageView toggleArrow;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,4 +63,5 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs {
         savedGifs.addAll(gifsList);
         adapter.notifyDataSetChanged();
     }
+
 }

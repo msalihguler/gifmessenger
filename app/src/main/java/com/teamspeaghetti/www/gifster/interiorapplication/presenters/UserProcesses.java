@@ -132,6 +132,7 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                     People people = new People();
                     people.setId(object.getString("id"));
                     people.setName(object.getString("name"));
+                    people.setFirst_name(object.getString("first_name"));
                     people.setProfile_url(url);
                     if(_fragment instanceof SearchPeopleFragment)
                         ((SearchPeopleFragment)_fragment).createList(people);

@@ -60,9 +60,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.VHolder> {
 
     @Override
     public void onBindViewHolder(ChatAdapter.VHolder holder, int position) {
-        holder.name.setText(_matches.get(position).getName());
+        holder.name.setText(_matches.get(position).getFirst_name());
         Picasso.with(_context).load(_matches.get(position).getProfile_url()).resize(75,75).transform(new CircleTransform()).into(holder.profile_pic);
-
     }
 
     @Override

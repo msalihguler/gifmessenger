@@ -109,7 +109,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     @Override
     public void createList(People people) {
             if(people.getName()!=null) {
-                name.setText(people.getName());
+                name.setText(people.getFirst_name());
                 Glide.with(getContext()).load(people.getProfile_url())
                         .crossFade()
                         .into(profile_pic);
