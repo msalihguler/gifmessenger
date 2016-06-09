@@ -10,7 +10,8 @@
         android:id="@+id/keyboard"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        >
         <android.support.v7.widget.RecyclerView
             android:id="@+id/sendGifs"
             android:layout_width="match_parent"

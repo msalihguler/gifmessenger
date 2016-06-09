@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.teamspeaghetti.www.gifster.R;
+import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
 
 import java.util.List;
@@ -36,14 +37,14 @@ public class ChatKeyboardAdapter extends RecyclerView.Adapter<ChatKeyboardAdapte
         public VHolder(View itemView,int viewtype) {
             super(itemView);
             gifs = (ImageView)itemView.findViewById(R.id.gif_chat_single);
-
+            gifs.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch(v.getId()) {
                 case R.id.gif_chat_single:
-
+                    Log.e("eben",_list.get(getPosition()).getUrl());
                     break;
             }
         }

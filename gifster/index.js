@@ -6,7 +6,7 @@ var http = require('http').Server(app);
 var bodyParser  =   require("body-parser");
 var gifsaving     =   require("./model/gifs");
 var users     =   require("./model/users");
-
+var messages  = require("./model/messages");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
 
@@ -178,6 +178,9 @@ app.get("/getmatches",function(req,res){
             res.send(JSON.stringify(response));
             }
     });
+});
+app.get("sendmessage",function(req,res){
+
 });
 app.get("/sendlikestatus",function(req,res){
     var my_id = req.query.m_id;
