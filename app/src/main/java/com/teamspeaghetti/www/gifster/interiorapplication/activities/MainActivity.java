@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.facebook.AccessToken;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.CircleTransform;
 import com.teamspeaghetti.www.gifster.R;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void registerUserToGIFsterServer() {
         new UserProcesses(this).sendRequest(AccessToken.getCurrentAccessToken().getUserId(),
                 String.valueOf(new GPSTracker(this).getLatitude()),
-                String.valueOf(new GPSTracker(this).getLongitude()));
+                String.valueOf(new GPSTracker(this).getLongitude()), FirebaseInstanceId.getInstance().getToken());
     }
 
     public void initViews(){

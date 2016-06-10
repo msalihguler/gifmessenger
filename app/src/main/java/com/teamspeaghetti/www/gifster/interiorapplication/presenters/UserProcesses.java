@@ -52,10 +52,10 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
     }
 
     @Override
-    public void sendRequest(String id,String latitude,String longitude) {
+    public void sendRequest(String id,String latitude,String longitude,String token) {
         retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
         requestInterface =retrofit.create(IRequestHolder.class);
-        Call<ResponseBody> call = requestInterface.registerUser(id,latitude,longitude);
+        Call<ResponseBody> call = requestInterface.registerUser(id,latitude,longitude,token);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

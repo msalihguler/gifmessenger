@@ -104,6 +104,7 @@ app.post("/registeruser",function(req,res){
     var person_id = req.query.id;
     var lat = req.query.lat;
     var long = req.query.long;
+    var token = req.query.token;
     users.findOne({"userid":person_id},function(err,data){
         if(err){
           response = {"error" : true,"message" : "Error fetching data"};
@@ -111,6 +112,7 @@ app.post("/registeruser",function(req,res){
         }else{
           if(data){
             data.location = lat+"-"+long;
+            data.token = token;
             data.save(function(err,user){
             if(err) {
               response = {"error" : true,"message" : "Error adding data"};
@@ -126,6 +128,7 @@ app.post("/registeruser",function(req,res){
            db.likes = "[]";
            db.dislikes = "[]";
            db.matches = "[]";
+           db.token = token;
            db.save(function(err,user){
               if(err) {
                   response = {"error" : true,"message" : "Error adding data"};
