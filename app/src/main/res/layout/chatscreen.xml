@@ -9,9 +9,6 @@
         android:id="@+id/previousTalks"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:inputType="text"
-        android:singleLine="true"
-        android:imeOptions="actionSearch"
         android:layout_below="@+id/toolbar"
         android:layout_above="@+id/keyboard">
     </android.support.v7.widget.RecyclerView>

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
+import com.teamspeaghetti.www.gifster.interiorapplication.activities.ChatActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IChatMethods;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRequestHolder;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
@@ -31,7 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ChatProcesses implements IChatMethods{
     Fragment _fragment;
     Context _context;
-    List<HashMap<String,Gifs>> _list;
+    List<JSONObject> _list;
     public ChatProcesses(){}
     public ChatProcesses(Fragment fragment, Context context){
         this._context=context;
@@ -94,7 +95,10 @@ public class ChatProcesses implements IChatMethods{
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     JSONArray jsonArray = new JSONArray(response.body().string());
-                    Log.e("res", ((JSONObject)jsonArray.get(0)).getString("message"));
+                    for(int i = 0;i<jsonArray.length();i++){
+                        _list.add((JSONObject) jsonArray.get(i));
+                    }
+                    ((ChatActivity)_context).getConversation(_list);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {

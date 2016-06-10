@@ -6,6 +6,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import com.teamspeaghetti.www.gifster.R;
@@ -15,6 +16,9 @@ import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrieveGI
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.AskSavedGIFs;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.ChatProcesses;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +37,7 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
     ChatKeyboardAdapter adapter;
     ConversationAdapter conversationAdapter;
     List<Gifs> savedGifs;
-    List<HashMap<String,Gifs>> earlyConversations;
+    List<JSONObject> earlyConversations;
     String otherID,name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,7 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         conversation = (RecyclerView)findViewById(R.id.previousTalks);
         savedGifs = new ArrayList<>();
         earlyConversations = new ArrayList<>();
+        conversationAdapter = new ConversationAdapter(earlyConversations,this);
         adapter = new ChatKeyboardAdapter(savedGifs,this,otherID);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         slide_down = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_down);
@@ -62,6 +67,8 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         slide_down.setFillAfter(true);
         gifList.setLayoutManager(layoutManager);
         gifList.setAdapter(adapter);
+        conversation.setLayoutManager(new LinearLayoutManager(this));
+        conversation.setAdapter(conversationAdapter);
     }
 
     public void makeCallForEarlyConversations(String id){
@@ -73,6 +80,11 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         savedGifs.addAll(gifsList);
         adapter.notifyDataSetChanged();
     }
+    public void getConversation(List<JSONObject> jsonObjectList){
+        earlyConversations.clear();
+        earlyConversations.addAll(jsonObjectList);
+        conversationAdapter.notifyDataSetChanged();
 
+    }
 
 }
