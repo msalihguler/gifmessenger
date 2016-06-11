@@ -39,6 +39,8 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
     List<Gifs> savedGifs;
     List<JSONObject> earlyConversations;
     String otherID,name;
+    public static boolean active = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,18 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         makeCallForEarlyConversations(otherID);
         getSupportActionBar().setTitle(name);
         new AskSavedGIFs(this).retrieveGIFs(savedGifs);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
     }
     public void initViews(){
         keyboard = (CardView)findViewById(R.id.keyboard);

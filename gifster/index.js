@@ -1,6 +1,7 @@
 
 
 var express = require("express");
+var request = require("request");
 var app = express();
 var http = require('http').Server(app);
 var bodyParser  =   require("body-parser");
@@ -222,7 +223,23 @@ app.get("/sendmessage",function(req,res){
        db.save(function(err,data){
            if(err){
            }else{
-              console.log("no error");
+              users.findOne({"userid":r_id},function(err,data){
+              console.log(data.token);
+              request({
+                 url: "https://fcm.googleapis.com/fcm/send",
+                 method: "POST",
+                 headers: {
+                     "Content-Type": "application/json",
+                      'Authorization': "key="
+                 },
+                 body: "{\"to\" : \""+data.token+"\",\"notification\" : {\"body\" : \"You have a message!\",\"title\" : \"Portugal vs. Denmark\",\"icon\" : \"myicon\"}}"
+
+                 }, function (error, response, body){
+                     console.log(body);
+                 });
+              });
+
+
            }
        });
        }

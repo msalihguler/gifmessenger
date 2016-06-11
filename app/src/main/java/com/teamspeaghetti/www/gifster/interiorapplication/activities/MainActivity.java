@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void registerUserToGIFsterServer() {
+        Log.e("token",FirebaseInstanceId.getInstance().getToken());
         new UserProcesses(this).sendRequest(AccessToken.getCurrentAccessToken().getUserId(),
                 String.valueOf(new GPSTracker(this).getLatitude()),
                 String.valueOf(new GPSTracker(this).getLongitude()), FirebaseInstanceId.getInstance().getToken());
