@@ -1,5 +1,9 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -9,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
+
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.adapter.ChatKeyboardAdapter;
 import com.teamspeaghetti.www.gifster.interiorapplication.adapter.ConversationAdapter;
@@ -39,6 +45,8 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
     List<Gifs> savedGifs;
     List<JSONObject> earlyConversations;
     String otherID,name;
+    IntentFilter filter;
+    MessageReceiver receiver;
     public static boolean active = false;
 
     @Override
@@ -57,6 +65,18 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
     public void onStart() {
         super.onStart();
         active = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver,filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
 
     @Override
@@ -83,6 +103,8 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         gifList.setAdapter(adapter);
         conversation.setLayoutManager(new LinearLayoutManager(this));
         conversation.setAdapter(conversationAdapter);
+        filter=new IntentFilter("com.teamspaghetti.gifster.newmessage");
+        receiver = new MessageReceiver();
     }
 
     public void makeCallForEarlyConversations(String id){
@@ -98,7 +120,19 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         earlyConversations.clear();
         earlyConversations.addAll(jsonObjectList);
         conversationAdapter.notifyDataSetChanged();
-
+        conversation.scrollToPosition(earlyConversations.size()-1);
     }
 
+    public class MessageReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                earlyConversations.add(new JSONObject(intent.getExtras().getString("jsonObject")));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            conversationAdapter.notifyDataSetChanged();
+            conversation.scrollToPosition(earlyConversations.size()-1);
+        }
+    }
 }

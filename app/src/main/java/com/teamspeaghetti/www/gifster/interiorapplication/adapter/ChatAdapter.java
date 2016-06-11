@@ -45,7 +45,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.VHolder> {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent((MainActivity)_context, ChatActivity.class);
-            intent.putExtra("name",_matches.get(getPosition()).getName());
+            intent.putExtra("name",_matches.get(getPosition()).getFirst_name());
             intent.putExtra("id",_matches.get(getPosition()).getId());
             _context.startActivity(intent);
         }

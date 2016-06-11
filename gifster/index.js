@@ -223,8 +223,8 @@ app.get("/sendmessage",function(req,res){
        db.save(function(err,data){
            if(err){
            }else{
-              users.findOne({"userid":r_id},function(err,data){
-              console.log(data.token);
+              users.findOne({"userid":r_id},function(err,dat){
+              console.log(data);
               request({
                  url: "https://fcm.googleapis.com/fcm/send",
                  method: "POST",
@@ -232,7 +232,7 @@ app.get("/sendmessage",function(req,res){
                      "Content-Type": "application/json",
                       'Authorization': "key="
                  },
-                 body: "{\"to\" : \""+data.token+"\",\"notification\" : {\"body\" : \"You have a message!\",\"title\" : \"Portugal vs. Denmark\",\"icon\" : \"myicon\"}}"
+                 body: "{\"to\" : \""+dat.token+"\",\"notification\" : {\"body\" : \"You have a message!\",\"title\" : "+JSON.stringify(data)+"}}"
 
                  }, function (error, response, body){
                      console.log(body);

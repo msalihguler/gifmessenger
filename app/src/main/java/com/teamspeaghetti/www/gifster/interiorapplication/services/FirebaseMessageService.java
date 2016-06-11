@@ -15,6 +15,9 @@ import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.activities.ChatActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.activities.MainActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Salih on 10.06.2016.
  */
@@ -23,8 +26,16 @@ public class FirebaseMessageService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d("From", "From: " + remoteMessage.getFrom());
         Log.d("Body", "Notification Message Body: " + remoteMessage.getNotification().getBody());
-        if(ChatActivity.active)
-            Log.e("act","open");
+        if(ChatActivity.active) {
+            try {
+                Intent intent = new Intent();
+                intent.setAction("com.teamspaghetti.gifster.newmessage");
+                intent.putExtra("jsonObject",remoteMessage.getNotification().getTitle());
+                sendBroadcast(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         else
         sendNotification(remoteMessage.getNotification().getBody());
     }
@@ -41,7 +52,7 @@ public class FirebaseMessageService extends FirebaseMessagingService {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.chat)
-                .setContentTitle("FCM Message")
+                .setContentTitle(getApplicationContext().getString(R.string.app_name))
                 .setContentText(messageBody)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
