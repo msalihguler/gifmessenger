@@ -7,8 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.ChatProcesses;
@@ -30,9 +34,11 @@ public class ChatKeyboardAdapter extends RecyclerView.Adapter<ChatKeyboardAdapte
     }
     public class VHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView gifs;
+        ProgressBar progressBar;
         public VHolder(View itemView,int viewtype) {
             super(itemView);
             gifs = (ImageView)itemView.findViewById(R.id.gif_chat_single);
+            progressBar=(ProgressBar)itemView.findViewById(R.id.loadingKeyboardItem);
             gifs.setOnClickListener(this);
         }
 
@@ -53,11 +59,23 @@ public class ChatKeyboardAdapter extends RecyclerView.Adapter<ChatKeyboardAdapte
     }
 
     @Override
-    public void onBindViewHolder(ChatKeyboardAdapter.VHolder holder, int position) {
+    public void onBindViewHolder(final ChatKeyboardAdapter.VHolder holder, int position) {
         String url = _list.get(position).getUrl();
+        holder.progressBar.setVisibility(View.VISIBLE);
         Glide.with(_context)
                 .load(Uri.parse(url))
-                .asGif().placeholder(R.drawable.rotate_animation).crossFade()
+                .asGif().crossFade().listener(new RequestListener<Uri, GifDrawable>() {
+            @Override
+            public boolean onException(Exception e, Uri model, Target<GifDrawable> target, boolean isFirstResource) {
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GifDrawable resource, Uri model, Target<GifDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                holder.progressBar.setVisibility(View.GONE);
+                return false;
+            }
+        })
                 .into(holder.gifs);
     }
 

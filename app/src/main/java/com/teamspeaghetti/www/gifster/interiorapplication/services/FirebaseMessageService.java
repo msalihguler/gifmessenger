@@ -31,7 +31,7 @@ public class FirebaseMessageService extends FirebaseMessagingService {
             try {
                 Intent intent = new Intent();
                 intent.setAction("com.teamspaghetti.gifster.newmessage");
-                intent.putExtra("jsonObject",remoteMessage.getNotification().getTitle());
+                intent.putExtra("jsonObject",remoteMessage.getData().get("message"));
                 sendBroadcast(intent);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -46,7 +46,7 @@ public class FirebaseMessageService extends FirebaseMessagingService {
         super.onMessageSent(s);
     }
     private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ChatActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
