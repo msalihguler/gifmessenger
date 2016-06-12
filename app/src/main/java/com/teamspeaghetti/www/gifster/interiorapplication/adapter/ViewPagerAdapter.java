@@ -7,8 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.FullScreenGIFsFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
@@ -37,8 +41,21 @@ public class ViewPagerAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.keyboard_full_screen_item, container, false);
         ImageView image = (ImageView)view.findViewById(R.id.image_preview);
+        final ProgressBar progressBar = (ProgressBar)view.findViewById(R.id.loadingFullScreenGIF);
+        progressBar.setVisibility(View.VISIBLE);
         Glide.with(context).load(list.get(position).getUrl())
-                .crossFade()
+                .crossFade().listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                progressBar.setVisibility(View.VISIBLE);
+                return false;
+            }
+        })
                 .into(image);
         container.addView(view);
         return view;

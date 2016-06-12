@@ -24,6 +24,7 @@ import org.json.JSONObject;
 public class FirebaseMessageService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+
         Log.d("From", "From: " + remoteMessage.getFrom());
         Log.d("Body", "Notification Message Body: " + remoteMessage.getNotification().getBody());
         if(ChatActivity.active) {

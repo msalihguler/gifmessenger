@@ -230,7 +230,7 @@ app.get("/sendmessage",function(req,res){
                  method: "POST",
                  headers: {
                      "Content-Type": "application/json",
-                      'Authorization': "key="
+                      'Authorization': "key=AIzaSyAuAr4BrpBVlpQYZMgoUfI-nmF8FIfi5MU"
                  },
                  body: "{\"to\" : \""+dat.token+"\",\"notification\" : {\"body\" : \"You have a message!\",\"title\" : "+JSON.stringify(data)+"}}"
 

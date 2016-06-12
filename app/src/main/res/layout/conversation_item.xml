@@ -6,24 +6,36 @@
     android:layout_marginLeft="4dp"
     android:layout_marginTop="4dp"
     android:layout_marginRight="4dp">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:orientation="vertical">
-
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/loadingConversation"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:id="@+id/gif_to_show"
-            android:layout_weight="4"/>
+            android:layout_weight="4"
+            android:layout_above="@+id/date" />
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/date" />
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/date"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center" />
 
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

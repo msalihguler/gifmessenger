@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         initViews();
         registerUserToGIFsterServer();
+        navigationView.setCheckedItem(R.id.nav_searchpeople);
         Utils.startFragment(new SearchPeopleFragment(),getSupportFragmentManager());
     }
 
@@ -102,6 +103,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id){
+            case R.id.nav_searchpeople:
+                Utils.startFragment(new SearchPeopleFragment(),getSupportFragmentManager());
+                break;
             case R.id.nav_profile:
                 Utils.startFragment(new ProfileFragment(),getSupportFragmentManager());
                 break;

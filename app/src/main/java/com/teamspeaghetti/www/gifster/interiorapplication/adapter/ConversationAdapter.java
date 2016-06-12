@@ -9,8 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
 import org.json.JSONException;
@@ -39,7 +43,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     }
 
     @Override
-    public void onBindViewHolder(ConversationAdapter.VHolder holder, int position) {
+    public void onBindViewHolder(final ConversationAdapter.VHolder holder, int position) {
         String url = null;
         String date = null;
         String sender =null;
@@ -55,9 +59,21 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(milliSeconds));
         holder.date.setText(new SimpleDateFormat("dd-MM-yyyy HH:MM").format(calendar.getTime()));
+        holder.progressBar.setVisibility(View.VISIBLE);
         Glide.with(_context)
                 .load(Uri.parse(url))
-                .asGif().placeholder(R.drawable.rotate_animation).crossFade()
+                .asGif().crossFade().listener(new RequestListener<Uri, GifDrawable>() {
+            @Override
+            public boolean onException(Exception e, Uri model, Target<GifDrawable> target, boolean isFirstResource) {
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GifDrawable resource, Uri model, Target<GifDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                holder.progressBar.setVisibility(View.GONE);
+                return false;
+            }
+        })
                 .into(holder.gif);
         if(sender.equals(Profile.getCurrentProfile().getId()))
                 holder.layout.setGravity(Gravity.RIGHT);
@@ -73,11 +89,13 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         TextView date;
         ImageView gif;
         LinearLayout layout;
+        ProgressBar progressBar;
         public VHolder(View itemView,int viewtype) {
             super(itemView);
             date = (TextView)itemView.findViewById(R.id.date);
             gif = (ImageView)itemView.findViewById(R.id.gif_to_show);
             layout = (LinearLayout)itemView.findViewById(R.id.messagelement);
+            progressBar=(ProgressBar)itemView.findViewById(R.id.loadingConversation);
         }
     }
 }
