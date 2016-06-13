@@ -52,16 +52,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-        registerUserToGIFsterServer();
         navigationView.setCheckedItem(R.id.nav_searchpeople);
         Utils.startFragment(new SearchPeopleFragment(),getSupportFragmentManager());
-    }
-
-    private void registerUserToGIFsterServer() {
-        Log.e("token",FirebaseInstanceId.getInstance().getToken());
-        new UserProcesses(this).sendRequest(AccessToken.getCurrentAccessToken().getUserId(),
-                String.valueOf(new GPSTracker(this).getLatitude()),
-                String.valueOf(new GPSTracker(this).getLongitude()), FirebaseInstanceId.getInstance().getToken());
     }
 
     public void initViews(){

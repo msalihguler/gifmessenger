@@ -18,7 +18,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.teamspeaghetti.www.gifster.R;
+import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.GPSTracker;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrievePeople;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
@@ -42,6 +44,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.searchpeople,null);
         user_instance = new UserProcesses(getContext(),this);
+        registerUserToGIFsterServer();
         user_instance.getPeople(AccessToken.getCurrentAccessToken().getUserId());
         return init(rootView);
     }
@@ -93,7 +96,11 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                 break;
         }
     }
-
+    private void registerUserToGIFsterServer() {
+        user_instance.sendRequest(AccessToken.getCurrentAccessToken().getUserId(),
+                String.valueOf(new GPSTracker(getContext()).getLatitude()),
+                String.valueOf(new GPSTracker(getContext()).getLongitude()), FirebaseInstanceId.getInstance().getToken());
+    }
     @Override
     public void getRetrievedPeople(List<People> peopleList) {
             peoples.clear();

@@ -122,29 +122,34 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
     }
     @Override
     public void getInformation(final String id) {
-        GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + id, null, HttpMethod.GET, new GraphRequest.Callback() {
-            @Override
-            public void onCompleted(GraphResponse response) {
-                try {
-                    JSONObject object = new JSONObject(response.getRawResponse());
-                    String url =((JSONObject)((JSONObject)object.get("picture")).get("data")).getString("url");
-                    People people = new People();
-                    people.setId(object.getString("id"));
-                    people.setName(object.getString("name"));
-                    people.setFirst_name(object.getString("first_name"));
-                    people.setProfile_url(url);
-                    if(_fragment instanceof SearchPeopleFragment)
-                        ((SearchPeopleFragment)_fragment).createList(people);
-                    if(_fragment instanceof MessageFragment)
-                        ((MessageFragment)_fragment).createList(people);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        if(id.equals("dummytext")){
+            if(_fragment instanceof MessageFragment)
+                ((MessageFragment)_fragment).createList(null);
+        }else {
+            GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + id, null, HttpMethod.GET, new GraphRequest.Callback() {
+                @Override
+                public void onCompleted(GraphResponse response) {
+                    try {
+                        JSONObject object = new JSONObject(response.getRawResponse());
+                        String url = ((JSONObject) ((JSONObject) object.get("picture")).get("data")).getString("url");
+                        People people = new People();
+                        people.setId(object.getString("id"));
+                        people.setName(object.getString("name"));
+                        people.setFirst_name(object.getString("first_name"));
+                        people.setProfile_url(url);
+                        if (_fragment instanceof SearchPeopleFragment)
+                            ((SearchPeopleFragment) _fragment).createList(people);
+                        if (_fragment instanceof MessageFragment)
+                            ((MessageFragment) _fragment).createList(people);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,link,first_name,picture.type(large)");
-        request.setParameters(parameters);
-        request.executeAsync();
+            });
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "id,name,link,first_name,picture.type(large)");
+            request.setParameters(parameters);
+            request.executeAsync();
+        }
     }
 }

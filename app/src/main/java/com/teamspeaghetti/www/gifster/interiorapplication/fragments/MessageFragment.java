@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.adapter.ChatAdapter;
+import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrieveMatches;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrievePeople;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
@@ -52,10 +53,15 @@ public class MessageFragment extends Fragment implements IRetrievePeople {
 
     @Override
     public void createList(People people) {
-        Log.e("people",people.getName());
-        matches.add(people);
-        chatAdapter.notifyDataSetChanged();
-        progressBar.setVisibility(View.GONE);
-        chat_holder.setVisibility(View.VISIBLE);
+        if(people==null){
+            progressBar.setVisibility(View.GONE);
+            Utils.createSnackBar(getView(),"No one yet");
+        }else {
+            Log.e("people", people.getName());
+            matches.add(people);
+            chatAdapter.notifyDataSetChanged();
+            progressBar.setVisibility(View.GONE);
+            chat_holder.setVisibility(View.VISIBLE);
+        }
     }
 }

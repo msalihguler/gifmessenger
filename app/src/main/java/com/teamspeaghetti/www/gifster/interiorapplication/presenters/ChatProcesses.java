@@ -51,10 +51,13 @@ public class ChatProcesses implements IChatMethods{
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     JSONArray jsonArray = new JSONArray(jsonObject.getString("matches"));
                     UserProcesses processes = new UserProcesses(_context,_fragment);
-                    for(int i=0;i<jsonArray.length();i++){
-                        processes.getInformation(jsonArray.getString(i));
+                    if(jsonArray.length()==0){
+                        processes.getInformation("dummytext");
+                    }else {
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            processes.getInformation(jsonArray.getString(i));
+                        }
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {

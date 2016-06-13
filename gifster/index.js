@@ -160,13 +160,27 @@ app.get("/getpeople",function(req,res){
                         res.send(JSON.stringify(response));
                     }else{
                       if(d){
-                        console.log(d);
                         response = {"error" : false,"message" : JSON.stringify(d)};
                         res.send(JSON.stringify(response));
                         }
                     }
 
                });
+            }else{
+               var finalArray = [];
+               finalArray.push(person_id);
+               users.find({"userid":{"$nin":finalArray}},function(e,d){
+                   if(err){
+                       response = {"error" : true,"message" : "Error adding data"};
+                       res.send(JSON.stringify(response));
+                   }else{
+                     if(d){
+                       response = {"error" : false,"message" : JSON.stringify(d)};
+                       res.send(JSON.stringify(response));
+                       }
+                   }
+
+              });
             }
         }
     });
@@ -178,8 +192,10 @@ app.get("/getmatches",function(req,res){
             response = {"error" : true,"message" : "Error adding data"};
             res.send(JSON.stringify(response));
             }else{
-            response = {"error" : false,"matches" : data.matches};
-            res.send(JSON.stringify(response));
+                console.log(data.matches);
+                response = {"error" : false,"matches" : data.matches};
+                res.send(JSON.stringify(response));
+
             }
     });
 });
