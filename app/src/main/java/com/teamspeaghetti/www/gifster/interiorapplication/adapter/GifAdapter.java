@@ -137,6 +137,11 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
                         public void onClick(View v) {
                             addToKeyBoard(gifsList.get(getPosition()).getUrl(),v_send);
                         }
+                    }).setAction(_context.getResources().getString(R.string.tofavourites), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snackbar.dismiss();
+                        }
                     });
                     snackbar.show();
                     break;

@@ -64,7 +64,6 @@ public class MessageFragment extends Fragment implements IRetrievePeople {
             progressBar.setVisibility(View.GONE);
             nomatchesLayout.setVisibility(View.VISIBLE);
         }else {
-            Log.e("people", people.getName());
             matches.add(people);
             chatAdapter.notifyDataSetChanged();
             progressBar.setVisibility(View.GONE);

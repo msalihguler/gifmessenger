@@ -4,6 +4,7 @@ package com.teamspeaghetti.www.gifster.interiorapplication.presenters;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;

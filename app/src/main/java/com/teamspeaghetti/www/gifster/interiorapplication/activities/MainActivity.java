@@ -27,6 +27,7 @@ import com.teamspeaghetti.www.gifster.interiorapplication.fragments.GIFFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.MessageFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.ProfileFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.SearchPeopleFragment;
+import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.INotifyActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.UserProcesses;
 import com.teamspeaghetti.www.gifster.userinteractions.activities.WelcomeActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IMockRetrievedInformation;
@@ -36,7 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,IMockRetrievedInformation {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,IMockRetrievedInformation,INotifyActivity {
 
     UserDetailRetriever detailRetriever;
     ImageView profile_picture;
@@ -135,4 +136,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    @Override
+    public void notifyActivitySelected(int pos) {
+        navigationView.getMenu().getItem(pos).setChecked(true);
+    }
 }

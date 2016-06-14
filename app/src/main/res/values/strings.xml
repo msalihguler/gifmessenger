@@ -19,6 +19,7 @@
 
     <string name="loadmore">Load More GIF!</string>
     <string name="tofavourites">Add to GIFboard</string>
+    <string name="dismiss">Dismiss</string>
     <string name="notifications">NOTIFICATIONS</string>
     <string name="gifboard">GIFBOARD</string>
     <string name="searchgif">Search GIFs...</string>
@@ -30,4 +31,5 @@
     <string name="searchpeople">Search for People</string>
     <string name="noonefound">No new person.\nBut you may try again soon.</string>
     <string name="nomatches">No matches yet.\nKeep swiping!</string>
+    <string name="nokeyboard">Your GIFBoard is empty.\nClick here to add some.</string>
 </resources>

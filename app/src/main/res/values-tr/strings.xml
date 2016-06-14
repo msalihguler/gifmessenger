@@ -8,6 +8,7 @@
 
     <string name="loadmore">Daha Fazla GIF!</string>
     <string name="tofavourites">GIFboard\'a ekle</string>
+    <string name="dismiss">Vazgeç</string>
     <string name="notifications">BİLDİRİMLER</string>
     <string name="gifboard">GIFBOARD</string>
     <string name="searchgif">GIF Ara...</string>
@@ -19,5 +20,5 @@
     <string name="searchpeople">Kişi Ara</string>
     <string name="noonefound">Yeni kimse yok.\nAma yakında tekrar deneyebilirsin.</string>
     <string name="nomatches">Henüz eşleşme yok.\nDenemeye devam et!</string>
-
+    <string name="nokeyboard">GIFBoard\'unuz boş.\nEklemek için tıklayın.</string>
 </resources>
