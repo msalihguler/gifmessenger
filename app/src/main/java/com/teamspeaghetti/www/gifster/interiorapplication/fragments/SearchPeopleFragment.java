@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
@@ -33,11 +34,12 @@ import java.util.List;
  */
 public class SearchPeopleFragment extends Fragment implements View.OnClickListener,IRetrievePeople {
     ImageView thumbup,thumbdown,profile_pic;
-    TextView name;
+    TextView name,errormessage;
     CardView holder;
     List<People> peoples;
     UserProcesses user_instance;
     ProgressBar pbar;
+    LinearLayout errorpage;
     int lastPosition=0;
     @Nullable
     @Override
@@ -45,22 +47,23 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         View rootView = inflater.inflate(R.layout.searchpeople,null);
         user_instance = new UserProcesses(getContext(),this);
         registerUserToGIFsterServer();
-        user_instance.getPeople(AccessToken.getCurrentAccessToken().getUserId());
-        return init(rootView);
+        rootView = init(rootView);
+        getPeopleFromServer();
+        return rootView;
     }
 
     public View init(View rootView){
         profile_pic = (ImageView)rootView.findViewById(R.id.profilepicture);
-        name = (TextView)rootView.findViewById(R.id.name);
         thumbup = (ImageView)rootView.findViewById(R.id.thumbsup);
         thumbdown = (ImageView)rootView.findViewById(R.id.thumbsdown);
+        name = (TextView)rootView.findViewById(R.id.name);
+        errormessage = (TextView)rootView.findViewById(R.id.notfound);
         pbar = (ProgressBar)rootView.findViewById(R.id.pbar);
         holder=(CardView)rootView.findViewById(R.id.profilecard);
+        errorpage = (LinearLayout)rootView.findViewById(R.id.noOneFound_message);
         peoples = new ArrayList<People>();
         thumbdown.setOnClickListener(this);
         thumbup.setOnClickListener(this);
-        holder.setVisibility(View.GONE);
-        pbar.setVisibility(View.VISIBLE);
         Drawable mDrawable = getActivity().getResources().getDrawable(R.drawable.thumbup);
         mDrawable.setColorFilter(new
                 PorterDuffColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.MULTIPLY));
@@ -70,6 +73,14 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         thumbdown.setRotationY(180);
         return rootView;
     }
+    public void getPeopleFromServer(){
+        if(holder.getVisibility()==View.VISIBLE)
+            holder.setVisibility(View.GONE);
+        if(errorpage.getVisibility()==View.VISIBLE)
+            errorpage.setVisibility(View.GONE);
+        pbar.setVisibility(View.VISIBLE);
+        user_instance.getPeople(AccessToken.getCurrentAccessToken().getUserId());
+    }
     @Override
     public void onClick(View v) {
         Log.e("count",String.valueOf(lastPosition));
@@ -78,7 +89,8 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                 if(lastPosition>=peoples.size()-1) {
                     holder.startAnimation(createAnimationForLastElement("like"));
                     lastPosition=0;
-                    Utils.createSnackBar(getView(),"There is no one new");
+                    holder.setVisibility(View.GONE);
+                    errorpage.setVisibility(View.VISIBLE);
                 }else{
                     holder.startAnimation(createAnimationForTopElements("like"));
                     user_instance.getInformation(peoples.get(lastPosition).getId());
@@ -109,7 +121,8 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
             user_instance.getInformation(peoples.get(0).getId());
         }else{
             pbar.setVisibility(View.GONE);
-            Utils.createSnackBar(getView(),"There is no one new");
+            holder.setVisibility(View.GONE);
+            errorpage.setVisibility(View.VISIBLE);
         }
     }
 
@@ -123,7 +136,6 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                 holder.setVisibility(View.VISIBLE);
                 if(pbar.isShown()) {
                     pbar.setVisibility(View.GONE);
-
                 }
             }
         }

@@ -17,5 +17,5 @@
     <string name="about">Hakkında</string>
     <string name="logut">Çıkış Yap</string>
     <string name="searchpeople">Kişi Ara</string>
-
+    <string name="noonefound">Yeni kimse yok.\nAma yakında tekrar deneyebilirsin.</string>
 </resources>
