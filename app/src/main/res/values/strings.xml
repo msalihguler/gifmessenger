@@ -29,4 +29,5 @@
     <string name="logut">Log Out</string>
     <string name="searchpeople">Search for People</string>
     <string name="noonefound">No new person.\nBut you may try again soon.</string>
+    <string name="nomatches">No matches yet.\nKeep swiping!</string>
 </resources>

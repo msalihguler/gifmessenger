@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.teamspeaghetti.www.gifster.R;
@@ -32,21 +33,27 @@ public class MessageFragment extends Fragment implements IRetrievePeople {
     LinearLayoutManager layoutManager;
     List<People> matches = new ArrayList<>();
     ChatProcesses chatInstance;
+    LinearLayout nomatchesLayout;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_messages,null);
         chat_holder = (RecyclerView)rootView.findViewById(R.id.chat_holder);
         progressBar = (ProgressBar)rootView.findViewById(R.id.progressChat);
+        nomatchesLayout = (LinearLayout)rootView.findViewById(R.id.nomatches_layotu);
         chatAdapter=new ChatAdapter(getContext(),matches);
         chatInstance = new ChatProcesses(MessageFragment.this,getContext());
         layoutManager = new LinearLayoutManager(getContext());
         chat_holder.setLayoutManager(layoutManager);
         chat_holder.setAdapter(chatAdapter);
-        chatInstance.getMatches();
+        getMatchesFromServer();
         return rootView;
     }
-
+    public void getMatchesFromServer(){
+        if(nomatchesLayout.getVisibility()==View.VISIBLE)
+            nomatchesLayout.setVisibility(View.GONE);
+        chatInstance.getMatches();
+    }
     @Override
     public void getRetrievedPeople(List<People> peopleList) {
     }
@@ -55,7 +62,7 @@ public class MessageFragment extends Fragment implements IRetrievePeople {
     public void createList(People people) {
         if(people==null){
             progressBar.setVisibility(View.GONE);
-            Utils.createSnackBar(getView(),"No one yet");
+            nomatchesLayout.setVisibility(View.VISIBLE);
         }else {
             Log.e("people", people.getName());
             matches.add(people);

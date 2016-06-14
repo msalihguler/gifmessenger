@@ -18,4 +18,6 @@
     <string name="logut">Çıkış Yap</string>
     <string name="searchpeople">Kişi Ara</string>
     <string name="noonefound">Yeni kimse yok.\nAma yakında tekrar deneyebilirsin.</string>
+    <string name="nomatches">Henüz eşleşme yok.\nDenemeye devam et!</string>
+
 </resources>
