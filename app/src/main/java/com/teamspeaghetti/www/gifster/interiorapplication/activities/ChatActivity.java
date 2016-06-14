@@ -122,7 +122,11 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         conversationAdapter.notifyDataSetChanged();
         conversation.scrollToPosition(earlyConversations.size()-1);
     }
-
+    public void addItem(JSONObject jsonObject){
+        earlyConversations.add(jsonObject);
+        conversationAdapter.notifyDataSetChanged();
+        conversation.scrollToPosition(earlyConversations.size()-1);
+    }
     public class MessageReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

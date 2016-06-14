@@ -78,8 +78,12 @@ public class ChatProcesses implements IChatMethods{
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    Log.e("response",response.body().string());
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    if(_context!=null)
+                        ((ChatActivity)_context).addItem(jsonObject);
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
