@@ -63,6 +63,7 @@ public class KeyboardFragment extends Fragment implements IRetrieveGIFs,View.OnC
         gifs.clear();
         gifs.addAll(gifsList);
         if(gifs.size()>0) {
+            progressBar.setVisibility(View.GONE);
             adapter.notifyDataSetChanged();
             recyclerView.setVisibility(View.VISIBLE);
         }else{

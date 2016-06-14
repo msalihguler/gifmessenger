@@ -14,10 +14,12 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.adapter.GifAdapter;
+import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrieveGIFs;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.AskingGIFProcess;
@@ -38,6 +40,7 @@ public class GIFFragment extends Fragment implements IRetrieveGIFs {
     GifAdapter adapter;
     AskingGIFProcess askingGIFProcess;
     LinearLayoutManager linearLayoutManager;
+    LinearLayout errorHolder;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class GIFFragment extends Fragment implements IRetrieveGIFs {
         giflogo = (ImageView)rootView.findViewById(R.id.giflogo);
         gifholder = (RecyclerView)rootView.findViewById(R.id.gif_holder);
         progressBar = (ProgressBar)rootView.findViewById(R.id.progress_bar);
+        errorHolder = (LinearLayout)rootView.findViewById(R.id.nogifs_layout);
         askingGIFProcess = new AskingGIFProcess(this);
         adapter = new GifAdapter(real_gif_list,askingGIFProcess);
         linearLayoutManager = new LinearLayoutManager(getContext());
@@ -57,6 +61,7 @@ public class GIFFragment extends Fragment implements IRetrieveGIFs {
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
                 if(actionId== EditorInfo.IME_ACTION_SEARCH){
                     imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                    errorHolder.setVisibility(View.GONE);
                     progressBar.setVisibility(View.VISIBLE);
                     askingGIFProcess.getGIFS(gifsearch.getText().toString(),real_gif_list,true);
                     return true;
@@ -78,7 +83,15 @@ public class GIFFragment extends Fragment implements IRetrieveGIFs {
     public void retrieveGIFs(List<Gifs> gifsList) {
         real_gif_list.clear();
         real_gif_list.addAll(gifsList);
-        adapter.notifyDataSetChanged();
-        progressBar.setVisibility(View.GONE);
+        if(real_gif_list.size()>0) {
+            adapter.notifyDataSetChanged();
+            progressBar.setVisibility(View.GONE);
+            gifholder.setVisibility(View.VISIBLE);
+        }else{
+            adapter.notifyDataSetChanged();
+            gifholder.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+            errorHolder.setVisibility(View.VISIBLE);
+        }
     }
 }

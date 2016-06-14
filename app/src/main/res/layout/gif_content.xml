@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-   >
+    android:layout_height="match_parent">
 
     <ImageView
         android:layout_width="match_parent"
@@ -20,7 +19,29 @@
         android:hint="@string/searchgif"
         android:id="@+id/gif_search" />
 
+    <LinearLayout
+        android:id="@+id/nogifs_layout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:gravity="center">
 
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/imageView2"
+            android:src="@drawable/gif_not_found" />
+
+        <TextView
+            android:id="@+id/notfound"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/nogif"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12dp"
+            android:gravity="center" />
+    </LinearLayout>
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
@@ -31,12 +52,7 @@
         android:id="@+id/gif_holder"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button" />
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
 </LinearLayout>

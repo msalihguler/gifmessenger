@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -137,12 +138,8 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
                         public void onClick(View v) {
                             addToKeyBoard(gifsList.get(getPosition()).getUrl(),v_send);
                         }
-                    }).setAction(_context.getResources().getString(R.string.tofavourites), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            snackbar.dismiss();
-                        }
                     });
+
                     snackbar.show();
                     break;
                 case R.id.loadmorebutton:
@@ -154,6 +151,7 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
 
         }
     }
+
     public void addToKeyBoard(String url, final View view){
         Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
         IRequestHolder requestInterface =retrofit.create(IRequestHolder.class);
