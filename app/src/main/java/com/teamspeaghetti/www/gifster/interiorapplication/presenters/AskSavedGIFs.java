@@ -61,13 +61,14 @@ public class AskSavedGIFs implements IRetrieveGIFs,IDeleteGIF {
                 try {
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     JSONArray jsonArray = jsonObject.getJSONArray("urlist");
+                    tempList.clear();
                     for(int i=0;i<jsonArray.length();i++){
                         tempList.add(new Gifs(jsonArray.getString(i)));
                     }
                     if(_fragment_context!=null)
                         ((KeyboardFragment)_fragment_context).retrieveGIFs(tempList);
                     if(_activity_context!=null)
-                            ((ChatActivity)_activity_context).retrieveGIFs(tempList);
+                        ((ChatActivity)_activity_context).retrieveGIFs(tempList);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -97,7 +98,7 @@ public class AskSavedGIFs implements IRetrieveGIFs,IDeleteGIF {
                     if(!jsonObject.getBoolean("error")){
                         tempList.remove(pos);
                         if(_fragment_context!=null)
-                        ((FullScreenGIFsFragment)_fragment_context).retrieveGIFs(tempList);
+                            ((FullScreenGIFsFragment)_fragment_context).retrieveGIFs(tempList);
                     }else{
                     }
 

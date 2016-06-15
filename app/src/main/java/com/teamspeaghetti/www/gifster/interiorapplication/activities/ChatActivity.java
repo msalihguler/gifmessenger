@@ -10,9 +10,12 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.teamspeaghetti.www.gifster.R;
@@ -21,6 +24,7 @@ import com.teamspeaghetti.www.gifster.interiorapplication.adapter.ConversationAd
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrieveGIFs;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.AskSavedGIFs;
+import com.teamspeaghetti.www.gifster.interiorapplication.presenters.AskingGIFProcess;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.ChatProcesses;
 
 import org.json.JSONException;
@@ -36,7 +40,6 @@ import java.util.List;
 public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
 
     //Variable declaration
-    Animation slide_down,slide_up;
     CardView keyboard;
     RecyclerView gifList,conversation;
     Toolbar toolbar;
@@ -47,6 +50,9 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
     String otherID,name;
     IntentFilter filter;
     MessageReceiver receiver;
+    EditText editText;
+    AskSavedGIFs askSavedGIFs;
+    ChatProcesses chatProcesses;
     public static boolean active = false;
 
     @Override
@@ -56,9 +62,10 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         otherID = getIntent().getExtras().getString("id");
         name = getIntent().getExtras().getString("name");
         initViews();
+        textChangingListener();
         makeCallForEarlyConversations(otherID);
         getSupportActionBar().setTitle(name);
-        new AskSavedGIFs(this).retrieveGIFs(savedGifs);
+        getKeyboard();
     }
 
     @Override
@@ -85,30 +92,69 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         active = false;
     }
     public void initViews(){
+        //Call views
         keyboard = (CardView)findViewById(R.id.keyboard);
         toolbar = (Toolbar) findViewById(R.id.custom_toolbar);
         gifList = (RecyclerView)findViewById(R.id.sendGifs);
         conversation = (RecyclerView)findViewById(R.id.previousTalks);
+        editText = (EditText)findViewById(R.id.searchGifs);
+
+        //Create Arrays
         savedGifs = new ArrayList<>();
         earlyConversations = new ArrayList<>();
+
+        //Create adapters
         conversationAdapter = new ConversationAdapter(earlyConversations,this);
         adapter = new ChatKeyboardAdapter(savedGifs,this,otherID);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        slide_down = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_down);
-        slide_up = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
+
+        //Set Toolbar as action bar
         setSupportActionBar(toolbar);
-        slide_up.setFillAfter(true);
-        slide_down.setFillAfter(true);
+
+        //Horizontal list view attribute
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
+        //list specifications
         gifList.setLayoutManager(layoutManager);
         gifList.setAdapter(adapter);
         conversation.setLayoutManager(new LinearLayoutManager(this));
         conversation.setAdapter(conversationAdapter);
+
+        //Defining filter for new message
         filter=new IntentFilter("com.teamspaghetti.gifster.newmessage");
         receiver = new MessageReceiver();
+
+        //object creations
+        askSavedGIFs = new AskSavedGIFs(this);
+        chatProcesses = new ChatProcesses(null,this);
+
     }
 
+    public void textChangingListener(){
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().length()>0){
+                    savedGifs.clear();
+                    adapter.notifyDataSetChanged();
+                    new AskingGIFProcess(ChatActivity.this).makeRequestToGetGifs(savedGifs,100,s.toString());
+                }if(s.toString().length()==0){
+                    getKeyboard();
+                }
+            }
+        });
+    }
     public void makeCallForEarlyConversations(String id){
-        new ChatProcesses(null,this).getMessages(id);
+        chatProcesses.getMessages(id);
+    }
+    public void getKeyboard(){
+        savedGifs.clear();
+        askSavedGIFs.retrieveGIFs(savedGifs);
     }
     @Override
     public void retrieveGIFs(List<Gifs> gifsList) {

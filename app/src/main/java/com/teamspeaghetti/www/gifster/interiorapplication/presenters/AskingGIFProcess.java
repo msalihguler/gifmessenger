@@ -1,7 +1,12 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.presenters;
 
 
+import android.app.Activity;
+import android.content.Context;
+import android.support.v4.app.Fragment;
+
 import com.teamspeaghetti.www.gifster.R;
+import com.teamspeaghetti.www.gifster.interiorapplication.activities.ChatActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.GIFFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IAskForGIFS;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRequestHolder;
@@ -26,10 +31,23 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Salih on 11.05.2016.
  */
 public class AskingGIFProcess implements IAskForGIFS {
-    GIFFragment mainActivity;
+    Fragment fragment;
+    Activity activity;
     String lastsearch;
-    public AskingGIFProcess(GIFFragment activityInstance){
-        this.mainActivity=activityInstance;
+    Retrofit retrofit;
+    IRequestHolder requestInterface;
+    Context context;
+    public AskingGIFProcess(Activity _activity){
+        this.activity=_activity;
+        context = _activity;
+        retrofit = new Retrofit.Builder().baseUrl(_activity.getResources().getString(R.string.giphyurl)).addConverterFactory(GsonConverterFactory.create()).build();
+        requestInterface =retrofit.create(IRequestHolder.class);
+    }
+    public AskingGIFProcess(Fragment fragmentInstance){
+        this.fragment=fragmentInstance;
+        context = fragmentInstance.getContext();
+        retrofit = new Retrofit.Builder().baseUrl(fragmentInstance.getResources().getString(R.string.giphyurl)).addConverterFactory(GsonConverterFactory.create()).build();
+        requestInterface =retrofit.create(IRequestHolder.class);
     }
     @Override
     public void getGIFS(String keywords, final List<Gifs> list,boolean newsearch) {
@@ -44,14 +62,13 @@ public class AskingGIFProcess implements IAskForGIFS {
             limit = list.size()+10;
         }
 
-        makeRequestToGetGifs(tempList,limit);
+        makeRequestToGetGifs(tempList,limit,lastsearch);
     }
 
-    public void makeRequestToGetGifs(List<Gifs> temp,int limit){
-        final List<Gifs> tempList = temp;
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(mainActivity.getResources().getString(R.string.giphyurl)).addConverterFactory(GsonConverterFactory.create()).build();
-        IRequestHolder requestInterface =retrofit.create(IRequestHolder.class);
-        Call<ResponseBody> call = requestInterface.makesearch(lastsearch,mainActivity.getString(R.string.giphy_key),String.valueOf(limit));
+    public void makeRequestToGetGifs(List<Gifs> temp,int limit,String searchWords){
+        final List<Gifs> tempList = new ArrayList<>();
+        tempList.addAll(temp);
+        Call<ResponseBody> call = requestInterface.makesearch(searchWords,context.getString(R.string.giphy_key),String.valueOf(limit));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -62,7 +79,14 @@ public class AskingGIFProcess implements IAskForGIFS {
                         String url = (String)((JSONObject)((JSONObject)((JSONObject)jsonArray.get(i)).get("images")).get("fixed_width_downsampled")).get("url");
                         tempList.add(new Gifs(url));
                     }
-                    mainActivity.retrieveGIFs(tempList);
+                    if(fragment !=null) {
+                        if (fragment instanceof GIFFragment)
+                            ((GIFFragment) fragment).retrieveGIFs(tempList);
+                    }
+                    if(activity != null){
+                        if(activity instanceof ChatActivity)
+                            ((ChatActivity)activity).retrieveGIFs(tempList);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
