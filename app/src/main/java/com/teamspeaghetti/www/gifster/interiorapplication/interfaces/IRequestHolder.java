@@ -21,6 +21,11 @@ public interface IRequestHolder {
     Call<ResponseBody> getUsers(@Query("id")String userid);
     @GET("/sendlikestatus")
     Call<ResponseBody> sendLikeStatus(@Query("m_id")String my_id,@Query("o_id")String userid,@Query("type")String type);
+    @GET("/revealprofile")
+    Call<ResponseBody> revealProfile(@Query("name")String name,@Query("url")String url,@Query("pic_link")String pic_link,@Query("id")String id,@Query("o_id")String o_id);
+    @GET("/getreveals")
+    Call<ResponseBody> getReveals(@Query("id")String id);
+
     /*
     *       GIF REQUESTS
     * */

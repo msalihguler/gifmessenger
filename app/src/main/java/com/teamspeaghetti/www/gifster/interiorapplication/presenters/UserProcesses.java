@@ -9,6 +9,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.MessageFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.SearchPeopleFragment;
@@ -120,6 +121,55 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
         });
 
     }
+
+    @Override
+    public void revealProfile(String id) {
+        retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
+        requestInterface =retrofit.create(IRequestHolder.class);
+        Call<ResponseBody> call = requestInterface.revealProfile(Profile.getCurrentProfile().getName(),
+                Profile.getCurrentProfile().getLinkUri().toString(),
+                Profile.getCurrentProfile().getProfilePictureUri(75,75).toString(),
+                Profile.getCurrentProfile().getId(),id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    Log.e("response",response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {}
+        });
+    }
+
+    @Override
+    public void getRevealedProfiles(String id) {
+        retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
+        requestInterface =retrofit.create(IRequestHolder.class);
+        Call<ResponseBody> call = requestInterface.getReveals(id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    JSONArray jsonArray = new JSONArray(jsonObject.getString("message"));
+                    for(int i=0;i<jsonArray.length();i++){
+                        Log.e("lol",jsonArray.getJSONObject(i).getString("name"));
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {}
+        });
+    }
+
     @Override
     public void getInformation(final String id) {
         if(id.equals("dummytext")){

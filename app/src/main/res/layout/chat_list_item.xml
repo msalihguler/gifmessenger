@@ -1,26 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
    >
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="12dp">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:layout_toLeftOf="@+id/revealProfile"
+        android:layout_toStartOf="@+id/revealProfile"
+        android:id="@+id/person_info_line">
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:id="@+id/mini_profile_photo"
             android:layout_gravity="center_vertical" />
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
             android:textColor="@color/colorPrimary"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/mini_profile_name"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="10dp" />
-    </LinearLayout>
-</LinearLayout>
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/mini_profile_photo"
+            android:layout_toEndOf="@+id/mini_profile_photo"
+            android:layout_marginLeft="6dp"
+            android:gravity="center_vertical" />
+
+    </RelativeLayout>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/revealProfile"
+        android:src="@drawable/personal_card"
+        android:layout_alignTop="@+id/person_info_line"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="12dp" />
+</RelativeLayout>

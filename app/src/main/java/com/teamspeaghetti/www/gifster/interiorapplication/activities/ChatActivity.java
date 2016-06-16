@@ -140,14 +140,17 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
             @Override
             public void afterTextChanged(Editable s) {
                 if(s.toString().length()>0){
-                    savedGifs.clear();
-                    adapter.notifyDataSetChanged();
-                    new AskingGIFProcess(ChatActivity.this).makeRequestToGetGifs(savedGifs,100,s.toString());
+                    makeInstantRequestForKeyboard(s.toString());
                 }if(s.toString().length()==0){
                     getKeyboard();
                 }
             }
         });
+    }
+    public void makeInstantRequestForKeyboard(String key){
+        savedGifs.clear();
+        adapter.notifyDataSetChanged();
+        new AskingGIFProcess(ChatActivity.this).makeRequestToGetGifs(savedGifs,100,key);
     }
     public void makeCallForEarlyConversations(String id){
         chatProcesses.getMessages(id);

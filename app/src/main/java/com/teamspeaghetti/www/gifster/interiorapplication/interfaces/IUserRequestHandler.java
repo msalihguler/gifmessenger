@@ -8,4 +8,6 @@ public interface IUserRequestHandler {
     public void sendRequest(String id,String latitude,String longitude,String token);
     public void getPeople(String id);
     public void sendLikeStatus(String m_id,String o_id,String type);
+    public void revealProfile(String id);
+    public void getRevealedProfiles(String id);
 }

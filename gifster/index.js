@@ -1,5 +1,3 @@
-
-
 var express = require("express");
 var request = require("request");
 var app = express();
@@ -8,6 +6,7 @@ var bodyParser  =   require("body-parser");
 var gifsaving     =   require("./model/gifs");
 var users     =   require("./model/users");
 var messages  = require("./model/messages");
+var reveals  = require("./model/reveals");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
 
@@ -249,7 +248,7 @@ app.get("/sendmessage",function(req,res){
                  method: "POST",
                  headers: {
                      "Content-Type": "application/json",
-                      'Authorization': "key=AIzaSyAuAr4BrpBVlpQYZMgoUfI-nmF8FIfi5MU"
+                      'Authorization': ""
                  },
                  body: "{\"to\" : \""+dat.token+"\",\"notification\" : {\"body\" : \"You have a message!\",\"title\" : \"GIFster\"},\"data\":{\"message\":"+JSON.stringify(data)+"}}"
 
@@ -257,7 +256,7 @@ app.get("/sendmessage",function(req,res){
                      console.log(body);
                  });
               });
-
+                res.send(JSON.stringify(data));
 
            }
        });
@@ -276,7 +275,6 @@ app.get("/sendlikestatus",function(req,res){
                  res.send(JSON.stringify(response));
                }else{
                 var tempArray = JSON.parse(data.likes);
-
                   users.findOne({"userid":my_id},function(error,d){
                    if(error){
                       response = {"error" : true,"message" : "Error fetching data"};
@@ -292,9 +290,24 @@ app.get("/sendlikestatus",function(req,res){
                          d.matches = JSON.stringify(tempMatches);
                          data.save(function(e,c){
                            if(err) {}
-                           else {}
+                           else {
+                           if(c){
+                            request({
+                            url: "https://fcm.googleapis.com/fcm/send",
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                 'Authorization': ""
+                            },
+                            body: "{\"to\" : \""+d.token+"\",\"notification\" : {\"body\" : \"You have a match!\",\"title\" : \"GIFster\"}}"
+
+                            }, function (error, response, body){
+                                console.log(body);
+                            });
+                            }
+                           }
                            });
-                          }
+                         }
                       }
                       var templikes = JSON.parse(d.likes);
                       templikes.push(o_id);
@@ -303,6 +316,21 @@ app.get("/sendlikestatus",function(req,res){
                       if(err) {
                          response = {"match" : false,"message" : "Error adding data"};
                       } else {
+                        if(match==true){
+                                request({
+                                url: "https://fcm.googleapis.com/fcm/send",
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                     'Authorization': ""
+                                },
+                                body: "{\"to\" : \""+data.token+"\",\"notification\" : {\"body\" : \"You have a match!\",\"title\" : \"GIFster\"}}"
+
+                                }, function (error, response, body){
+                                    console.log(body);
+                                });
+
+                        }
                          response = {"match" : match,"message" : "likes updated: " +user.likes};
                       }
                          res.send(JSON.stringify(response));
@@ -335,7 +363,103 @@ app.get("/sendlikestatus",function(req,res){
     });
     }
 });
+app.get("/revealprofile",function(req,res){
+    var name = req.query.name;
+    var link = req.query.url;
+    var pic_link = req.query.pic_link;
+    var id = req.query.id;
+    var r_id = req.query.o_id;
+    var response = {};
+    reveals.findOne({"userid":id},function(error,data){
+           if(error){
+            response = {"error" : true,"message" : "Error fetching data"};
+            res.send(JSON.stringify(response));
+           }else{
+                if(data){
+                    var profile_array = JSON.parse(data.revealed_profiles);
+                    var single_array = "[name:"+name+",link:"+link+",pic_link:"+pic_link+"]";
+                    if(!(data.revealed_profiles.indexOf(single_array)>-1)){
+                    profile_array.push(JSON.stringify(single_array));
+                    data.save(function(e,d){
+                    if(e){
+                      response = {"error" : true,"message" : "Error while saving data"};
+                      res.send(JSON.stringify(response));
+                    }else{
+                        if(d){
+                         users.findOne({"userid":r_id},function(err,dat){
+                          request({
+                             url: "https://fcm.googleapis.com/fcm/send",
+                             method: "POST",
+                             headers: {
+                                 "Content-Type": "application/json",
+                                  'Authorization': ""
+                             },
+                             body: "{\"to\" : \""+dat.token+"\",\"notification\" : {\"body\" : \"Someone revealed a profile to you!\",\"title\" : \"GIFster\"}}"
 
+                             }, function (error, response, body){
+                                 console.log(body);
+                             });
+                          });
+                        response = {"error" : false,"message" : "success"};
+                        res.send(JSON.stringify(response));
+                        }
+                    }
+                    });
+                    }
+                }else{
+                    var db = new reveals();
+                    db.userid = id;
+                    var profile_array = [];
+                    var single_array = "[name:"+name+",link:"+link+",pic_link:"+pic_link+"]";
+                    profile_array.push(JSON.stringify(single_array));
+                    db.revealed_profiles=JSON.stringify(profile_array);
+                       db.save(function(e,d){
+                        if(e){
+                          response = {"error" : true,"message" : "Error while saving data"};
+                          res.send(JSON.stringify(response));
+                        }else{
+                            if(d){
+                             users.findOne({"userid":r_id},function(err,dat){
+                              request({
+                                 url: "https://fcm.googleapis.com/fcm/send",
+                                 method: "POST",
+                                 headers: {
+                                     "Content-Type": "application/json",
+                                      'Authorization': ""
+                                 },
+                                 body: "{\"to\" : \""+dat.token+"\",\"notification\" : {\"body\" : \"Someone revealed a profile to you!\",\"title\" : \"GIFster\"}}"
+
+                                 }, function (error, response, body){
+                                     console.log(body);
+                                 });
+                              });
+                                response = {"error" : false,"message" : "success"};
+                                res.send(JSON.stringify(response));
+                            }
+                        }
+                        });
+                }
+           }
+    });
+});
+app.get("/getreveals",function(req,res){
+    var id = req.query.id;
+    var response = {};
+    reveals.findOne({"userid":id},function(e,d){
+        if(e){
+        response = {"error" : true,"message" : "Error while fetching data"};
+        res.send(JSON.stringify(response));
+        }else{
+            if(d){
+            response = {"error" : false,"message" : d.revealed_profiles};
+            res.send(JSON.stringify(response));
+            }else{
+            response = {"error" : true,"message" : "no reveals yet"};
+            res.send(JSON.stringify(response));
+            }
+        }
+    });
+});
 
 http.listen(3000, function(){
   console.log('listening on *:3000');

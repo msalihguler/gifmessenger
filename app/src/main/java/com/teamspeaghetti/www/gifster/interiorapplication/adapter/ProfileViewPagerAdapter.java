@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.KeyboardFragment;
-import com.teamspeaghetti.www.gifster.interiorapplication.fragments.NotificationFragment;
+import com.teamspeaghetti.www.gifster.interiorapplication.fragments.RevealedProfilesFragment;
 
 /**
  * Created by Salih on 18.05.2016.
@@ -25,9 +25,10 @@ public class ProfileViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new NotificationFragment();
+                return new RevealedProfilesFragment();
             case 1:
                 return new KeyboardFragment();
+
         }
         return null;
     }
@@ -36,9 +37,10 @@ public class ProfileViewPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position){
             case 0:
-                return _context.getResources().getString(R.string.notifications);
+                return "REVEALS";
             case 1:
                 return _context.getResources().getString(R.string.gifboard);
+
         }
         return null;
     }
