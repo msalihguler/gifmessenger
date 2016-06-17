@@ -248,7 +248,7 @@ app.get("/sendmessage",function(req,res){
                  method: "POST",
                  headers: {
                      "Content-Type": "application/json",
-                      'Authorization': ""
+                      'Authorization': "key=AIzaSyAuAr4BrpBVlpQYZMgoUfI-nmF8FIfi5MU"
                  },
                  body: "{\"to\" : \""+dat.token+"\",\"notification\" : {\"body\" : \"You have a message!\",\"title\" : \"GIFster\"},\"data\":{\"message\":"+JSON.stringify(data)+"}}"
 
@@ -297,7 +297,7 @@ app.get("/sendlikestatus",function(req,res){
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
-                                 'Authorization': ""
+                                 'Authorization': "key=AIzaSyAuAr4BrpBVlpQYZMgoUfI-nmF8FIfi5MU"
                             },
                             body: "{\"to\" : \""+d.token+"\",\"notification\" : {\"body\" : \"You have a match!\",\"title\" : \"GIFster\"}}"
 
@@ -322,7 +322,7 @@ app.get("/sendlikestatus",function(req,res){
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json",
-                                     'Authorization': ""
+                                    'Authorization': "key=AIzaSyAuAr4BrpBVlpQYZMgoUfI-nmF8FIfi5MU"
                                 },
                                 body: "{\"to\" : \""+data.token+"\",\"notification\" : {\"body\" : \"You have a match!\",\"title\" : \"GIFster\"}}"
 
@@ -370,14 +370,14 @@ app.get("/revealprofile",function(req,res){
     var id = req.query.id;
     var r_id = req.query.o_id;
     var response = {};
-    reveals.findOne({"userid":id},function(error,data){
+    reveals.findOne({"userid":r_id},function(error,data){
            if(error){
             response = {"error" : true,"message" : "Error fetching data"};
             res.send(JSON.stringify(response));
            }else{
                 if(data){
                     var profile_array = JSON.parse(data.revealed_profiles);
-                    var single_array = "[name:"+name+",link:"+link+",pic_link:"+pic_link+"]";
+                    var single_array = {"name":name,"link":link,"pic_link":pic_link};
                     if(!(data.revealed_profiles.indexOf(single_array)>-1)){
                     profile_array.push(JSON.stringify(single_array));
                     data.save(function(e,d){
@@ -386,20 +386,19 @@ app.get("/revealprofile",function(req,res){
                       res.send(JSON.stringify(response));
                     }else{
                         if(d){
-                         users.findOne({"userid":r_id},function(err,dat){
                           request({
                              url: "https://fcm.googleapis.com/fcm/send",
                              method: "POST",
                              headers: {
                                  "Content-Type": "application/json",
-                                  'Authorization': ""
+                                 'Authorization': "key=AIzaSyAuAr4BrpBVlpQYZMgoUfI-nmF8FIfi5MU"
                              },
-                             body: "{\"to\" : \""+dat.token+"\",\"notification\" : {\"body\" : \"Someone revealed a profile to you!\",\"title\" : \"GIFster\"}}"
+                             body: "{\"to\" : \""+data.token+"\",\"notification\" : {\"body\" : \"Someone revealed a profile to you!\",\"title\" : \"GIFster\"}}"
 
                              }, function (error, response, body){
                                  console.log(body);
                              });
-                          });
+
                         response = {"error" : false,"message" : "success"};
                         res.send(JSON.stringify(response));
                         }
@@ -408,9 +407,9 @@ app.get("/revealprofile",function(req,res){
                     }
                 }else{
                     var db = new reveals();
-                    db.userid = id;
+                    db.userid = r_id;
                     var profile_array = [];
-                    var single_array = "[name:"+name+",link:"+link+",pic_link:"+pic_link+"]";
+                    var single_array = {"name":name,"link":link,"pic_link":pic_link};
                     profile_array.push(JSON.stringify(single_array));
                     db.revealed_profiles=JSON.stringify(profile_array);
                        db.save(function(e,d){
@@ -425,7 +424,7 @@ app.get("/revealprofile",function(req,res){
                                  method: "POST",
                                  headers: {
                                      "Content-Type": "application/json",
-                                      'Authorization': ""
+                                      'Authorization': "key=AIzaSyAuAr4BrpBVlpQYZMgoUfI-nmF8FIfi5MU"
                                  },
                                  body: "{\"to\" : \""+dat.token+"\",\"notification\" : {\"body\" : \"Someone revealed a profile to you!\",\"title\" : \"GIFster\"}}"
 

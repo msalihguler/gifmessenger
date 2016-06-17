@@ -12,6 +12,7 @@ import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.MessageFragment;
+import com.teamspeaghetti.www.gifster.interiorapplication.fragments.RevealedProfilesFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.SearchPeopleFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IOtherPeopleInformationRetriever;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRequestHolder;
@@ -128,7 +129,7 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
         requestInterface =retrofit.create(IRequestHolder.class);
         Call<ResponseBody> call = requestInterface.revealProfile(Profile.getCurrentProfile().getName(),
                 Profile.getCurrentProfile().getLinkUri().toString(),
-                Profile.getCurrentProfile().getProfilePictureUri(75,75).toString(),
+                Profile.getCurrentProfile().getProfilePictureUri(150,150).toString(),
                 Profile.getCurrentProfile().getId(),id);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -153,12 +154,18 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
+                    List<JSONObject> revealed_list = new ArrayList<>();
                     JSONObject jsonObject = new JSONObject(response.body().string());
-                    JSONArray jsonArray = new JSONArray(jsonObject.getString("message"));
-                    for(int i=0;i<jsonArray.length();i++){
-                        Log.e("lol",jsonArray.getJSONObject(i).getString("name"));
+                    String last = jsonObject.getString("message");
+                    if(!(last.equals("no reveals yet"))){
+                    JSONArray jsonArray = new JSONArray(last);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject temp = new JSONObject(jsonArray.getString(i));
+                            revealed_list.add(temp);
+                        }
                     }
-
+                if(_fragment instanceof RevealedProfilesFragment)
+                    ((RevealedProfilesFragment)_fragment).getResponseForRevealedProfiles(revealed_list);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {

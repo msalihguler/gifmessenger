@@ -33,5 +33,5 @@
     <string name="nomatches">No matches yet.\nKeep swiping!</string>
     <string name="nokeyboard">Your GIFBoard is empty.\nClick here to add some.</string>
     <string name="nogif">GIF not found.\nWe will get on that.</string>
-
+    <string name="norevealed">No one has revealed their profile yet.\nKeep trying!</string>
 </resources>

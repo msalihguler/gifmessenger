@@ -22,4 +22,5 @@
     <string name="nomatches">Henüz eşleşme yok.\nDenemeye devam et!</string>
     <string name="nokeyboard">GIFBoard\'unuz boş.\nEklemek için tıklayın.</string>
     <string name="nogif">GIF bulunamadı.\nBununla ilgileneceğiz.</string>
+    <string name="norevealed">Kimse profilini seninle paylaşmamış.\nDenemeye devam et!</string>
 </resources>
