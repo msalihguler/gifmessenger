@@ -30,21 +30,4 @@ public class Utils {
         Snackbar snackbar = Snackbar.make(view,message,Snackbar.LENGTH_LONG);
         snackbar.show();
     }
-    public static void createAlert(Context context){
-        final Dialog dialog = new Dialog(context,R.style.DialogTheme);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.about_dialog);
-
-        TextView text = (TextView) dialog.findViewById(R.id.okaybutton);
-        text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
-
-
 }

@@ -1,5 +1,7 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -40,6 +42,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     UserProcesses user_instance;
     ProgressBar pbar;
     LinearLayout errorpage;
+    SharedPreferences preferences;
     int lastPosition=0;
     @Nullable
     @Override
@@ -61,6 +64,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         pbar = (ProgressBar)rootView.findViewById(R.id.pbar);
         holder=(CardView)rootView.findViewById(R.id.profilecard);
         errorpage = (LinearLayout)rootView.findViewById(R.id.noOneFound_message);
+        preferences = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
         peoples = new ArrayList<People>();
         thumbdown.setOnClickListener(this);
         thumbup.setOnClickListener(this);
@@ -129,14 +133,17 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     @Override
     public void createList(People people) {
             if(people.getName()!=null) {
-                name.setText(people.getFirst_name());
+                String gender = preferences.getString("preferred", "female");
+                if (people.getGender().equals(gender)){
+                    name.setText(people.getFirst_name());
                 Glide.with(getContext()).load(people.getProfile_url())
                         .crossFade()
                         .into(profile_pic);
                 holder.setVisibility(View.VISIBLE);
-                if(pbar.isShown()) {
+                if (pbar.isShown()) {
                     pbar.setVisibility(View.GONE);
                 }
+            }
             }
         }
     public Animation createAnimationForLastElement(String type){

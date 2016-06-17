@@ -26,7 +26,7 @@
     <string name="profile">Profile</string>
     <string name="message">Messages</string>
     <string name="gifs">GIF Search</string>
-    <string name="about">About</string>
+    <string name="about">Settings</string>
     <string name="logut">Log Out</string>
     <string name="searchpeople">Search for People</string>
     <string name="noonefound">No new person.\nBut you may try again soon.</string>
@@ -34,4 +34,9 @@
     <string name="nokeyboard">Your GIFBoard is empty.\nClick here to add some.</string>
     <string name="nogif">GIF not found.\nWe will get on that.</string>
     <string name="norevealed">No one has revealed their profile yet.\nKeep trying!</string>
+    <string name="gender">Preferred Gender</string>
+    <string name="women">Women</string>
+    <string name="men">Men</string>
+    <string name="rateapplication">Rate this application!</string>
+    <string name="deleteaccount">Delete this account!</string>
 </resources>
