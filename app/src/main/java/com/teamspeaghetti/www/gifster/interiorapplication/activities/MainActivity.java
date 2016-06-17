@@ -25,6 +25,7 @@ import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.GPSTrack
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.GIFFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.MessageFragment;
+import com.teamspeaghetti.www.gifster.interiorapplication.fragments.OptionsFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.ProfileFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.SearchPeopleFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.INotifyActivity;
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Utils.startFragment(new GIFFragment(),getSupportFragmentManager());
                 break;
             case R.id.nav_about:
-                Utils.createAlert(this);
+                Utils.startFragment(new OptionsFragment(),getSupportFragmentManager());
                 break;
             case R.id.nav_logout:
                 LoginManager.getInstance().logOut();

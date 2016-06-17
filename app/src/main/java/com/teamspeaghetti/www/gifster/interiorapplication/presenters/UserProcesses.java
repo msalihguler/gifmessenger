@@ -193,6 +193,9 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                         people.setId(object.getString("id"));
                         people.setName(object.getString("name"));
                         people.setFirst_name(object.getString("first_name"));
+                        people.setGender(object.getString("gender"));
+                        people.setProfile_url(object.getString("link"));
+                        people.setLocation(object.getJSONObject("location").getString("name"));
                         people.setProfile_url(url);
                         if (_fragment instanceof SearchPeopleFragment)
                             ((SearchPeopleFragment) _fragment).createList(people);
@@ -204,7 +207,7 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                 }
             });
             Bundle parameters = new Bundle();
-            parameters.putString("fields", "id,name,link,first_name,picture.type(large)");
+            parameters.putString("fields", "id,name,link,first_name,picture.type(large),gender");
             request.setParameters(parameters);
             request.executeAsync();
         }
