@@ -176,19 +176,31 @@ app.get("/deleteprofile",function(req,res){
                 if(user){
                     for(i=0;i<user.length;i++){
                     var temp =user[i].matches;
+                    var temp2 = user[i].likes;
+                    var temp3 = user[i].dislikes;
                         if(temp.indexOf(id)>-1){
                             var tempMatches = JSON.parse(temp);
                             var index = tempMatches.indexOf(id);
                             tempMatches.splice(index,1);
                             user[i].matches = JSON.stringify(tempMatches);
                         }
+                        if(temp2.indexOf(id)>-1){
+                            var tempMatches = JSON.parse(temp2);
+                            var index = tempMatches.indexOf(id);
+                            tempMatches.splice(index,1);
+                            user[i].likes = JSON.stringify(tempMatches);
+                        }
+                        if(temp3.indexOf(id)>-1){
+                            var tempMatches = JSON.parse(temp3);
+                            var index = tempMatches.indexOf(id);
+                            tempMatches.splice(index,1);
+                            user[i].dislikes = JSON.stringify(tempMatches);
+                        }
+                        user[i].save(function(l,m){
+                            if(l){}
+                            else{}
+                        });
                     }
-                    user.save(function(err,no){
-                    if(err) {
-                      } else {
-                      console.log("lul");
-                      }
-                    });
                 }
                 }
                 });
