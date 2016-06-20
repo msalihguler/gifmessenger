@@ -10,4 +10,5 @@ public interface IUserRequestHandler {
     public void sendLikeStatus(String m_id,String o_id,String type);
     public void revealProfile(String id);
     public void getRevealedProfiles(String id);
+    public void deleteProfile(String id);
 }

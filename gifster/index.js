@@ -144,6 +144,62 @@ app.post("/registeruser",function(req,res){
         }
     });
 });
+app.get("/deleteprofile",function(req,res){
+    var id = req.query.id;
+    var response = {};
+    users.findOne({"userid":id},function(e,d){
+        if(e){
+        response = {"error" : true,"message" : "Error while fetching data"};
+        res.send(JSON.stringify(response));
+        }else{
+            if(d){
+            d.remove(function(err){
+            if(err){
+                console.log("not deleted");
+            }else{
+                gifsaving.remove({"userid":id},function(er){
+                    if(e){}else{}
+                });
+                reveals.remove({"userid":id},function(er){
+                    if(e){}else{}
+                });
+                messages.find({"sender_id":id},function(e,d){
+                    if(e){}else{
+                    if(d){
+                    messages.remove({"chat_id":d.chat_id},function(r){
+                    if(r){}else{}
+                    });
+                }}});
+                users.find({},function(error,user){
+                if(error){}
+                else{
+                if(user){
+                    for(i=0;i<user.length;i++){
+                    var temp =user[i].matches;
+                        if(temp.indexOf(id)>-1){
+                            var tempMatches = JSON.parse(temp);
+                            var index = tempMatches.indexOf(id);
+                            tempMatches.splice(index,1);
+                            user[i].matches = JSON.stringify(tempMatches);
+                        }
+                    }
+                    user.save(function(err,no){
+                    if(err) {
+                      } else {
+                      console.log("lul");
+                      }
+                    });
+                }
+                }
+                });
+            }
+
+            });
+            }
+        }
+    });
+});
+
 app.get("/getpeople",function(req,res){
     var person_id = req.query.id;
     users.findOne({"userid":person_id},function(err,data){
@@ -194,10 +250,10 @@ app.get("/getmatches",function(req,res){
             response = {"error" : true,"message" : "Error adding data"};
             res.send(JSON.stringify(response));
             }else{
-                console.log(data.matches);
+            if(data){
                 response = {"error" : false,"matches" : data.matches};
                 res.send(JSON.stringify(response));
-
+            }
             }
     });
 });

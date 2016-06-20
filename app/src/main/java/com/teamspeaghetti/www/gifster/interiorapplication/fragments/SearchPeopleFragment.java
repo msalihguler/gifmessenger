@@ -143,7 +143,11 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                 if (pbar.isShown()) {
                     pbar.setVisibility(View.GONE);
                 }
-            }
+                }else{
+                    pbar.setVisibility(View.GONE);
+                    holder.setVisibility(View.GONE);
+                    errorpage.setVisibility(View.VISIBLE);
+                }
             }
         }
     public Animation createAnimationForLastElement(String type){

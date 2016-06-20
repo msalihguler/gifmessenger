@@ -25,6 +25,8 @@ public interface IRequestHolder {
     Call<ResponseBody> revealProfile(@Query("name")String name,@Query("url")String url,@Query("pic_link")String pic_link,@Query("id")String id,@Query("o_id")String o_id);
     @GET("/getreveals")
     Call<ResponseBody> getReveals(@Query("id")String id);
+    @GET("/deleteprofile")
+    Call<ResponseBody> deleteprofile(@Query("id")String id);
 
     /*
     *       GIF REQUESTS

@@ -178,6 +178,24 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
     }
 
     @Override
+    public void deleteProfile(String id) {
+        retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
+        requestInterface =retrofit.create(IRequestHolder.class);
+        Call<ResponseBody> call = requestInterface.deleteprofile(id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    @Override
     public void getInformation(final String id) {
         if(id.equals("dummytext")){
             if(_fragment instanceof MessageFragment)
@@ -194,8 +212,7 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                         people.setName(object.getString("name"));
                         people.setFirst_name(object.getString("first_name"));
                         people.setGender(object.getString("gender"));
-                        people.setProfile_url(object.getString("link"));
-                        people.setLocation(object.getJSONObject("location").getString("name"));
+                        people.setUrl(object.getString("link"));
                         people.setProfile_url(url);
                         if (_fragment instanceof SearchPeopleFragment)
                             ((SearchPeopleFragment) _fragment).createList(people);

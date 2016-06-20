@@ -15,8 +15,10 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.facebook.Profile;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
+import com.teamspeaghetti.www.gifster.interiorapplication.presenters.UserProcesses;
 
 /**
  * Created by Salih on 17.06.2016.
@@ -70,6 +72,7 @@ public class OptionsFragment extends Fragment implements RadioGroup.OnCheckedCha
                 }
                 break;
             case R.id.delete_account:
+                new UserProcesses(getContext(),OptionsFragment.this).deleteProfile(Profile.getCurrentProfile().getId());
                 break;
         }
     }
