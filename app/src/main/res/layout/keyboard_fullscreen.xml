@@ -33,7 +33,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/send"
             android:layout_weight="1"
-            android:src="@drawable/ic_send_white_24dp" />
+            android:src="@drawable/ic_send_white_24dp"
+            android:visibility="gone" />
     </LinearLayout>
 
 </RelativeLayout>

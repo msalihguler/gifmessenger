@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="application_definiton">GIFler aracılığı ile yabancılarla konuş.</string>
-    <string name="encourege_definiton">Karşındakinin adını öğrenmek için eğlenceli yüzünü göster.</string>
+    <string name="encourege_definiton">Karşındakinin Facebook Profilini almak için eğlenceli yüzünü göster.</string>
     <string name="facebook_definition">Kayıt Yok! Facebook hesabınla giriş yapman yeterli.</string>
     <string name="ready_definition">Herşey Hazır!\n Giriş Yap!</string>
     <string name="login">Giriş Yap!</string>
@@ -28,4 +28,9 @@
     <string name="men">Erkek</string>
     <string name="rateapplication">Uygulamayı oyla!</string>
     <string name="deleteaccount">Bu hesabı sil!</string>
+    <string name="searchatgiphy">GIPHY\'de ara!</string>
+    <string name="startconversation">Henüz mesajlaşma başlamamış.\nBir GIF gönder ve konuşmayı başlat.</string>
+    <string name="information">GIFster bir Team Spaghetti ürünüdür.</string>
+    <string name="nogifs">Gösterecek GIF yok.\nAma aşağıdan arayabilirsin.</string>
+    <string name="dialog_message">Hesabınızı silmek istediğinize emin misiniz?\nSistemdeki tüm bilgileriniz silinecektir.</string>
 </resources>

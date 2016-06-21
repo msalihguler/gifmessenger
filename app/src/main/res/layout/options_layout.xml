@@ -85,7 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.3"
-            android:text="GIFster is a teamspaghetti product."
+            android:text="@string/information"
             android:id="@+id/textView2"
             android:gravity="center"
             android:textColor="@color/colorPrimary" />

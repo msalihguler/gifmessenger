@@ -13,9 +13,13 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.teamspeaghetti.www.gifster.R;
@@ -53,6 +57,9 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
     EditText editText;
     AskSavedGIFs askSavedGIFs;
     ChatProcesses chatProcesses;
+    ProgressBar progressBar;
+    LinearLayout errorPage;
+    TextView nokeyboardError;
     public static boolean active = false;
 
     @Override
@@ -98,6 +105,9 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         gifList = (RecyclerView)findViewById(R.id.sendGifs);
         conversation = (RecyclerView)findViewById(R.id.previousTalks);
         editText = (EditText)findViewById(R.id.searchGifs);
+        progressBar = (ProgressBar) findViewById(R.id.progressInsideChat);
+        errorPage = (LinearLayout)findViewById(R.id.nomessages_layout);
+        nokeyboardError = (TextView)findViewById(R.id.errorMessage);
 
         //Create Arrays
         savedGifs = new ArrayList<>();
@@ -152,9 +162,11 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         adapter.notifyDataSetChanged();
         new AskingGIFProcess(ChatActivity.this).makeRequestToGetGifs(savedGifs,100,key);
     }
+
     public void makeCallForEarlyConversations(String id){
         chatProcesses.getMessages(id);
     }
+
     public void getKeyboard(){
         savedGifs.clear();
         askSavedGIFs.retrieveGIFs(savedGifs);
@@ -163,16 +175,38 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
     public void retrieveGIFs(List<Gifs> gifsList) {
         savedGifs.clear();
         savedGifs.addAll(gifsList);
-        adapter.notifyDataSetChanged();
+        if(gifsList.size()<=0){
+            nokeyboardError.setVisibility(View.VISIBLE);
+            gifList.setVisibility(View.GONE);
+        }else{
+            if(nokeyboardError.getVisibility()==View.VISIBLE){
+                nokeyboardError.setVisibility(View.GONE);
+                gifList.setVisibility(View.VISIBLE);
+            }
+            adapter.notifyDataSetChanged();
+        }
+
     }
     public void getConversation(List<JSONObject> jsonObjectList){
-        earlyConversations.clear();
         earlyConversations.addAll(jsonObjectList);
-        conversationAdapter.notifyDataSetChanged();
-        conversation.scrollToPosition(earlyConversations.size()-1);
+        if(earlyConversations.size()>0){
+            if(progressBar.isShown())
+                progressBar.setVisibility(View.GONE);
+            conversation.setVisibility(View.VISIBLE);
+            conversationAdapter.notifyDataSetChanged();
+            conversation.scrollToPosition(earlyConversations.size()-1);
+        }else{
+            if(progressBar.isShown())
+                progressBar.setVisibility(View.GONE);
+            conversation.setVisibility(View.GONE);
+            errorPage.setVisibility(View.VISIBLE);
+        }
+
     }
     public void addItem(JSONObject jsonObject){
         earlyConversations.add(jsonObject);
+        errorPage.setVisibility(View.GONE);
+        conversation.setVisibility(View.VISIBLE);
         conversationAdapter.notifyDataSetChanged();
         conversation.scrollToPosition(earlyConversations.size()-1);
     }

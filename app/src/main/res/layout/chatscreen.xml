@@ -4,12 +4,43 @@
     android:layout_height="match_parent">
     <include android:id="@+id/toolbar"
         layout="@layout/toolbar"></include>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressInsideChat"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+    <LinearLayout
+        android:id="@+id/nomessages_layout"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:id="@+id/imageView2"
+            android:src="@drawable/no_match" />
+
+        <TextView
+            android:id="@+id/notfound"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/startconversation"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12dp"
+            android:gravity="center" />
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/previousTalks"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
-        android:layout_above="@+id/keyboard">
+        android:layout_above="@+id/keyboard"
+        android:visibility="gone">
     </android.support.v7.widget.RecyclerView>
     <android.support.v7.widget.CardView
         android:id="@+id/keyboard"
@@ -17,12 +48,24 @@
         android:layout_height="100dp"
         android:layout_above="@+id/searchGifs"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="4dp">
+        <TextView
+            android:id="@+id/errorMessage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:text="@string/nogifs"
+            android:visibility="gone"
+            />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/sendGifs"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
         </android.support.v7.widget.RecyclerView>
+
     </android.support.v7.widget.CardView>
 
     <EditText
@@ -35,5 +78,5 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:hint="Giphyde ara" />
+        android:hint="@string/searchatgiphy" />
 </RelativeLayout>

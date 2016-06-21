@@ -58,7 +58,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         String milliSeconds = String.valueOf(x)+"000";
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(milliSeconds));
-        holder.date.setText(new SimpleDateFormat("dd-MM-yyyy HH:MM").format(calendar.getTime()));
+        holder.date.setText(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(calendar.getTime()));
         holder.progressBar.setVisibility(View.VISIBLE);
         Glide.with(_context)
                 .load(Uri.parse(url))

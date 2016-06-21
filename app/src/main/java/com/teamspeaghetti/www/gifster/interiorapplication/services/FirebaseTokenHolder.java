@@ -14,9 +14,13 @@ import com.teamspeaghetti.www.gifster.interiorapplication.presenters.UserProcess
 public class FirebaseTokenHolder extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
-        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d("Token", "Refreshed token: " + refreshedToken);
-        sendRegistrationToServer(refreshedToken);
+        try {
+            String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+            Log.d("Token", "Refreshed token: " + refreshedToken);
+            sendRegistrationToServer(refreshedToken);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     public void sendRegistrationToServer(String token){
         new UserProcesses(getApplicationContext()).sendRequest(AccessToken.getCurrentAccessToken().getUserId(),

@@ -1,13 +1,16 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.fragments;
 
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,7 +75,21 @@ public class OptionsFragment extends Fragment implements RadioGroup.OnCheckedCha
                 }
                 break;
             case R.id.delete_account:
-                new UserProcesses(getContext(),OptionsFragment.this).deleteProfile(Profile.getCurrentProfile().getId());
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(R.string.dialog_message)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                new UserProcesses(getContext(),OptionsFragment.this).deleteProfile(Profile.getCurrentProfile().getId());
+                            }
+                        })
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                // Create the AlertDialog object and return it
+                Dialog alert = builder.create();
+                alert.show();
                 break;
         }
     }
