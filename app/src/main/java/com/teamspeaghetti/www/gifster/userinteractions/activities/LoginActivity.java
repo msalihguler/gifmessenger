@@ -11,12 +11,17 @@ import android.widget.Toast;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.activities.MainActivity;
 import com.teamspeaghetti.www.gifster.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -56,10 +61,26 @@ public class LoginActivity extends AppIntro {
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                                try {
+                                    intent.putExtra("gender",object.getString("gender"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "gender");
+                request.setParameters(parameters);
+                request.executeAsync();
 
-                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                startActivity(intent);
-                finish();
             }
             @Override
             public void onCancel() {

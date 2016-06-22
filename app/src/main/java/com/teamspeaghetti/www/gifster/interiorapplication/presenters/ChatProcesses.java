@@ -52,10 +52,10 @@ public class ChatProcesses implements IChatMethods{
                     JSONArray jsonArray = new JSONArray(jsonObject.getString("matches"));
                     UserProcesses processes = new UserProcesses(_context,_fragment);
                     if(jsonArray.length()==0){
-                        processes.getInformation("dummytext");
+                        processes.getInformation("dummytext","null");
                     }else {
                         for (int i = 0; i < jsonArray.length(); i++) {
-                            processes.getInformation(jsonArray.getString(i));
+                            processes.getInformation(jsonArray.getString(i),"null");
                         }
                     }
                 } catch (IOException e) {

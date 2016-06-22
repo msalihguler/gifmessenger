@@ -97,7 +97,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                     errorpage.setVisibility(View.VISIBLE);
                 }else{
                     holder.startAnimation(createAnimationForTopElements("like"));
-                    user_instance.getInformation(peoples.get(lastPosition).getId());
+                    user_instance.getInformation(peoples.get(lastPosition).getId(),peoples.get(lastPosition).getGender());
                 }
                 break;
             case R.id.thumbsdown:
@@ -107,22 +107,28 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                     Utils.createSnackBar(getView(),"There is no one new");
                 }else {
                     holder.startAnimation(createAnimationForTopElements("dislike"));
-                    user_instance.getInformation(peoples.get(lastPosition).getId());
+                    user_instance.getInformation(peoples.get(lastPosition).getId(),peoples.get(lastPosition).getGender());
                 }
                 break;
         }
     }
     private void registerUserToGIFsterServer() {
+        String gender = null;
+        try {
+            gender = getActivity().getIntent().getExtras().getString("gender");
+        }catch (Exception e){
+            gender = "null";
+        }
         user_instance.sendRequest(AccessToken.getCurrentAccessToken().getUserId(),
                 String.valueOf(new GPSTracker(getContext()).getLatitude()),
-                String.valueOf(new GPSTracker(getContext()).getLongitude()), FirebaseInstanceId.getInstance().getToken());
+                String.valueOf(new GPSTracker(getContext()).getLongitude()), FirebaseInstanceId.getInstance().getToken(),gender);
     }
     @Override
     public void getRetrievedPeople(List<People> peopleList) {
             peoples.clear();
             peoples.addAll(peopleList);
         if(peoples.size()>0) {
-            user_instance.getInformation(peoples.get(0).getId());
+            user_instance.getInformation(peoples.get(0).getId(),peoples.get(0).getGender());
         }else{
             pbar.setVisibility(View.GONE);
             holder.setVisibility(View.GONE);

@@ -54,10 +54,10 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
     }
 
     @Override
-    public void sendRequest(String id,String latitude,String longitude,String token) {
+    public void sendRequest(String id,String latitude,String longitude,String token,String gender) {
         retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
         requestInterface =retrofit.create(IRequestHolder.class);
-        Call<ResponseBody> call = requestInterface.registerUser(id,latitude,longitude,token);
+        Call<ResponseBody> call = requestInterface.registerUser(id,latitude,longitude,token,gender);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -84,7 +84,9 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                     JSONArray jsonObject1 = new JSONArray(temp);
                     for(int i=0;i<jsonObject1.length();i++) {
                         String id = ((JSONObject) jsonObject1.get(i)).getString("userid");
-                        peopleList.add(new People(id));
+                        String gender = ((JSONObject) jsonObject1.get(i)).getString("gender");
+                        peopleList.add(new People(id,gender));
+
                     }
                     if(_fragment instanceof SearchPeopleFragment)
                         ((SearchPeopleFragment)_fragment).getRetrievedPeople(peopleList);
@@ -196,7 +198,7 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
     }
 
     @Override
-    public void getInformation(final String id) {
+    public void getInformation(final String id,final String gender) {
         if(id.equals("dummytext")){
             if(_fragment instanceof MessageFragment)
                 ((MessageFragment)_fragment).createList(null);
@@ -212,7 +214,7 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                         people.setName(object.getString("name"));
                         people.setFirst_name(object.getString("first_name"));
                         people.setUrl(object.getString("link"));
-                        people.setGender(object.getString("gender"));
+                        people.setGender(gender);
                         people.setProfile_url(url);
                         if (_fragment instanceof SearchPeopleFragment)
                             ((SearchPeopleFragment) _fragment).createList(people);
@@ -224,7 +226,7 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                 }
             });
             Bundle parameters = new Bundle();
-            parameters.putString("fields", "id,name,link,first_name,picture.type(large),gender");
+            parameters.putString("fields", "id,name,link,first_name,picture.type(large)");
             request.setParameters(parameters);
             request.executeAsync();
         }

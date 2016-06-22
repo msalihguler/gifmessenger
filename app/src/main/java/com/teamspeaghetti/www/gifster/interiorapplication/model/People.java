@@ -58,7 +58,10 @@ public class People {
     public People(String id) {
         setId(id);
     }
-
+    public People(String id,String gender) {
+        setId(id);
+        setGender(gender);
+    }
     public People(String id, String likes, String location) {
         this.id = id;
         this.likes = likes;

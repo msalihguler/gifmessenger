@@ -11,7 +11,7 @@
     <string name="navigation_drawer_close">close</string>
 
     <string name="giphyurl">http://api.giphy.com</string>
-    <string name="serverurl">http://192.168.1.166:3000</string>
+    <string name="serverurl">http://gifmessenger.herokuapp.com</string>
     <string name="deletetitle">Delete</string>
     <string name="deletemessage">Are you sure you want to delete this gif?</string>
     <string name="yes">YES</string>
