@@ -37,7 +37,7 @@ public class ProfileViewPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position){
             case 0:
-                return "REVEALS";
+                return _context.getResources().getString(R.string.reveals);
             case 1:
                 return _context.getResources().getString(R.string.gifboard);
 

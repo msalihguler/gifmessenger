@@ -10,5 +10,12 @@
         android:minHeight="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        local:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:src="@drawable/title"/>
+
+    </android.support.v7.widget.Toolbar>
 </LinearLayout>

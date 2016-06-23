@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -34,7 +35,9 @@ import java.util.List;
 /**
  * Created by Salih on 21.05.2016.
  */
-public class SearchPeopleFragment extends Fragment implements View.OnClickListener,IRetrievePeople {
+public class SearchPeopleFragment extends Fragment implements View.OnClickListener,IRetrievePeople,View.OnTouchListener {
+
+    //Variable declarations
     ImageView thumbup,thumbdown,profile_pic;
     TextView name,errormessage;
     CardView holder;
@@ -44,6 +47,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     LinearLayout errorpage;
     SharedPreferences preferences;
     int lastPosition=0;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,6 +60,8 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     }
 
     public View init(View rootView){
+
+        //View initializations
         profile_pic = (ImageView)rootView.findViewById(R.id.profilepicture);
         thumbup = (ImageView)rootView.findViewById(R.id.thumbsup);
         thumbdown = (ImageView)rootView.findViewById(R.id.thumbsdown);
@@ -64,19 +70,35 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         pbar = (ProgressBar)rootView.findViewById(R.id.pbar);
         holder=(CardView)rootView.findViewById(R.id.profilecard);
         errorpage = (LinearLayout)rootView.findViewById(R.id.noOneFound_message);
+
+        //Shared preferences initialization
         preferences = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+
+        //List initialization
         peoples = new ArrayList<People>();
+
+        //Listeners for thumbs
         thumbdown.setOnClickListener(this);
         thumbup.setOnClickListener(this);
-        Drawable mDrawable = getActivity().getResources().getDrawable(R.drawable.thumbup);
-        mDrawable.setColorFilter(new
-                PorterDuffColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.MULTIPLY));
-        thumbup.setImageDrawable(mDrawable);
-        thumbdown.setImageDrawable(mDrawable);
+        thumbdown.setOnTouchListener(this);
+        thumbup.setOnTouchListener(this);
+
+
+        //rotate thumb image and change it's color
+        Drawable drawableUp = getActivity().getResources().getDrawable(R.drawable.thumbup);
+        Drawable drawableDown = getActivity().getResources().getDrawable(R.drawable.thumbup);
+        drawableUp.setColorFilter(new
+                PorterDuffColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY));
+        drawableDown.setColorFilter(new
+                PorterDuffColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY));
+        thumbup.setImageDrawable(drawableUp);
+        thumbdown.setImageDrawable(drawableDown);
         thumbdown.setRotationX(180);
         thumbdown.setRotationY(180);
+
         return rootView;
     }
+
     public void getPeopleFromServer(){
         if(holder.getVisibility()==View.VISIBLE)
             holder.setVisibility(View.GONE);
@@ -85,6 +107,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         pbar.setVisibility(View.VISIBLE);
         user_instance.getPeople(AccessToken.getCurrentAccessToken().getUserId());
     }
+
     @Override
     public void onClick(View v) {
         Log.e("count",String.valueOf(lastPosition));
@@ -104,7 +127,8 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                 if(lastPosition>=peoples.size()-1) {
                     holder.startAnimation(createAnimationForLastElement("dislike"));
                     lastPosition=0;
-                    Utils.createSnackBar(getView(),"There is no one new");
+                    holder.setVisibility(View.GONE);
+                    errorpage.setVisibility(View.VISIBLE);
                 }else {
                     holder.startAnimation(createAnimationForTopElements("dislike"));
                     user_instance.getInformation(peoples.get(lastPosition).getId(),peoples.get(lastPosition).getGender());
@@ -112,6 +136,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                 break;
         }
     }
+
     private void registerUserToGIFsterServer() {
         String gender = null;
         try {
@@ -123,6 +148,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                 String.valueOf(new GPSTracker(getContext()).getLatitude()),
                 String.valueOf(new GPSTracker(getContext()).getLongitude()), FirebaseInstanceId.getInstance().getToken(),gender);
     }
+
     @Override
     public void getRetrievedPeople(List<People> peopleList) {
             peoples.clear();
@@ -142,7 +168,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                 String gender = preferences.getString("preferred", "female");
                 if (people.getGender().equals(gender)){
                     name.setText(people.getFirst_name());
-                Glide.with(getContext()).load(people.getProfile_url())
+                Glide.with(getContext()).load(people.getProfile_url()).centerCrop()
                         .crossFade()
                         .into(profile_pic);
                 holder.setVisibility(View.VISIBLE);
@@ -150,9 +176,14 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                     pbar.setVisibility(View.GONE);
                 }
                 }else{
-                    pbar.setVisibility(View.GONE);
-                    holder.setVisibility(View.GONE);
-                    errorpage.setVisibility(View.VISIBLE);
+                    lastPosition++;
+                    if(lastPosition<peoples.size()){
+                        user_instance.getInformation(peoples.get(lastPosition).getId(),peoples.get(lastPosition).getGender());
+                    }else {
+                        pbar.setVisibility(View.GONE);
+                        holder.setVisibility(View.GONE);
+                        errorpage.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         }
@@ -175,5 +206,34 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         else
             animation = AnimationUtils.loadAnimation(getContext(), R.anim.move_right);
         return animation;
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if(event.getAction()==MotionEvent.ACTION_DOWN) {
+            switch (v.getId()) {
+                case R.id.thumbsdown:
+                    thumbdown.getDrawable().setColorFilter(new
+                            PorterDuffColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.MULTIPLY));
+                    break;
+                case R.id.thumbsup:
+                    thumbup.getDrawable().setColorFilter(new
+                            PorterDuffColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.MULTIPLY));
+                    break;
+            }
+        }
+        if(event.getAction()==MotionEvent.ACTION_UP) {
+            switch (v.getId()) {
+                case R.id.thumbsdown:
+                    thumbdown.getDrawable().setColorFilter(new
+                            PorterDuffColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY));
+                    break;
+                case R.id.thumbsup:
+                    thumbup.getDrawable().setColorFilter(new
+                            PorterDuffColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY));
+                    break;
+            }
+        }
+        return false;
     }
 }

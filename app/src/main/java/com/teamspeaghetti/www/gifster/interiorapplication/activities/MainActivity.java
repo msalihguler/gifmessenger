@@ -2,6 +2,8 @@ package com.teamspeaghetti.www.gifster.interiorapplication.activities;
 
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -37,9 +39,12 @@ import com.teamspeaghetti.www.gifster.userinteractions.presenters.UserDetailRetr
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,IMockRetrievedInformation,INotifyActivity {
 
+    //Variable declarations
     UserDetailRetriever detailRetriever;
     ImageView profile_picture;
     TextView details;
@@ -59,20 +64,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void initViews(){
+        //View initializations
         toolbar = (Toolbar)findViewById(R.id.custom_toolbar);
         drawer= (DrawerLayout)findViewById(R.id.drawer_layout);
         navigationView = (NavigationView)findViewById(R.id.nav_view);
+
+        //Get header and it's childs
         header_holder = navigationView.getHeaderView(0);
-        detailRetriever= new UserDetailRetriever(this);
-        details=(TextView)header_holder.findViewById(R.id.name);
         profile_picture=(ImageView)header_holder.findViewById(R.id.profile_picture);
+        details=(TextView)header_holder.findViewById(R.id.name);
+
+        //Object creation and calling methods
+        detailRetriever= new UserDetailRetriever(this);
         detailRetriever.retrieveInformation();
+
+        //Toolbar specifications
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        //Setlistener
         navigationView.setNavigationItemSelectedListener(this);
     }
 

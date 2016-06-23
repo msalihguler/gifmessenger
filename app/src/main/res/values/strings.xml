@@ -43,5 +43,7 @@
     <string name="startconversation">No messages yet.\nLet\'s start a GIF conversation.</string>
     <string name="information">GIFster is a Team Spaghetti product.</string>
     <string name="nogifs">We have nothing to show.\nBut you can search for it below</string>
-    <string name="dialog_message">Are you you want to delete this account?\nAll your information will be deleted from the system.</string>
+    <string name="dialog_message">Are you you want to delete this account?\n\nAll your information will be deleted from the system.</string>
+    <string name="reveal_message">Are you sure you want reveal your Facebook profile?</string>
+    <string name="reveals">PROFILES</string>
 </resources>

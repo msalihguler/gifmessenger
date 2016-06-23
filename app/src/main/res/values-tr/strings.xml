@@ -5,7 +5,8 @@
     <string name="facebook_definition">Kayıt Yok! Facebook hesabınla giriş yapman yeterli.</string>
     <string name="ready_definition">Herşey Hazır!\n Giriş Yap!</string>
     <string name="login">Giriş Yap!</string>
-
+    <string name="yes">EVET</string>
+    <string name="no">HAYIR</string>
     <string name="loadmore">Daha Fazla GIF!</string>
     <string name="tofavourites">GIFboard\'a ekle</string>
     <string name="dismiss">Vazgeç</string>
@@ -32,5 +33,8 @@
     <string name="startconversation">Henüz mesajlaşma başlamamış.\nBir GIF gönder ve konuşmayı başlat.</string>
     <string name="information">GIFster bir Team Spaghetti ürünüdür.</string>
     <string name="nogifs">Gösterecek GIF yok.\nAma aşağıdan arayabilirsin.</string>
-    <string name="dialog_message">Hesabınızı silmek istediğinize emin misiniz?\nSistemdeki tüm bilgileriniz silinecektir.</string>
+    <string name="dialog_message">Hesabınızı silmek istediğinize emin misiniz?\n\nSistemdeki tüm bilgileriniz silinecektir.</string>
+    <string name="reveal_message">Facebook profilinizi paylaşmak istediğinize emin misiniz?</string>
+    <string name="reveals">PROFILLER</string>
+
 </resources>

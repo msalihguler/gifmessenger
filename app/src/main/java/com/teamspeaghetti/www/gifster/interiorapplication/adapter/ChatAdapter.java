@@ -1,8 +1,11 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,22 +33,31 @@ import java.util.List;
  */
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.VHolder> {
 
+    //Variable Declarations
     Context _context;
     List<People> _matches;
+
     public ChatAdapter(Context context, List<People> matches){
         this._context=context;
         this._matches=matches;
     }
     public class VHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        //ViewHolder variable declarations
         ImageView profile_pic,reveal_profile;
         TextView name;
         RelativeLayout to_chat;
+
         public VHolder(View itemView,int viewtype) {
             super(itemView);
+
+            //Initialize ViewHolder variables
             profile_pic=(ImageView)itemView.findViewById(R.id.mini_profile_photo);
             reveal_profile = (ImageView)itemView.findViewById(R.id.revealProfile);
             name = (TextView)itemView.findViewById(R.id.mini_profile_name);
             to_chat = (RelativeLayout)itemView.findViewById(R.id.person_info_line);
+
+            //Onlisteners
             to_chat.setOnClickListener(this);
             reveal_profile.setOnClickListener(this);
         }
@@ -54,7 +66,21 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.VHolder> {
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.revealProfile:
-                    new UserProcesses(_context).revealProfile(_matches.get(getPosition()).getId());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(_context);
+                    builder.setMessage(R.string.reveal_message)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    new UserProcesses(_context).revealProfile(_matches.get(getPosition()).getId());
+                                }
+                            })
+                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    // Create the AlertDialog object and return it
+                    Dialog alert = builder.create();
+                    alert.show();
                     break;
                 case R.id.person_info_line:
                     Intent intent = new Intent((MainActivity) _context, ChatActivity.class);

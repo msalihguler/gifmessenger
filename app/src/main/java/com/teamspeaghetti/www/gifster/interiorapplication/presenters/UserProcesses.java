@@ -129,10 +129,11 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
     public void revealProfile(String id) {
         retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
         requestInterface =retrofit.create(IRequestHolder.class);
-        Call<ResponseBody> call = requestInterface.revealProfile(Profile.getCurrentProfile().getName(),
-                Profile.getCurrentProfile().getLinkUri().toString(),
-                Profile.getCurrentProfile().getProfilePictureUri(150,150).toString(),
-                Profile.getCurrentProfile().getId(),id);
+        String name = Profile.getCurrentProfile().getName();
+        String url = Profile.getCurrentProfile().getLinkUri().toString();
+        String pic_link = Profile.getCurrentProfile().getProfilePictureUri(150,150).toString();
+        String m_id = Profile.getCurrentProfile().getId();
+        Call<ResponseBody> call = requestInterface.revealProfile(name,url,pic_link,m_id,id);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -143,7 +144,9 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                 }
             }
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {}
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+            }
         });
     }
 
@@ -220,8 +223,8 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                             ((SearchPeopleFragment) _fragment).createList(people);
                         if (_fragment instanceof MessageFragment)
                             ((MessageFragment) _fragment).createList(people);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    } catch (Exception e) {
+                        Log.e("res",response.getError().getErrorMessage());
                     }
                 }
             });

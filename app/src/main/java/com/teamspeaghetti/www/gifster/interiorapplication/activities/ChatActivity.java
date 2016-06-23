@@ -69,7 +69,7 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         otherID = getIntent().getExtras().getString("id");
         name = getIntent().getExtras().getString("name");
         initViews();
-        textChangingListener();
+        searchTextChangingListener();
         makeCallForEarlyConversations(otherID);
         getSupportActionBar().setTitle(name);
         getKeyboard();
@@ -119,6 +119,7 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
 
         //Set Toolbar as action bar
         setSupportActionBar(toolbar);
+        toolbar.getChildAt(0).setVisibility(View.GONE);
 
         //Horizontal list view attribute
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -139,7 +140,7 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
 
     }
 
-    public void textChangingListener(){
+    public void searchTextChangingListener(){
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -157,6 +158,7 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
             }
         });
     }
+
     public void makeInstantRequestForKeyboard(String key){
         savedGifs.clear();
         adapter.notifyDataSetChanged();
@@ -167,10 +169,13 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         chatProcesses.getMessages(id);
     }
 
+
     public void getKeyboard(){
         savedGifs.clear();
         askSavedGIFs.retrieveGIFs(savedGifs);
     }
+
+
     @Override
     public void retrieveGIFs(List<Gifs> gifsList) {
         savedGifs.clear();
@@ -185,8 +190,8 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
             }
             adapter.notifyDataSetChanged();
         }
-
     }
+
     public void getConversation(List<JSONObject> jsonObjectList){
         earlyConversations.addAll(jsonObjectList);
         if(earlyConversations.size()>0){
@@ -203,6 +208,7 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         }
 
     }
+
     public void addItem(JSONObject jsonObject){
         earlyConversations.add(jsonObject);
         errorPage.setVisibility(View.GONE);
@@ -210,6 +216,7 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         conversationAdapter.notifyDataSetChanged();
         conversation.scrollToPosition(earlyConversations.size()-1);
     }
+
     public class MessageReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

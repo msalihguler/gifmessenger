@@ -19,9 +19,11 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.UserProcesses;
+import com.teamspeaghetti.www.gifster.userinteractions.activities.WelcomeActivity;
 
 /**
  * Created by Salih on 17.06.2016.
@@ -80,6 +82,10 @@ public class OptionsFragment extends Fragment implements RadioGroup.OnCheckedCha
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 new UserProcesses(getContext(),OptionsFragment.this).deleteProfile(Profile.getCurrentProfile().getId());
+                                LoginManager.getInstance().logOut();
+                                Intent intent = new Intent(getActivity(),WelcomeActivity.class);
+                                startActivity(intent);
+                                getActivity().finish();
                             }
                         })
                         .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {

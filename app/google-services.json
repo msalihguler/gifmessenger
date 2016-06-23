@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "688395258110",
+    "firebase_url": "https://project-38861986281018819.firebaseio.com",
+    "project_id": "project-38861986281018819",
+    "storage_bucket": "project-38861986281018819.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688395258110:android:44c13aa6ad3ae902",
+        "android_client_info": {
+          "package_name": "com.teamspeaghetti.www.gifster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "688395258110-7q39p8qpc0l53rojqetdbf8s3lifrkjp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teamspeaghetti.www.gifster",
+            "certificate_hash": "CBE163B03CE80F4E94A40147932D11DC559A7F2D"
+          }
+        },
+        {
+          "client_id": "688395258110-k1h28rprl6t3v5930uemmosv1frkcam1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATu-UKakZfEHV-vjylw7wYpdm38XFNIGs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688395258110-k1h28rprl6t3v5930uemmosv1frkcam1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
