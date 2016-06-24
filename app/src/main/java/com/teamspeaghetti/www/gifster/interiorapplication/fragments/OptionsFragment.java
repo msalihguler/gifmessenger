@@ -96,6 +96,7 @@ public class OptionsFragment extends Fragment implements RadioGroup.OnCheckedCha
                             public void onClick(DialogInterface dialog, int id) {
                                 new UserProcesses(getContext(),OptionsFragment.this).deleteProfile(Profile.getCurrentProfile().getId());
                                 LoginManager.getInstance().logOut();
+                                getContext().getSharedPreferences("settings", Context.MODE_PRIVATE).edit().clear().commit();
                                 Intent intent = new Intent(getActivity(),WelcomeActivity.class);
                                 startActivity(intent);
                                 getActivity().finish();

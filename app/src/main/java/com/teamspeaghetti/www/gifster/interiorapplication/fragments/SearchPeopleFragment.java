@@ -55,8 +55,8 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.searchpeople,null);
         user_instance = new UserProcesses(getContext(),this);
-        registerUserToGIFsterServer();
         rootView = init(rootView);
+        registerUserToGIFsterServer();
         getPeopleFromServer();
         return rootView;
     }
@@ -143,6 +143,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         String gender = null;
         try {
             gender = getActivity().getIntent().getExtras().getString("gender");
+            Log.e("gen",gender);
             if(preferences.getString("preferred","not selected").equals("not selected")){
                 if(gender.equals("male"))
                     preferences.edit().putString("preferred","female").commit();

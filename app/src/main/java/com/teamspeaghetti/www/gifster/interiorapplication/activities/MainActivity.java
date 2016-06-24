@@ -1,5 +1,6 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -72,9 +73,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         details=(TextView)header_holder.findViewById(R.id.name);
 
         //Fill header of navigation view
-        details.setText(Profile.getCurrentProfile().getFirstName());
         String imageUrl = "https://graph.facebook.com/"+Profile.getCurrentProfile().getId()+"/picture?type=large";
         Picasso.with(this).load(imageUrl).transform(new CircleTransform()).into(profile_picture);
+        details.setText(Profile.getCurrentProfile().getFirstName());
 
         //Toolbar specifications
         setSupportActionBar(toolbar);
@@ -133,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_logout:
                 LoginManager.getInstance().logOut();
+                this.getSharedPreferences("settings", Context.MODE_PRIVATE).edit().clear().commit();
                 Intent intent = new Intent(this,WelcomeActivity.class);
                 startActivity(intent);
                 finish();
