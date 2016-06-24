@@ -50,4 +50,5 @@
     <string name="login_error">Login Error: </string>
     <string name="login_cancel">Login Cancelled.</string>
     <string name="filter_string">com.teamspaghetti.gifster.newmessage</string>
+
 </resources>

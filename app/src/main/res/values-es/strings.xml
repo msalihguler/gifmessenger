@@ -28,7 +28,7 @@
     <string name="profile">Perfil</string>
     <string name="rateapplication">¡Califica esta aplicación!</string>
     <string name="ready_definition">¡Todo listo! ¡Inicia sesión ya!</string>
-    <string name="reveal_message"></string>
+    <string name="reveal_message">¿Está seguro que quiere revelar su perfil de Facebook?</string>
     <string name="reveals">PERFILES</string>
     <string name="searchatgiphy">Busca en GIPHY</string>
     <string name="searchgif">Buscando GIFs…</string>
@@ -39,4 +39,6 @@
     <string name="gifboard">GIFBOARD</string>
     <string name="login_cancel">Entrada cancelado</string>
     <string name="login_error">Error de inicio de sesión</string>
+    <string name="startconversation">Aún sin mensajes. \nEmpieza una conversación GIF.</string>
+    <string name="network_error_message">¡Sin conexión a internet!\nPor favor consulte su estado de conexión.</string>
 </resources>

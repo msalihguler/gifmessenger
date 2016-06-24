@@ -210,7 +210,7 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                         if (_fragment instanceof MessageFragment)
                             ((MessageFragment) _fragment).createList(people);
                     } catch (Exception e) {
-                        Log.e("res",response.getError().getErrorMessage());
+                        e.printStackTrace();
                     }
                 }
             });

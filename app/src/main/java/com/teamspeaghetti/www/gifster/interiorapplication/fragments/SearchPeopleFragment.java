@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * Created by Salih on 21.05.2016.
  */
-public class SearchPeopleFragment extends Fragment implements View.OnClickListener,IRetrievePeople,View.OnTouchListener,ConnectivityReceiver.ConnectivityReceiverListener {
+public class SearchPeopleFragment extends Fragment implements View.OnClickListener,IRetrievePeople,View.OnTouchListener{
 
     //Variable declarations
     ImageView thumbup,thumbdown,profile_pic;
@@ -247,9 +247,4 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         return false;
     }
 
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-        registerUserToGIFsterServer();
-        getPeopleFromServer();
-    }
 }

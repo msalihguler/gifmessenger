@@ -9,7 +9,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -37,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //Variable declarations
     ImageView profile_picture;
     TextView details;
-    JSONObject userInfo;
     View header_holder;
     Toolbar toolbar;
     DrawerLayout drawer;
@@ -114,23 +112,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id){
             case R.id.nav_searchpeople:
                 if(ConnectivityReceiver.isConnected())
-                Utils.startFragment(new SearchPeopleFragment(),getSupportFragmentManager());
+                    Utils.startFragment(new SearchPeopleFragment(),getSupportFragmentManager());
+                else
+                    openNetworkError();
+
                 break;
             case R.id.nav_profile:
                 if(ConnectivityReceiver.isConnected())
-                Utils.startFragment(new ProfileFragment(),getSupportFragmentManager());
+                    Utils.startFragment(new ProfileFragment(),getSupportFragmentManager());
+                else
+                    openNetworkError();
+
                 break;
             case R.id.nav_messages:
                 if(ConnectivityReceiver.isConnected())
-                Utils.startFragment(new MessageFragment(),getSupportFragmentManager());
+                    Utils.startFragment(new MessageFragment(),getSupportFragmentManager());
+                else
+                    openNetworkError();
+
                 break;
             case R.id.nav_searchgif:
                 if(ConnectivityReceiver.isConnected())
-                Utils.startFragment(new GIFFragment(),getSupportFragmentManager());
+                    Utils.startFragment(new GIFFragment(),getSupportFragmentManager());
+                else
+                    openNetworkError();
+
                 break;
             case R.id.nav_about:
                 if(ConnectivityReceiver.isConnected())
-                Utils.startFragment(new OptionsFragment(),getSupportFragmentManager());
+                    Utils.startFragment(new OptionsFragment(),getSupportFragmentManager());
+                else
+                    openNetworkError();
                 break;
             case R.id.nav_logout:
                 LoginManager.getInstance().logOut();
@@ -151,7 +163,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void notifyActivitySelected(int pos) {
         navigationView.getMenu().getItem(pos).setChecked(true);
     }
-
+    public void openNetworkError(){
+        int size = navigationView.getMenu().size();
+        for (int i = 0; i < size; i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
+        Utils.startFragmentWithoutAnimation(new NetworkErrorPageFragment(), getSupportFragmentManager());
+    }
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if(isConnected){
@@ -159,11 +177,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Utils.startFragment(new SearchPeopleFragment(), getSupportFragmentManager());
         }
         if(!isConnected){
-            int size = navigationView.getMenu().size();
-            for (int i = 0; i < size; i++) {
-                navigationView.getMenu().getItem(i).setChecked(false);
-            }
-            Utils.startFragment(new NetworkErrorPageFragment(), getSupportFragmentManager());
+            openNetworkError();
         }
     }
 }
