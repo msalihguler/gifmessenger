@@ -30,8 +30,9 @@ import java.util.List;
 /**
  * Created by Salih on 16.05.2016.
  */
-public class GIFFragment extends Fragment implements IRetrieveGIFs {
+public class GIFFragment extends Fragment implements IRetrieveGIFs, TextView.OnEditorActionListener {
 
+    //Variable declarations
     ProgressBar progressBar;
     EditText gifsearch;
     ImageView giflogo;
@@ -41,35 +42,12 @@ public class GIFFragment extends Fragment implements IRetrieveGIFs {
     AskingGIFProcess askingGIFProcess;
     LinearLayoutManager linearLayoutManager;
     LinearLayout errorHolder;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.gif_content,null);
-        gifsearch = (EditText)rootView.findViewById(R.id.gif_search);
-        giflogo = (ImageView)rootView.findViewById(R.id.giflogo);
-        gifholder = (RecyclerView)rootView.findViewById(R.id.gif_holder);
-        progressBar = (ProgressBar)rootView.findViewById(R.id.progress_bar);
-        errorHolder = (LinearLayout)rootView.findViewById(R.id.nogifs_layout);
-        askingGIFProcess = new AskingGIFProcess(this);
-        adapter = new GifAdapter(real_gif_list,askingGIFProcess);
-        linearLayoutManager = new LinearLayoutManager(getContext());
-        gifholder.setLayoutManager(linearLayoutManager);
-        gifholder.setAdapter(adapter);
-        gifsearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                if(actionId== EditorInfo.IME_ACTION_SEARCH){
-                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-                    errorHolder.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.VISIBLE);
-                    askingGIFProcess.getGIFS(gifsearch.getText().toString(),real_gif_list,true);
-                    return true;
-                }else{
-                    return true;
-                }
-            }
-        });
+        View rootView = inflater.inflate(R.layout.gif_content,null);
+        rootView = init(rootView);
         return rootView;
     }
 
@@ -78,6 +56,27 @@ public class GIFFragment extends Fragment implements IRetrieveGIFs {
         super.onCreate(savedInstanceState);
     }
 
+    public View init(View rootView){
+        //Variable initializations
+        gifsearch = (EditText)rootView.findViewById(R.id.gif_search);
+        giflogo = (ImageView)rootView.findViewById(R.id.giflogo);
+        gifholder = (RecyclerView)rootView.findViewById(R.id.gif_holder);
+        progressBar = (ProgressBar)rootView.findViewById(R.id.progress_bar);
+        errorHolder = (LinearLayout)rootView.findViewById(R.id.nogifs_layout);
+
+        //Creating class object
+        askingGIFProcess = new AskingGIFProcess(this);
+        adapter = new GifAdapter(real_gif_list,askingGIFProcess);
+
+        //Recycler specifications
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        gifholder.setLayoutManager(linearLayoutManager);
+        gifholder.setAdapter(adapter);
+
+        //gifsearch listener
+        gifsearch.setOnEditorActionListener(this);
+        return rootView;
+    }
 
     @Override
     public void retrieveGIFs(List<Gifs> gifsList) {
@@ -92,6 +91,20 @@ public class GIFFragment extends Fragment implements IRetrieveGIFs {
             gifholder.setVisibility(View.GONE);
             progressBar.setVisibility(View.GONE);
             errorHolder.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if(actionId== EditorInfo.IME_ACTION_SEARCH){
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+            errorHolder.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+            askingGIFProcess.getGIFS(gifsearch.getText().toString(),real_gif_list,true);
+            return true;
+        }else{
+            return true;
         }
     }
 }

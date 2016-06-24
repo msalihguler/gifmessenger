@@ -30,7 +30,7 @@
     <string name="logut">Log Out</string>
     <string name="searchpeople">Search for People</string>
     <string name="noonefound">No new person.\nBut you may try again soon.</string>
-    <string name="nomatches">No matches yet.\nKeep swiping!</string>
+    <string name="nomatches">No matches yet.\nKeep trying!</string>
     <string name="nokeyboard">Your GIFBoard is empty.\nClick here to add some.</string>
     <string name="nogif">GIF not found.\nWe will get on that.</string>
     <string name="norevealed">No one has revealed their profile yet.\nKeep trying!</string>
@@ -46,4 +46,8 @@
     <string name="dialog_message">Are you you want to delete this account?\n\nAll your information will be deleted from the system.</string>
     <string name="reveal_message">Are you sure you want reveal your Facebook profile?</string>
     <string name="reveals">PROFILES</string>
+    <string name="network_error_message">No Internet Connection!\nPlease check your internet connectivity.</string>
+    <string name="login_error">Login Error: </string>
+    <string name="login_cancel">Login Cancelled.</string>
+    <string name="filter_string">com.teamspaghetti.gifster.newmessage</string>
 </resources>

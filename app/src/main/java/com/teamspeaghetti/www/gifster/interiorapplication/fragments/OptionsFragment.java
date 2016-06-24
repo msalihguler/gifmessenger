@@ -30,28 +30,42 @@ import com.teamspeaghetti.www.gifster.userinteractions.activities.WelcomeActivit
  */
 public class OptionsFragment extends Fragment implements RadioGroup.OnCheckedChangeListener,View.OnClickListener{
 
+    //Variable declaration
     SharedPreferences preferences;
     RadioGroup genderPreferences;
     CardView rateApplication,deleteAccount;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.options_layout,null);
-        preferences = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+        rootView = init(rootView);
+        return rootView;
+    }
+    public View init (View rootView){
+        //View initialization
         genderPreferences = (RadioGroup)rootView.findViewById(R.id.gender_settings);
         rateApplication = (CardView)rootView.findViewById(R.id.rate_application);
         deleteAccount   = (CardView)rootView.findViewById(R.id.delete_account);
+
+        //Shared Preferences initialization
+        preferences = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+
+        //Listeners
         rateApplication.setOnClickListener(this);
         deleteAccount.setOnClickListener(this);
+        genderPreferences.setOnCheckedChangeListener(this);
+
+        //Setting preferred gender
         String gender = preferences.getString("preferred","female");
+
         if(gender.equals("female"))
             genderPreferences.check(R.id.women_selected);
         else
             genderPreferences.check(R.id.men_selected);
-        genderPreferences.setOnCheckedChangeListener(this);
+
         return rootView;
     }
-
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId){
@@ -73,7 +87,6 @@ public class OptionsFragment extends Fragment implements RadioGroup.OnCheckedCha
                 try {
                     startActivity(myAppLinkToMarket);
                 } catch (ActivityNotFoundException e) {
-                    Utils.createSnackBar(getView(),"Activity not found");
                 }
                 break;
             case R.id.delete_account:
@@ -93,7 +106,6 @@ public class OptionsFragment extends Fragment implements RadioGroup.OnCheckedCha
                                 dialog.dismiss();
                             }
                         });
-                // Create the AlertDialog object and return it
                 Dialog alert = builder.create();
                 alert.show();
                 break;

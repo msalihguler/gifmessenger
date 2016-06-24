@@ -28,36 +28,56 @@ import java.util.List;
  */
 public class KeyboardFragment extends Fragment implements IRetrieveGIFs,View.OnClickListener {
 
+    //Variable declarations
     RecyclerView recyclerView;
     List<Gifs> gifs;
     KeyboardAdapter adapter;
     AskSavedGIFs savedgifs;
     ProgressBar progressBar;
     LinearLayout errorHolder;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.keyboard_fragment,null);
-        savedgifs = new AskSavedGIFs(this);
-        gifs = new ArrayList<>();
-        adapter = new KeyboardAdapter(gifs,getContext());
-        progressBar = (ProgressBar)rootView.findViewById(R.id.progress_keyboard);
-        errorHolder = (LinearLayout)rootView.findViewById(R.id.nogifs_layout);
-        errorHolder.setOnClickListener(this);
-        recyclerView = (RecyclerView)rootView.findViewById(R.id.keyboard_holder);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 2);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(adapter);
+        rootView=init(rootView);
         getGIFsFromServer();
         return rootView;
     }
-        public void getGIFsFromServer(){
-            if(errorHolder.getVisibility()==View.VISIBLE)
-                errorHolder.setVisibility(View.GONE);
-            if(progressBar.getVisibility()==View.GONE)
-                progressBar.setVisibility(View.VISIBLE);
-            savedgifs.retrieveGIFs(gifs);
-        }
+
+    public View init(View rootView){
+
+        //Variable initialization
+        progressBar = (ProgressBar)rootView.findViewById(R.id.progress_keyboard);
+        errorHolder = (LinearLayout)rootView.findViewById(R.id.nogifs_layout);
+        recyclerView = (RecyclerView)rootView.findViewById(R.id.keyboard_holder);
+
+        //Object initialization
+        savedgifs = new AskSavedGIFs(this);
+        adapter = new KeyboardAdapter(gifs,getContext());
+
+        //List initialization
+        gifs = new ArrayList<>();
+
+        //listeners
+        errorHolder.setOnClickListener(this);
+
+        //recyclerview specification
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(adapter);
+
+        return rootView;
+    }
+
+    public void getGIFsFromServer(){
+        if(errorHolder.getVisibility()==View.VISIBLE)
+            errorHolder.setVisibility(View.GONE);
+        if(progressBar.getVisibility()==View.GONE)
+            progressBar.setVisibility(View.VISIBLE);
+        savedgifs.retrieveGIFs(gifs);
+    }
+
     @Override
     public void retrieveGIFs(List<Gifs> gifsList) {
         gifs.clear();

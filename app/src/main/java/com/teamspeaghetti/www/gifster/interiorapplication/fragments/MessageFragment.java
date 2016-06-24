@@ -27,6 +27,8 @@ import java.util.List;
  * Created by Salih on 3.06.2016.
  */
 public class MessageFragment extends Fragment implements IRetrievePeople {
+
+    //Variable declaration
     RecyclerView chat_holder;
     ChatAdapter chatAdapter;
     ProgressBar progressBar;
@@ -34,19 +36,30 @@ public class MessageFragment extends Fragment implements IRetrievePeople {
     List<People> matches = new ArrayList<>();
     ChatProcesses chatInstance;
     LinearLayout nomatchesLayout;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_messages,null);
+        rootView = init(rootView);
+        getMatchesFromServer();
+        return rootView;
+    }
+    public View init(View rootView){
+        //Variable initialization
         chat_holder = (RecyclerView)rootView.findViewById(R.id.chat_holder);
         progressBar = (ProgressBar)rootView.findViewById(R.id.progressChat);
         nomatchesLayout = (LinearLayout)rootView.findViewById(R.id.nomatches_layotu);
+
+        //object initialization
         chatAdapter=new ChatAdapter(getContext(),matches);
         chatInstance = new ChatProcesses(MessageFragment.this,getContext());
+
+        //RecyclerView specifications
         layoutManager = new LinearLayoutManager(getContext());
         chat_holder.setLayoutManager(layoutManager);
         chat_holder.setAdapter(chatAdapter);
-        getMatchesFromServer();
+
         return rootView;
     }
     public void getMatchesFromServer(){
@@ -55,8 +68,7 @@ public class MessageFragment extends Fragment implements IRetrievePeople {
         chatInstance.getMatches();
     }
     @Override
-    public void getRetrievedPeople(List<People> peopleList) {
-    }
+    public void getRetrievedPeople(List<People> peopleList) {}
 
     @Override
     public void createList(People people) {

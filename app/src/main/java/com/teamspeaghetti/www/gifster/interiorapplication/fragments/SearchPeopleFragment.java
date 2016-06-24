@@ -29,13 +29,15 @@ import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrievePeople;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.UserProcesses;
+import com.teamspeaghetti.www.gifster.interiorapplication.receiver.ConnectivityReceiver;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Salih on 21.05.2016.
  */
-public class SearchPeopleFragment extends Fragment implements View.OnClickListener,IRetrievePeople,View.OnTouchListener {
+public class SearchPeopleFragment extends Fragment implements View.OnClickListener,IRetrievePeople,View.OnTouchListener,ConnectivityReceiver.ConnectivityReceiverListener {
 
     //Variable declarations
     ImageView thumbup,thumbdown,profile_pic;
@@ -141,6 +143,13 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         String gender = null;
         try {
             gender = getActivity().getIntent().getExtras().getString("gender");
+            if(preferences.getString("preferred","not selected").equals("not selected")){
+                if(gender.equals("male"))
+                    preferences.edit().putString("preferred","female").commit();
+                else if(gender.equals("female"))
+                    preferences.edit().putString("preferred","male").commit();
+            }
+
         }catch (Exception e){
             gender = "null";
         }
@@ -165,7 +174,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     @Override
     public void createList(People people) {
             if(people.getName()!=null) {
-                String gender = preferences.getString("preferred", "female");
+                String gender = preferences.getString("preferred", "not selected");
                 if (people.getGender().equals(gender)){
                     name.setText(people.getFirst_name());
                 Glide.with(getContext()).load(people.getProfile_url()).centerCrop()
@@ -235,5 +244,11 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
             }
         }
         return false;
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        registerUserToGIFsterServer();
+        getPeopleFromServer();
     }
 }

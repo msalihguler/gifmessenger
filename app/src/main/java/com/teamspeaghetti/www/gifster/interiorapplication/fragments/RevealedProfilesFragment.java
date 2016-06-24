@@ -23,6 +23,7 @@ import java.util.List;
  * Created by Salih on 16.06.2016.
  */
 public class RevealedProfilesFragment extends Fragment {
+
     //Variable declaration
     RecyclerView revealed_list;
     ProgressBar progressBar;

@@ -131,7 +131,7 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         conversation.setAdapter(conversationAdapter);
 
         //Defining filter for new message
-        filter=new IntentFilter("com.teamspaghetti.gifster.newmessage");
+        filter=new IntentFilter(getResources().getString(R.string.filter_string));
         receiver = new MessageReceiver();
 
         //object creations

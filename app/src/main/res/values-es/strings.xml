@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about">Ajustes</string>
+    <string name="application_definiton">Habla con desconocidos con GIFs</string>
+    <string name="deletemessage">¿Está seguro que desea borrar este gif?</string>
+    <string name="deleteaccount">¡Elimina esta cuenta!</string>
+    <string name="deletetitle">Borrar</string>
+    <string name="dialog_message">¿Está seguro que quiere eliminar esta cuenta? \n\nToda la información se eliminará del sistema.</string>
+    <string name="dismiss">Descartar</string>
+    <string name="encourege_definiton">Muestra tu lado más increíbles y convence \n a tu compañero/a para conseguir su perfil de Facebook.</string>
+    <string name="facebook_definition">¡Sin registro! ¡Sólamente inicie sesión con su cuenta de Facebook!</string>
+    <string name="gender">Sexo preferido</string>
+    <string name="gifs">Búsqueda de GIF</string>
+    <string name="information">GIFster es un producto de Team Spaghetti.</string>
+    <string name="loadmore">¡Carga más GIFs!</string>
+    <string name="login">¡Inicia sesión! </string>
+    <string name="logut">Cerrar sesión</string>
+    <string name="men">Hombres</string>
+    <string name="message">Mensajes</string>
+    <string name="no">NO</string>
+    <string name="nogif">GIF no encontrado.\n Nos pondremos con ello.</string>
+    <string name="nogifs">No tenemos nada para mostrar.\n Pero puedes buscarlo abajo.</string>
+    <string name="nokeyboard">Tu GIFboard está vacío. \nHaga click aquí para añadir alguno.</string>
+    <string name="nomatches">Sin emparejamientos todavía.\n¡Sigue intentando!</string>
+    <string name="noonefound">Ninguna nueva persona.\n Pero puedes intentarlo de nuevo pronto.</string>
+    <string name="norevealed">Nadie ha hecho público su perfil aún. \n¡Sigue intentando!</string>
+    <string name="notifications">NOTIFICASIONES</string>
+    <string name="profile">Perfil</string>
+    <string name="rateapplication">¡Califica esta aplicación!</string>
+    <string name="ready_definition">¡Todo listo! ¡Inicia sesión ya!</string>
+    <string name="reveal_message"></string>
+    <string name="reveals">PERFILES</string>
+    <string name="searchatgiphy">Busca en GIPHY</string>
+    <string name="searchgif">Buscando GIFs…</string>
+    <string name="searchpeople">Buscar Personas</string>
+    <string name="tofavourites">Añadir a la GIFboard</string>
+    <string name="women">Mujeres</string>
+    <string name="yes">SÍ</string>
+    <string name="gifboard">GIFBOARD</string>
+    <string name="login_cancel">Entrada cancelado</string>
+    <string name="login_error">Error de inicio de sesión</string>
+</resources>

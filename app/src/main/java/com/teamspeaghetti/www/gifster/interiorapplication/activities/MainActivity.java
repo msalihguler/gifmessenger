@@ -2,8 +2,6 @@ package com.teamspeaghetti.www.gifster.interiorapplication.activities;
 
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,37 +13,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.facebook.AccessToken;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.CircleTransform;
 import com.teamspeaghetti.www.gifster.R;
-import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.GPSTracker;
+import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.MainApplication;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.GIFFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.MessageFragment;
+import com.teamspeaghetti.www.gifster.interiorapplication.fragments.NetworkErrorPageFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.OptionsFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.ProfileFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.SearchPeopleFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.INotifyActivity;
-import com.teamspeaghetti.www.gifster.interiorapplication.presenters.UserProcesses;
+import com.teamspeaghetti.www.gifster.interiorapplication.receiver.ConnectivityReceiver;
 import com.teamspeaghetti.www.gifster.userinteractions.activities.WelcomeActivity;
-import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IMockRetrievedInformation;
-import com.teamspeaghetti.www.gifster.userinteractions.presenters.UserDetailRetriever;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
-
-
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,IMockRetrievedInformation,INotifyActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,INotifyActivity,ConnectivityReceiver.ConnectivityReceiverListener {
 
     //Variable declarations
-    UserDetailRetriever detailRetriever;
     ImageView profile_picture;
     TextView details;
     JSONObject userInfo;
@@ -59,8 +47,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-        navigationView.setCheckedItem(R.id.nav_searchpeople);
-        Utils.startFragment(new SearchPeopleFragment(),getSupportFragmentManager());
+        if(ConnectivityReceiver.isConnected()) {
+            navigationView.setCheckedItem(R.id.nav_searchpeople);
+            Utils.startFragment(new SearchPeopleFragment(), getSupportFragmentManager());
+        }else{
+            Utils.startFragment(new NetworkErrorPageFragment(),getSupportFragmentManager());
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MainApplication.getInstance().setConnectivityListener(this);
     }
 
     public void initViews(){
@@ -74,9 +71,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         profile_picture=(ImageView)header_holder.findViewById(R.id.profile_picture);
         details=(TextView)header_holder.findViewById(R.id.name);
 
-        //Object creation and calling methods
-        detailRetriever= new UserDetailRetriever(this);
-        detailRetriever.retrieveInformation();
+        //Fill header of navigation view
+        details.setText(Profile.getCurrentProfile().getFirstName());
+        String imageUrl = "https://graph.facebook.com/"+Profile.getCurrentProfile().getId()+"/picture?type=large";
+        Picasso.with(this).load(imageUrl).transform(new CircleTransform()).into(profile_picture);
 
         //Toolbar specifications
         setSupportActionBar(toolbar);
@@ -114,18 +112,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id){
             case R.id.nav_searchpeople:
+                if(ConnectivityReceiver.isConnected())
                 Utils.startFragment(new SearchPeopleFragment(),getSupportFragmentManager());
                 break;
             case R.id.nav_profile:
+                if(ConnectivityReceiver.isConnected())
                 Utils.startFragment(new ProfileFragment(),getSupportFragmentManager());
                 break;
             case R.id.nav_messages:
+                if(ConnectivityReceiver.isConnected())
                 Utils.startFragment(new MessageFragment(),getSupportFragmentManager());
                 break;
             case R.id.nav_searchgif:
+                if(ConnectivityReceiver.isConnected())
                 Utils.startFragment(new GIFFragment(),getSupportFragmentManager());
                 break;
             case R.id.nav_about:
+                if(ConnectivityReceiver.isConnected())
                 Utils.startFragment(new OptionsFragment(),getSupportFragmentManager());
                 break;
             case R.id.nav_logout:
@@ -141,20 +144,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    @Override
-    public void userInformation(JSONObject retrievedInformation) {
-        userInfo = retrievedInformation;
-        try {
-            details.setText(userInfo.getString("first_name"));
-            String imageUrl = userInfo.getJSONObject("picture").getJSONObject("data").getString("url");
-            Picasso.with(this).load(imageUrl).transform(new CircleTransform()).into(profile_picture);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void notifyActivitySelected(int pos) {
         navigationView.getMenu().getItem(pos).setChecked(true);
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if(isConnected){
+            navigationView.setCheckedItem(R.id.nav_searchpeople);
+            Utils.startFragment(new SearchPeopleFragment(), getSupportFragmentManager());
+        }
+        if(!isConnected){
+            int size = navigationView.getMenu().size();
+            for (int i = 0; i < size; i++) {
+                navigationView.getMenu().getItem(i).setChecked(false);
+            }
+            Utils.startFragment(new NetworkErrorPageFragment(), getSupportFragmentManager());
+        }
     }
 }

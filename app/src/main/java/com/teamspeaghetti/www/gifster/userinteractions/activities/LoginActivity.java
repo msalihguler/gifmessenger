@@ -13,6 +13,8 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.github.paolorotolo.appintro.AppIntro;
@@ -61,6 +63,14 @@ public class LoginActivity extends AppIntro {
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                ProfileTracker profileTracker = new ProfileTracker() {
+                    @Override
+                    protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                        this.stopTracking();
+                        Profile.setCurrentProfile(currentProfile);
+                    }
+                };
+                profileTracker.startTracking();
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
@@ -84,12 +94,16 @@ public class LoginActivity extends AppIntro {
             }
             @Override
             public void onCancel() {
-                Snackbar snackbar = Snackbar.make(pager,"Login Cancelled",Snackbar.LENGTH_SHORT);
+                Snackbar snackbar = Snackbar.make(pager,getResources().getString(R.string.login_cancel),Snackbar.LENGTH_SHORT);
                 snackbar.show();
             }
             @Override
             public void onError(FacebookException error) {
-                Snackbar snackbar = Snackbar.make(pager,"Login Error: "+error,Snackbar.LENGTH_SHORT);
+                Snackbar snackbar;
+                if(error.getMessage().equals("net::ERR_INTERNET_DISCONNECTED"))
+                snackbar = Snackbar.make(pager,getResources().getString(R.string.network_error_message),Snackbar.LENGTH_SHORT);
+                else
+                snackbar = Snackbar.make(pager,getResources().getString(R.string.login_error)+error,Snackbar.LENGTH_SHORT);
                 snackbar.show();
                 error.printStackTrace();
             }

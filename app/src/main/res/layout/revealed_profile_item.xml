@@ -26,7 +26,8 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/revealed_profile_name"
                 android:layout_weight="1"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@color/colorPrimary" />
 
 
         </LinearLayout>

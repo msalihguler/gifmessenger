@@ -104,19 +104,7 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
         Call<ResponseBody> call = requestInterface.sendLikeStatus(m_id,o_id,type);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response.body().string());
-                    Boolean match = jsonObject.getBoolean("match");
-                    if (match){
-                        Log.e("match","yes");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {}
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
@@ -130,10 +118,8 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
         retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
         requestInterface =retrofit.create(IRequestHolder.class);
         String name = Profile.getCurrentProfile().getName();
-        String url = Profile.getCurrentProfile().getLinkUri().toString();
-        String pic_link = Profile.getCurrentProfile().getProfilePictureUri(150,150).toString();
         String m_id = Profile.getCurrentProfile().getId();
-        Call<ResponseBody> call = requestInterface.revealProfile(name,url,pic_link,m_id,id);
+        Call<ResponseBody> call = requestInterface.revealProfile(name,m_id,id);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

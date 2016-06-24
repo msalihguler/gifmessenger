@@ -36,5 +36,9 @@
     <string name="dialog_message">Hesabınızı silmek istediğinize emin misiniz?\n\nSistemdeki tüm bilgileriniz silinecektir.</string>
     <string name="reveal_message">Facebook profilinizi paylaşmak istediğinize emin misiniz?</string>
     <string name="reveals">PROFILLER</string>
-
+    <string name="network_error_message">İnternet bağlantınız yok!\nLütfen bağlantınızı kontrol edin.</string>
+    <string name="login_error">Giriş Hatası: </string>
+    <string name="login_cancel">Giriş yapmaktan vazgeçildi.</string>
+    <string name="deletemessage">Bu GIF\'i silmek istediğinize emin misiniz?</string>
+    <string name="deletetitle">Sil</string>
 </resources>
