@@ -1,7 +1,9 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -30,6 +32,8 @@ import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrievePe
 import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.UserProcesses;
 import com.teamspeaghetti.www.gifster.interiorapplication.receiver.ConnectivityReceiver;
+import com.wooplr.spotlight.SpotlightView;
+import com.wooplr.spotlight.utils.SpotlightListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,15 +92,14 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
 
         //rotate thumb image and change it's color
         Drawable drawableUp = getActivity().getResources().getDrawable(R.drawable.thumbup);
-        Drawable drawableDown = getActivity().getResources().getDrawable(R.drawable.thumbup);
+        Drawable drawableDown = getActivity().getResources().getDrawable(R.drawable.thumbdown);
         drawableUp.setColorFilter(new
                 PorterDuffColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY));
         drawableDown.setColorFilter(new
                 PorterDuffColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY));
         thumbup.setImageDrawable(drawableUp);
         thumbdown.setImageDrawable(drawableDown);
-        thumbdown.setRotationX(180);
-        thumbdown.setRotationY(180);
+
 
         return rootView;
     }
@@ -115,30 +118,81 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         Log.e("count",String.valueOf(lastPosition));
         switch (v.getId()){
             case R.id.thumbsup:
-                if(lastPosition>=peoples.size()-1) {
-                    holder.startAnimation(createAnimationForLastElement("like"));
-                    lastPosition=0;
-                    holder.setVisibility(View.GONE);
-                    errorpage.setVisibility(View.VISIBLE);
+                if(ConnectivityReceiver.isConnected()) {
+                    if (lastPosition >= peoples.size() - 1) {
+                        holder.startAnimation(createAnimationForLastElement("like"));
+                        lastPosition = 0;
+                        holder.setVisibility(View.GONE);
+                        errorpage.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.startAnimation(createAnimationForTopElements("like"));
+                        user_instance.getInformation(peoples.get(lastPosition).getId(), peoples.get(lastPosition).getGender());
+                    }
                 }else{
-                    holder.startAnimation(createAnimationForTopElements("like"));
-                    user_instance.getInformation(peoples.get(lastPosition).getId(),peoples.get(lastPosition).getGender());
+                    Utils.startFragment(new NetworkErrorPageFragment(),getFragmentManager());
                 }
                 break;
             case R.id.thumbsdown:
-                if(lastPosition>=peoples.size()-1) {
-                    holder.startAnimation(createAnimationForLastElement("dislike"));
-                    lastPosition=0;
-                    holder.setVisibility(View.GONE);
-                    errorpage.setVisibility(View.VISIBLE);
-                }else {
-                    holder.startAnimation(createAnimationForTopElements("dislike"));
-                    user_instance.getInformation(peoples.get(lastPosition).getId(),peoples.get(lastPosition).getGender());
+                if(ConnectivityReceiver.isConnected()) {
+                    if (lastPosition >= peoples.size() - 1) {
+                        holder.startAnimation(createAnimationForLastElement("dislike"));
+                        lastPosition = 0;
+                        holder.setVisibility(View.GONE);
+                        errorpage.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.startAnimation(createAnimationForTopElements("dislike"));
+                        user_instance.getInformation(peoples.get(lastPosition).getId(), peoples.get(lastPosition).getGender());
+                    }
+                }else{
+                    Utils.startFragment(new NetworkErrorPageFragment(),getFragmentManager());
                 }
                 break;
         }
     }
-
+    public void createSpotLight(){
+        new SpotlightView.Builder((Activity) getContext())
+                .introAnimationDuration(400)
+                .enableRevalAnimation(true)
+                .performClick(true)
+                .fadeinTextDuration(400)
+                .headingTvColor(getContext().getResources().getColor(R.color.white))
+                .headingTvSize(32)
+                .headingTvText(getContext().getResources().getString(R.string.searchpeopletitle))
+                .subHeadingTvColor(Color.parseColor("#ffffff"))
+                .subHeadingTvSize(16)
+                .subHeadingTvText(getContext().getResources().getString(R.string.thumbupexplanation))
+                .maskColor(getContext().getResources().getColor(R.color.bgspotlight))
+                .target(thumbup)
+                .lineAnimDuration(400)
+                .lineAndArcColor(getContext().getResources().getColor(R.color.colorAccent))
+                .dismissOnTouch(true)
+                .enableDismissAfterShown(true)
+                .usageId(getContext().getResources().getString(R.string.thumbupkey)).setListener(new SpotlightListener() {
+                @Override
+                public void onUserClicked(String s) {
+                    new SpotlightView.Builder((Activity) getContext())
+                            .introAnimationDuration(400)
+                            .enableRevalAnimation(true)
+                            .performClick(true)
+                            .fadeinTextDuration(400)
+                            .headingTvColor(getContext().getResources().getColor(R.color.white))
+                            .headingTvSize(32)
+                            .headingTvText(getContext().getResources().getString(R.string.searchpeopletitle))
+                            .subHeadingTvColor(Color.parseColor("#ffffff"))
+                            .subHeadingTvSize(16)
+                            .subHeadingTvText(getContext().getResources().getString(R.string.thumbdownexplanation))
+                            .maskColor(getContext().getResources().getColor(R.color.bgspotlight))
+                            .target(thumbdown)
+                            .lineAnimDuration(400)
+                            .lineAndArcColor(getContext().getResources().getColor(R.color.colorAccent))
+                            .dismissOnTouch(true)
+                            .enableDismissAfterShown(true)
+                            .usageId(getContext().getResources().getString(R.string.thumbdownkey))
+                            .show();
+                }
+                })//UNIQUE ID
+                .show();
+    }
     private void registerUserToGIFsterServer() {
         String gender = null;
         try {
@@ -185,6 +239,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                 if (pbar.isShown()) {
                     pbar.setVisibility(View.GONE);
                 }
+                    createSpotLight();
                 }else{
                     lastPosition++;
                     if(lastPosition<peoples.size()){

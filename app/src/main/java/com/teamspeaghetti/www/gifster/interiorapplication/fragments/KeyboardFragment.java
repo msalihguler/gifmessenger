@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.activities.MainActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.adapter.KeyboardAdapter;
@@ -19,7 +18,6 @@ import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRetrieveGIFs;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.Gifs;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.AskSavedGIFs;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,12 +50,12 @@ public class KeyboardFragment extends Fragment implements IRetrieveGIFs,View.OnC
         errorHolder = (LinearLayout)rootView.findViewById(R.id.nogifs_layout);
         recyclerView = (RecyclerView)rootView.findViewById(R.id.keyboard_holder);
 
+        //List initialization
+        gifs = new ArrayList<>();
+
         //Object initialization
         savedgifs = new AskSavedGIFs(this);
         adapter = new KeyboardAdapter(gifs,getContext());
-
-        //List initialization
-        gifs = new ArrayList<>();
 
         //listeners
         errorHolder.setOnClickListener(this);
@@ -83,6 +81,7 @@ public class KeyboardFragment extends Fragment implements IRetrieveGIFs,View.OnC
         gifs.clear();
         gifs.addAll(gifsList);
         if(gifs.size()>0) {
+            Log.e("url",gifs.get(0).getUrl());
             progressBar.setVisibility(View.GONE);
             adapter.notifyDataSetChanged();
             recyclerView.setVisibility(View.VISIBLE);

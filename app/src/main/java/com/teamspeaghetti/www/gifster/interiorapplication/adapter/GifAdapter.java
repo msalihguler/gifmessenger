@@ -74,7 +74,7 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
     }
 
     @Override
-    public void onBindViewHolder(final VHolder holder, int position) {
+    public void onBindViewHolder(final VHolder holder, final int position) {
         try {
             if(position==gifsList.size()){
                 holder.loadmore.setVisibility(View.VISIBLE);
@@ -94,6 +94,9 @@ public class GifAdapter extends RecyclerView.Adapter<GifAdapter.VHolder> {
                     @Override
                     public boolean onResourceReady(GifDrawable resource, Uri model, Target<GifDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                         holder.loading.setVisibility(View.GONE);
+                        if(position==0)
+                            Utils.createShowcase(_context,holder.gif_single,"GIF",_context.getResources().getString(R.string.searchgifexplanation)
+                                    ,_context.getResources().getString(R.string.searchgifkey));
                         return false;
                     }
                 })

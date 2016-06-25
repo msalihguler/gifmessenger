@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF5722</color>
     <color name="white">#ffffff</color>
     <color name="whitefaded">#80FFFFFF</color>
+    <color name="bgspotlight">#dc303f9f</color>
 </resources>

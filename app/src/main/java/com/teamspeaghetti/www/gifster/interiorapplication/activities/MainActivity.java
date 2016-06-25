@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.CircleTransform;
@@ -71,9 +72,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         details=(TextView)header_holder.findViewById(R.id.name);
 
         //Fill header of navigation view
-        String imageUrl = "https://graph.facebook.com/"+Profile.getCurrentProfile().getId()+"/picture?type=large";
-        Picasso.with(this).load(imageUrl).transform(new CircleTransform()).into(profile_picture);
-        details.setText(Profile.getCurrentProfile().getFirstName());
+        try {
+            String imageUrl = "https://graph.facebook.com/" + Profile.getCurrentProfile().getId() + "/picture?type=large";
+            Picasso.with(this).load(imageUrl).transform(new CircleTransform()).into(profile_picture);
+            details.setText(Profile.getCurrentProfile().getFirstName());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         //Toolbar specifications
         setSupportActionBar(toolbar);
@@ -157,7 +162,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
+    ProfileTracker tracker = new ProfileTracker() {
+        @Override
+        protected void onCurrentProfileChanged(Profile profile, Profile profile1) {
+            if(profile1!=null) {
+                String imageUrl = "https://graph.facebook.com/" + profile1.getId() + "/picture?type=large";
+                Picasso.with(MainActivity.this).load(imageUrl).transform(new CircleTransform()).into(profile_picture);
+                details.setText(profile1.getFirstName());
+            }
+        }
+    };
 
     @Override
     public void notifyActivitySelected(int pos) {
@@ -174,10 +188,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onNetworkConnectionChanged(boolean isConnected) {
         if(isConnected){
             navigationView.setCheckedItem(R.id.nav_searchpeople);
-            Utils.startFragment(new SearchPeopleFragment(), getSupportFragmentManager());
+            try {
+                Utils.startFragment(new SearchPeopleFragment(), getSupportFragmentManager());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         if(!isConnected){
-            openNetworkError();
+            try {
+                openNetworkError();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -16,10 +16,11 @@ import com.teamspeaghetti.www.gifster.interiorapplication.fragments.RevealedProf
 public class ProfileViewPagerAdapter extends FragmentPagerAdapter {
     int count=0;
     Context _context;
-    public ProfileViewPagerAdapter(FragmentManager fm,int fragment_count,Context context) {
+    public ProfileViewPagerAdapter(FragmentManager fm, int fragment_count, Context context) {
         super(fm);
         this.count=fragment_count;
         this._context=context;
+
     }
     @Override
     public Fragment getItem(int position) {

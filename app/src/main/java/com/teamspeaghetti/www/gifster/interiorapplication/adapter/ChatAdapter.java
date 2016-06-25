@@ -1,9 +1,11 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.adapter;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.Image;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -23,8 +25,10 @@ import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.activities.ChatActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.activities.MainActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.CircleTransform;
+import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.UserProcesses;
+import com.wooplr.spotlight.SpotlightView;
 
 import java.util.List;
 
@@ -103,6 +107,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.VHolder> {
     public void onBindViewHolder(ChatAdapter.VHolder holder, int position) {
         holder.name.setText(_matches.get(position).getFirst_name());
         Picasso.with(_context).load(_matches.get(position).getProfile_url()).resize(75,75).transform(new CircleTransform()).into(holder.profile_pic);
+        if(position==0){
+            Utils.createShowcase(_context,holder.reveal_profile,_context.getResources().getString(R.string.messagelisttitle)
+                    ,_context.getResources().getString(R.string.messagelistexplanation),_context.getResources().getString(R.string.revealkey));
+        }
     }
 
     @Override

@@ -35,10 +35,26 @@
     <string name="nogifs">Gösterecek GIF yok.\nAma aşağıdan arayabilirsin.</string>
     <string name="dialog_message">Hesabınızı silmek istediğinize emin misiniz?\n\nSistemdeki tüm bilgileriniz silinecektir.</string>
     <string name="reveal_message">Facebook profilinizi paylaşmak istediğinize emin misiniz?</string>
-    <string name="reveals">PROFILLER</string>
+    <string name="reveals">Profiller</string>
     <string name="network_error_message">İnternet bağlantınız yok!\nLütfen bağlantınızı kontrol edin.</string>
     <string name="login_error">Giriş Hatası: </string>
     <string name="login_cancel">Giriş yapmaktan vazgeçildi.</string>
     <string name="deletemessage">Bu GIF\'i silmek istediğinize emin misiniz?</string>
     <string name="deletetitle">Sil</string>
+
+    <string name="searchpeopletitle">Kişi Ara</string>
+    <string name="thumbupexplanation">Bu tuşu\nKarşındakini \"Beğenmek\" için kullan.</string>
+    <string name="thumbdownexplanation">Bu tuşu başka profillere\nGöz atmak için kullan</string>
+
+
+    <string name="profiletitle">Profil Sayfası</string>
+    <string name="profilesexplanation">Buranın altında sizinle paylaşılmış profilleri görebilirsiniz.</string>
+    <string name="gifboardexplanation">Buranın altında ise kaydettiğiniz GIF'leri bulabilirsiniz</string>
+
+    <string name="messagelisttitle">Profilini Paylaş</string>
+    <string name="messagelistexplanation">Bu tuşa basarak profilinizi karşı tarafla paylaşabilirsiniz.</string>
+
+    <string name="searchgifexplanation">Buraya basarak GIFBOARD'unuza GIF ekleyebilirsiniz.</string>
+
+    <string name="profilecardexplanation">Bu karta basarak paylaşılmış profili açabilirsiniz.</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.teamspeaghetti.www.gifster.interiorapplication.fragments;
 
+import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
