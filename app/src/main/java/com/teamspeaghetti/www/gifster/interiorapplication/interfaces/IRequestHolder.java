@@ -27,7 +27,8 @@ public interface IRequestHolder {
     Call<ResponseBody> getReveals(@Query("id")String id);
     @GET("/deleteprofile")
     Call<ResponseBody> deleteprofile(@Query("id")String id);
-
+    @GET("/deletetoken")
+    Call<ResponseBody> deletetoken(@Query("id")String id);
     /*
     *       GIF REQUESTS
     * */

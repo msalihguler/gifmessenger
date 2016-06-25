@@ -1,6 +1,9 @@
 package com.teamspeaghetti.www.gifster.userinteractions.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -45,6 +48,9 @@ public class LoginActivity extends AppIntro {
     public void init(@Nullable Bundle savedInstanceState) {
         callbackManager=CallbackManager.Factory.create();
         //Adding fragments for introduction
+        Drawable drawableUp = getResources().getDrawable(R.drawable.thumbup);
+        drawableUp.setColorFilter(new
+                PorterDuffColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.MULTIPLY));
         addSlide(AppIntroFragment.newInstance("",getResources().getString(R.string.application_definiton),R.drawable.foto,getResources().getColor(R.color.colorPrimaryDark)));
         addSlide(AppIntroFragment.newInstance("",getResources().getString(R.string.encourege_definiton),R.drawable.chat,getResources().getColor(R.color.colorPrimaryDark)));
         addSlide(AppIntroFragment.newInstance("",getResources().getString(R.string.facebook_definition),R.drawable.facebook,getResources().getColor(R.color.colorPrimaryDark)));

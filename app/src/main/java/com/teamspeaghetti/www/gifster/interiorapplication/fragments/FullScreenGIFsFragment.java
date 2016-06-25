@@ -40,6 +40,7 @@ public class FullScreenGIFsFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.keyboard_fullscreen, container, false);
+        onSaveInstanceState(savedInstanceState);
         viewpager = (ViewPager)v.findViewById(R.id.fullgifs);
         delete = (ImageView)v.findViewById(R.id.delete);
         send = (ImageView)v.findViewById(R.id.send);

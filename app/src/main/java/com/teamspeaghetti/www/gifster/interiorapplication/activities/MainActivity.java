@@ -29,6 +29,7 @@ import com.teamspeaghetti.www.gifster.interiorapplication.fragments.OptionsFragm
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.ProfileFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.fragments.SearchPeopleFragment;
 import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.INotifyActivity;
+import com.teamspeaghetti.www.gifster.interiorapplication.presenters.UserProcesses;
 import com.teamspeaghetti.www.gifster.interiorapplication.receiver.ConnectivityReceiver;
 import com.teamspeaghetti.www.gifster.userinteractions.activities.WelcomeActivity;
 import org.json.JSONObject;
@@ -154,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     openNetworkError();
                 break;
             case R.id.nav_logout:
+                new UserProcesses(this).clearTokenFromServer(Profile.getCurrentProfile().getId());
                 LoginManager.getInstance().logOut();
                 this.getSharedPreferences("settings", Context.MODE_PRIVATE).edit().clear().commit();
                 Intent intent = new Intent(this,WelcomeActivity.class);

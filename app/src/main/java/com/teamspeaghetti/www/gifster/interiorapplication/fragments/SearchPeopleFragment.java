@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
+import com.facebook.Profile;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.GPSTracker;
@@ -58,6 +59,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.searchpeople,null);
+        onSaveInstanceState(savedInstanceState);
         user_instance = new UserProcesses(getContext(),this);
         rootView = init(rootView);
         registerUserToGIFsterServer();
@@ -110,7 +112,8 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         if(errorpage.getVisibility()==View.VISIBLE)
             errorpage.setVisibility(View.GONE);
         pbar.setVisibility(View.VISIBLE);
-        user_instance.getPeople(AccessToken.getCurrentAccessToken().getUserId());
+        if(Profile.getCurrentProfile()!=null)
+        user_instance.getPeople(Profile.getCurrentProfile().getId());
     }
 
     @Override
@@ -208,9 +211,11 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         }catch (Exception e){
             gender = "null";
         }
-        user_instance.sendRequest(AccessToken.getCurrentAccessToken().getUserId(),
-                String.valueOf(new GPSTracker(getContext()).getLatitude()),
-                String.valueOf(new GPSTracker(getContext()).getLongitude()), FirebaseInstanceId.getInstance().getToken(),gender);
+        if(Profile.getCurrentProfile()!=null) {
+            user_instance.sendRequest(Profile.getCurrentProfile().getId(),
+                    String.valueOf(new GPSTracker(getContext()).getLatitude()),
+                    String.valueOf(new GPSTracker(getContext()).getLongitude()), FirebaseInstanceId.getInstance().getToken(), gender);
+        }
     }
 
     @Override

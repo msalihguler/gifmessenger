@@ -220,4 +220,20 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
             request.executeAsync();
         }
     }
+    public void clearTokenFromServer(String id){
+        retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
+        requestInterface =retrofit.create(IRequestHolder.class);
+        Call<ResponseBody> call = requestInterface.deletetoken(id);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
 }
