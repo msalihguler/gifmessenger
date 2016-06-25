@@ -38,8 +38,7 @@ public class WelcomeActivity extends AppCompatActivity{
     }
         //Method to check if user loggedin
     public boolean isLoggedIn() {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        return accessToken != null;
+        return getSharedPreferences("settings",MODE_PRIVATE).getBoolean("loggedin",false);
     }
 
 

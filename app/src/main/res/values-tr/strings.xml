@@ -49,12 +49,12 @@
 
     <string name="profiletitle">Profil Sayfası</string>
     <string name="profilesexplanation">Buranın altında sizinle paylaşılmış profilleri görebilirsiniz.</string>
-    <string name="gifboardexplanation">Buranın altında ise kaydettiğiniz GIF'leri bulabilirsiniz</string>
+    <string name="gifboardexplanation">Buranın altında ise kaydettiğiniz GIF\'leri bulabilirsiniz</string>
 
     <string name="messagelisttitle">Profilini Paylaş</string>
     <string name="messagelistexplanation">Bu tuşa basarak profilinizi karşı tarafla paylaşabilirsiniz.</string>
 
-    <string name="searchgifexplanation">Buraya basarak GIFBOARD'unuza GIF ekleyebilirsiniz.</string>
+    <string name="searchgifexplanation">Buraya basarak GIFBOARD\'unuza GIF ekleyebilirsiniz.</string>
 
     <string name="profilecardexplanation">Bu karta basarak paylaşılmış profili açabilirsiniz.</string>
 </resources>

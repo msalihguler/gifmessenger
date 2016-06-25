@@ -2,6 +2,7 @@ package com.teamspeaghetti.www.gifster.interiorapplication.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar;
     DrawerLayout drawer;
     NavigationView navigationView;
-
+    SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         header_holder = navigationView.getHeaderView(0);
         profile_picture=(ImageView)header_holder.findViewById(R.id.profile_picture);
         details=(TextView)header_holder.findViewById(R.id.name);
+
+        //preferences initialization
+        preferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
 
         //Fill header of navigation view
         try {

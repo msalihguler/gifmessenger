@@ -63,6 +63,7 @@ public class LoginActivity extends AppIntro {
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                getSharedPreferences("settings",MODE_PRIVATE).edit().putBoolean("loggedin",true).commit();
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
