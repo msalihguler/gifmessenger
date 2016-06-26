@@ -1,17 +1,17 @@
 <resources>
-    <string name="app_name">GIFster</string>
-    <string name="facebook_app_id">1742342752707809</string>
-    <string name="giphy_key">dc6zaTOxFJmzC</string>
+    <string name="app_name" translatable="false">GIFster</string>
+    <string name="facebook_app_id" translatable="false">1742342752707809</string>
+    <string name="giphy_key" translatable="false">n3eueCStupKOQ</string>
     <string name="application_definiton">Talk to strangers with GIFs.</string>
     <string name="encourege_definiton">Show your awesome side and convince your mate to get \n his/her Facebook Profile.</string>
     <string name="facebook_definition">No Registration! Just login with your Facebook account!</string>
     <string name="ready_definition">All set!\n Login now!</string>
     <string name="login">Log In!</string>
-    <string name="navigation_drawer_open">open</string>
-    <string name="navigation_drawer_close">close</string>
+    <string name="navigation_drawer_open" translatable="false">open</string>
+    <string name="navigation_drawer_close" translatable="false">close</string>
 
-    <string name="giphyurl">http://api.giphy.com</string>
-    <string name="serverurl">http://gifmessenger.herokuapp.com</string>
+    <string name="giphyurl" translatable="false">http://api.giphy.com</string>
+    <string name="serverurl" translatable="false">http://gifmessenger.herokuapp.com</string>
     <string name="deletetitle">Delete</string>
     <string name="deletemessage">Are you sure you want to delete this gif?</string>
     <string name="yes">YES</string>
@@ -49,27 +49,27 @@
     <string name="network_error_message">No Internet Connection!\nPlease check your internet connectivity.</string>
     <string name="login_error">Login Error: </string>
     <string name="login_cancel">Login Cancelled.</string>
-    <string name="filter_string">com.teamspaghetti.gifster.newmessage</string>
+    <string name="filter_string" translatable="false">com.teamspaghetti.gifster.newmessage</string>
 
     <string name="searchpeopletitle">Search People</string>
     <string name="thumbupexplanation">Use this button to\nGive\"Thumbs Up\" to this person.</string>
     <string name="thumbdownexplanation">Use this Button to\nContinue with other candidates.</string>
-    <string name="thumbupkey">thumbup</string>
-    <string name="thumbdownkey">thumbdown</string>
+    <string name="thumbupkey" translatable="false">thumbup</string>
+    <string name="thumbdownkey" translatable="false">thumbdown</string>
 
     <string name="profiletitle">Profile Page</string>
     <string name="profilesexplanation">Under this tab you can see Revealed Profiles from other users</string>
     <string name="gifboardexplanation">Under this tab you may find gifs you saved</string>
-    <string name="profilekey">profile</string>
-    <string name="gifboardkey">gifboard</string>
+    <string name="profilekey" translatable="false">profile</string>
+    <string name="gifboardkey" translatable="false">gifboard</string>
 
     <string name="messagelisttitle">Reveal Profile</string>
     <string name="messagelistexplanation">You can reveal your profile with this button.</string>
-    <string name="revealkey">revealprofile</string>
+    <string name="revealkey" translatable="false">revealprofile</string>
 
     <string name="searchgifexplanation">Click here to add GIF to GIFBOARD.</string>
-    <string name="searchgifkey">gifs</string>
+    <string name="searchgifkey" translatable="false">gifs</string>
 
     <string name="profilecardexplanation">Click this card to open profile of your match.</string>
-    <string name="profilecardkey">profilecard</string>
+    <string name="profilecardkey" translatable="false">profilecard</string>
 </resources>

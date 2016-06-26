@@ -224,8 +224,9 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         @Override
         public void onReceive(Context context, Intent intent) {
             try {
+                chatProcesses.sendSeenStatus(otherID);
                 earlyConversations.add(new JSONObject(intent.getExtras().getString("jsonObject")));
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             conversationAdapter.notifyDataSetChanged();

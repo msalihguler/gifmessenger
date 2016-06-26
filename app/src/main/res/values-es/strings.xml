@@ -50,4 +50,5 @@
     <string name="messagelistexplanation">Puede revelar su perfil con este botón</string>
     <string name="searchgifexplanation">Clicka aquí para añadir GIF al GIFBOARD</string>
     <string name="profilecardexplanation">Clicka esta carta para abrir el perfil de tu coincidencia</string>
+    <string name="searchpeopletitle">Buscar Personas</string>
 </resources>

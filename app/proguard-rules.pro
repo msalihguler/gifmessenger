@@ -15,3 +15,9 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+ #### -- Picasso --
+ -dontwarn com.squareup.picasso.**
+ -dontwarn com.squareup.okhttp.**
+ -dontwarn okio.**
+ -dontwarn retrofit2.Platform$Java8
+ -keep class !com.teamspaghetti.www.gifster.**
