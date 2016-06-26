@@ -60,7 +60,6 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.searchpeople,null);
-        onSaveInstanceState(savedInstanceState);
         user_instance = new UserProcesses(getContext(),this);
         rootView = init(rootView);
         registerUserToGIFsterServer();

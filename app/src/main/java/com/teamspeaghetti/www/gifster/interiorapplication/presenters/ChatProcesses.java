@@ -116,5 +116,17 @@ public class ChatProcesses implements IChatMethods{
             public void onFailure(Call<ResponseBody> call, Throwable t) {}
         });
     }
+    public void sendSeenStatus(String otherID) {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
+        IRequestHolder requestInterface =retrofit.create(IRequestHolder.class);
+        Call<ResponseBody> call = requestInterface.updateseen(Profile.getCurrentProfile().getId(),otherID);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {}
+        });
+    }
 }

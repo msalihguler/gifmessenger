@@ -63,7 +63,7 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     Log.e("response",response.body().string());
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

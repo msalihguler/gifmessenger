@@ -3,6 +3,7 @@ package com.teamspeaghetti.www.gifster.interiorapplication.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * Created by Salih on 3.06.2016.
  */
-public class MessageFragment extends Fragment implements IRetrievePeople {
+public class MessageFragment extends Fragment implements IRetrievePeople,SwipeRefreshLayout.OnRefreshListener {
 
     //Variable declaration
     RecyclerView chat_holder;
@@ -36,6 +37,7 @@ public class MessageFragment extends Fragment implements IRetrievePeople {
     List<People> matches = new ArrayList<>();
     ChatProcesses chatInstance;
     LinearLayout nomatchesLayout;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Nullable
     @Override
@@ -50,6 +52,7 @@ public class MessageFragment extends Fragment implements IRetrievePeople {
         chat_holder = (RecyclerView)rootView.findViewById(R.id.chat_holder);
         progressBar = (ProgressBar)rootView.findViewById(R.id.progressChat);
         nomatchesLayout = (LinearLayout)rootView.findViewById(R.id.nomatches_layotu);
+        swipeRefreshLayout=(SwipeRefreshLayout)rootView.findViewById(R.id.message_swipe_container);
 
         //object initialization
         chatAdapter=new ChatAdapter(getContext(),matches);
@@ -60,11 +63,15 @@ public class MessageFragment extends Fragment implements IRetrievePeople {
         chat_holder.setLayoutManager(layoutManager);
         chat_holder.setAdapter(chatAdapter);
 
+        //listener
+        swipeRefreshLayout.setOnRefreshListener(this);
+
         return rootView;
     }
     public void getMatchesFromServer(){
         if(nomatchesLayout.getVisibility()==View.VISIBLE)
             nomatchesLayout.setVisibility(View.GONE);
+        matches.clear();
         chatInstance.getMatches();
     }
     @Override
@@ -80,6 +87,13 @@ public class MessageFragment extends Fragment implements IRetrievePeople {
             chatAdapter.notifyDataSetChanged();
             progressBar.setVisibility(View.GONE);
             chat_holder.setVisibility(View.VISIBLE);
+            if(swipeRefreshLayout.isRefreshing())
+                swipeRefreshLayout.setRefreshing(false);
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        getMatchesFromServer();
     }
 }

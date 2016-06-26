@@ -30,6 +30,15 @@
             android:layout_marginLeft="6dp"
             android:gravity="center_vertical" />
 
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="50dp"
+            android:id="@+id/message_count"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/mini_profile_name"
+            android:layout_toEndOf="@+id/mini_profile_name"
+            android:layout_marginLeft="5dp" />
+
     </RelativeLayout>
     <ImageView
         android:layout_width="50dp"

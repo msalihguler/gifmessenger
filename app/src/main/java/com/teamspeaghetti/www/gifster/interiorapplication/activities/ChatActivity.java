@@ -73,6 +73,7 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         makeCallForEarlyConversations(otherID);
         getSupportActionBar().setTitle(name);
         getKeyboard();
+        sendSeenStatus(otherID);
     }
 
     @Override
@@ -216,7 +217,9 @@ public class ChatActivity extends AppCompatActivity implements IRetrieveGIFs{
         conversationAdapter.notifyDataSetChanged();
         conversation.scrollToPosition(earlyConversations.size()-1);
     }
-
+    public void sendSeenStatus(String otherID){
+        chatProcesses.sendSeenStatus(otherID);
+    }
     public class MessageReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

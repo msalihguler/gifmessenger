@@ -26,11 +26,20 @@ import com.teamspeaghetti.www.gifster.interiorapplication.activities.ChatActivit
 import com.teamspeaghetti.www.gifster.interiorapplication.activities.MainActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.CircleTransform;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
+import com.teamspeaghetti.www.gifster.interiorapplication.interfaces.IRequestHolder;
 import com.teamspeaghetti.www.gifster.interiorapplication.model.People;
 import com.teamspeaghetti.www.gifster.interiorapplication.presenters.UserProcesses;
 import com.wooplr.spotlight.SpotlightView;
 
+import java.io.IOException;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Salih on 4.06.2016.
@@ -48,7 +57,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.VHolder> {
     public class VHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         //ViewHolder variable declarations
-        ImageView profile_pic,reveal_profile;
+        ImageView profile_pic,reveal_profile,message_count;
         TextView name;
         RelativeLayout to_chat;
 
@@ -58,6 +67,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.VHolder> {
             //Initialize ViewHolder variables
             profile_pic=(ImageView)itemView.findViewById(R.id.mini_profile_photo);
             reveal_profile = (ImageView)itemView.findViewById(R.id.revealProfile);
+            message_count=(ImageView)itemView.findViewById(R.id.message_count);
             name = (TextView)itemView.findViewById(R.id.mini_profile_name);
             to_chat = (RelativeLayout)itemView.findViewById(R.id.person_info_line);
 
@@ -91,6 +101,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.VHolder> {
                     intent.putExtra("name", _matches.get(getPosition()).getFirst_name());
                     intent.putExtra("id", _matches.get(getPosition()).getId());
                     _context.startActivity(intent);
+                    message_count.setVisibility(View.GONE);
                     break;
             }
         }
@@ -104,9 +115,49 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.VHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ChatAdapter.VHolder holder, int position) {
+    public void onBindViewHolder(final ChatAdapter.VHolder holder, int position) {
         holder.name.setText(_matches.get(position).getFirst_name());
         Picasso.with(_context).load(_matches.get(position).getProfile_url()).resize(75,75).transform(new CircleTransform()).into(holder.profile_pic);
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(_context.getResources().getString(R.string.serverurl)).addConverterFactory(GsonConverterFactory.create()).build();
+        IRequestHolder requestInterface =retrofit.create(IRequestHolder.class);
+        Call<ResponseBody> call = requestInterface.getNumber(Profile.getCurrentProfile().getId(),_matches.get(position).getId());
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    int count = Integer.parseInt(response.body().string());
+                    if(count==0){
+                        holder.message_count.setVisibility(View.GONE);
+                    }
+                    else if(count==1){
+                        holder.message_count.setVisibility(View.VISIBLE);
+                        holder.message_count.setImageResource(R.drawable.one_indicator);
+                    }else if(count==2){
+                        holder.message_count.setVisibility(View.VISIBLE);
+                        holder.message_count.setImageResource(R.drawable.two_indicator);
+                    }else if(count==3){
+                        holder.message_count.setVisibility(View.VISIBLE);
+                        holder.message_count.setImageResource(R.drawable.three_indicator);
+                    }else if(count==4){
+                        holder.message_count.setVisibility(View.VISIBLE);
+                        holder.message_count.setImageResource(R.drawable.four_indicator);
+                    }else if(count==5){
+                        holder.message_count.setVisibility(View.VISIBLE);
+                        holder.message_count.setImageResource(R.drawable.five_indicator);
+                    }else{
+                        holder.message_count.setVisibility(View.VISIBLE);
+                        holder.message_count.setImageResource(R.drawable.more_indicator);
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
         if(position==0){
             Utils.createShowcase(_context,holder.reveal_profile,_context.getResources().getString(R.string.messagelisttitle)
                     ,_context.getResources().getString(R.string.messagelistexplanation),_context.getResources().getString(R.string.revealkey));

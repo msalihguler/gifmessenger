@@ -29,6 +29,8 @@ public interface IRequestHolder {
     Call<ResponseBody> deleteprofile(@Query("id")String id);
     @GET("/deletetoken")
     Call<ResponseBody> deletetoken(@Query("id")String id);
+    @GET("/getnotseennumber")
+    Call<ResponseBody> getNumber(@Query("m_id")String id,@Query("o_id")String o_id);
     /*
     *       GIF REQUESTS
     * */
@@ -47,4 +49,6 @@ public interface IRequestHolder {
     Call<ResponseBody> saveMessagetoServer(@Query("m_id")String m_id,@Query("o_id")String o_id,@Query("message")String msg);
     @GET("/getmessage")
     Call<ResponseBody> getMessages(@Query("m_id")String m_id,@Query("o_id")String o_id);
+    @GET("/updateseen")
+    Call<ResponseBody> updateseen(@Query("m_id")String m_id,@Query("o_id")String o_id);
 }
