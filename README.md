@@ -20,6 +20,14 @@ Powered by GIPHY
 ### TODO
 * Add tests
 
+Developed By
+------------
+* Muhammed Salih GÜLER - <muhammedsalihguler@gmail.com>
+
+<a href="https://tr.linkedin.com/in/msalihguler">
+  <img alt="Add me to Linkedin" src="https://github.com/JorgeCastilloPrz/EasyMVP/blob/master/art/linkedin.png" />
+</a>
+
 License
 -------
     Copyright 2016 Muhammed Salih GÜLER - msalihguler 
