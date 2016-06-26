@@ -16,7 +16,7 @@ public interface IRequestHolder {
     @GET("/getmatches")
     Call<ResponseBody> getMatches(@Query("id")String userid);
     @POST("/registeruser")
-    Call<ResponseBody> registerUser(@Query("id")String userid,@Query("lat")String latitude,@Query("long")String longitude,@Query("token")String token,@Query("gender")String gender);
+    Call<ResponseBody> registerUser(@Query("id")String userid,@Query("lat")String latitude,@Query("long")String longitude,@Query("token")String token,@Query("gender")String gender,@Query("lang")String language);
     @GET("/getpeople")
     Call<ResponseBody> getUsers(@Query("id")String userid);
     @GET("/sendlikestatus")

@@ -16,6 +16,8 @@ import com.teamspeaghetti.www.gifster.interiorapplication.presenters.UserProcess
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Locale;
+
 /**
  * Created by Salih on 10.06.2016.
  */
@@ -39,7 +41,7 @@ public class FirebaseTokenHolder extends FirebaseInstanceIdService {
                         try {
                         new UserProcesses(getApplicationContext()).sendRequest(AccessToken.getCurrentAccessToken().getUserId(),
                                 String.valueOf(new GPSTracker(FirebaseTokenHolder.this).getLatitude()),
-                                String.valueOf(new GPSTracker(FirebaseTokenHolder.this).getLongitude()), token,object.getString("gender"));
+                                String.valueOf(new GPSTracker(FirebaseTokenHolder.this).getLongitude()), token,object.getString("gender"), Locale.getDefault().getLanguage());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

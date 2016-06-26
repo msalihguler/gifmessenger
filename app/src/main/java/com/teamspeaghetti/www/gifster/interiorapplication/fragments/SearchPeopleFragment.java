@@ -38,6 +38,7 @@ import com.wooplr.spotlight.utils.SpotlightListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Salih on 21.05.2016.
@@ -214,7 +215,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         if(Profile.getCurrentProfile()!=null) {
             user_instance.sendRequest(Profile.getCurrentProfile().getId(),
                     String.valueOf(new GPSTracker(getContext()).getLatitude()),
-                    String.valueOf(new GPSTracker(getContext()).getLongitude()), FirebaseInstanceId.getInstance().getToken(), gender);
+                    String.valueOf(new GPSTracker(getContext()).getLongitude()), FirebaseInstanceId.getInstance().getToken(), gender, Locale.getDefault().getLanguage());
         }
     }
 

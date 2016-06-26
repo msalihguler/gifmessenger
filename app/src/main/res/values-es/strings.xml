@@ -41,4 +41,13 @@
     <string name="login_error">Error de inicio de sesión</string>
     <string name="startconversation">Aún sin mensajes. \nEmpieza una conversación GIF.</string>
     <string name="network_error_message">¡Sin conexión a internet!\nPor favor consulte su estado de conexión.</string>
+    <string name="thumbupexplanation">Usa este botón para\nDar\"Thumbs Up\" a esta persona.</string>
+    <string name="thumbdownexplanation">Usa este botón para\nContinuar con otros candidatos.</string>
+    <string name="profiletitle">Página de Perfil</string>
+    <string name="profilesexplanation">En esta pestaña puede ver los Perfiles Revelados de otros usuarios</string>
+    <string name="gifboardexplanation">En esta pestaña puede encontrar los gifs que ha guardado</string>
+    <string name="messagelisttitle">Revelar Perfil</string>
+    <string name="messagelistexplanation">Puede revelar su perfil con este botón</string>
+    <string name="searchgifexplanation">Clicka aquí para añadir GIF al GIFBOARD</string>
+    <string name="profilecardexplanation">Clicka esta carta para abrir el perfil de tu coincidencia</string>
 </resources>
