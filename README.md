@@ -7,7 +7,7 @@ It is an application for meeting with new people and learning who they are over 
 Powered by GIPHY
 
 ### Screenshots
-![image](images/device-2016-06-27-011727.png) ![image](images/device-2016-06-27-010312.png)
+![image](images/device-2016-06-27-011727.png) ![image](images/device-2016-06-27-011909.png)
 
 ### Libraries used in the project
 * [Firebase](https://github.com/firebase)
