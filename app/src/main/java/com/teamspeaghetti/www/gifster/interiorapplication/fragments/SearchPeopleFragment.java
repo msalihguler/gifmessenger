@@ -10,6 +10,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,7 +45,7 @@ import java.util.Locale;
 /**
  * Created by Salih on 21.05.2016.
  */
-public class SearchPeopleFragment extends Fragment implements View.OnClickListener,IRetrievePeople,View.OnTouchListener{
+public class SearchPeopleFragment extends Fragment implements View.OnClickListener,IRetrievePeople,View.OnTouchListener,SwipeRefreshLayout.OnRefreshListener{
 
     //Variable declarations
     ImageView thumbup,thumbdown,profile_pic;
@@ -54,6 +56,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     ProgressBar pbar;
     LinearLayout errorpage;
     SharedPreferences preferences;
+    SwipeRefreshLayout swipeRefreshLayout;
     int lastPosition=0;
 
     @Nullable
@@ -78,6 +81,7 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         pbar = (ProgressBar)rootView.findViewById(R.id.pbar);
         holder=(CardView)rootView.findViewById(R.id.profilecard);
         errorpage = (LinearLayout)rootView.findViewById(R.id.noOneFound_message);
+        swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.refresh_layout);
 
         //Shared preferences initialization
         preferences = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
@@ -85,12 +89,12 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         //List initialization
         peoples = new ArrayList<People>();
 
-        //Listeners for thumbs
+        //Listeners for views
         thumbdown.setOnClickListener(this);
         thumbup.setOnClickListener(this);
         thumbdown.setOnTouchListener(this);
         thumbup.setOnTouchListener(this);
-
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         //rotate thumb image and change it's color
         Drawable drawableUp = getActivity().getResources().getDrawable(R.drawable.thumbup);
@@ -101,6 +105,12 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                 PorterDuffColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY));
         thumbup.setImageDrawable(drawableUp);
         thumbdown.setImageDrawable(drawableDown);
+
+        //Swipe refresh layout customization
+        swipeRefreshLayout.setColorSchemeColors(
+                ContextCompat.getColor(getActivity(), R.color.colorPrimary),
+                ContextCompat.getColor(getActivity(), R.color.colorAccent),
+                ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
 
 
         return rootView;
@@ -222,6 +232,8 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
     public void getRetrievedPeople(List<People> peopleList) {
             peoples.clear();
             peoples.addAll(peopleList);
+            if(swipeRefreshLayout.isRefreshing())
+                swipeRefreshLayout.setRefreshing(false);
         if(peoples.size()>0) {
             user_instance.getInformation(peoples.get(0).getId(),peoples.get(0).getGender());
         }else{
@@ -307,4 +319,19 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         return false;
     }
 
+    @Override
+    public void onRefresh() {
+        if(holder.getVisibility()!=View.VISIBLE) {
+            if (ConnectivityReceiver.isConnected())
+                getPeopleFromServer();
+            else {
+                errorpage.setVisibility(View.GONE);
+                Utils.startFragmentWithoutAnimation(new NetworkErrorPageFragment(), getFragmentManager());
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }else{
+            swipeRefreshLayout.setRefreshing(false);
+        }
+
+    }
 }
