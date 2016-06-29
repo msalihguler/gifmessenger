@@ -79,6 +79,7 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
+                    peopleList.clear();
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     String temp = jsonObject.getString("message");
                     JSONArray jsonObject1 = new JSONArray(temp);
@@ -197,9 +198,10 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                 public void onCompleted(GraphResponse response) {
                     try {
                         JSONObject object = new JSONObject(response.getRawResponse());
-                        String url = ((JSONObject) ((JSONObject) object.get("picture")).get("data")).getString("url");
+                        String id = object.getString("id");
+                        String url = "https://graph.facebook.com/"+id+"/picture?type=large";
                         People people = new People();
-                        people.setId(object.getString("id"));
+                        people.setId(id);
                         people.setName(object.getString("name"));
                         people.setFirst_name(object.getString("first_name"));
                         people.setUrl(object.getString("link"));
@@ -215,7 +217,7 @@ public class UserProcesses implements IUserRequestHandler,IOtherPeopleInformatio
                 }
             });
             Bundle parameters = new Bundle();
-            parameters.putString("fields", "id,name,link,first_name,picture.type(large)");
+            parameters.putString("fields", "id,name,link,first_name");
             request.setParameters(parameters);
             request.executeAsync();
         }

@@ -154,7 +154,6 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                         errorpage.setVisibility(View.VISIBLE);
                     } else {
                         holder.startAnimation(createAnimationForTopElements("dislike"));
-                        user_instance.getInformation(peoples.get(lastPosition).getId(), peoples.get(lastPosition).getGender());
                     }
                 }else{
                     Utils.startFragment(new NetworkErrorPageFragment(),getFragmentManager());
@@ -230,17 +229,20 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void getRetrievedPeople(List<People> peopleList) {
-            peoples.clear();
-            peoples.addAll(peopleList);
-            if(swipeRefreshLayout.isRefreshing())
-                swipeRefreshLayout.setRefreshing(false);
-        if(peoples.size()>0) {
-            user_instance.getInformation(peoples.get(0).getId(),peoples.get(0).getGender());
-        }else{
-            pbar.setVisibility(View.GONE);
-            holder.setVisibility(View.GONE);
-            errorpage.setVisibility(View.VISIBLE);
-        }
+
+                peoples.clear();
+                peoples.addAll(peopleList);
+                if (swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+                if (peoples.size() > 0) {
+                    user_instance.getInformation(peoples.get(0).getId(), peoples.get(0).getGender());
+                } else {
+                    pbar.setVisibility(View.GONE);
+                    holder.setVisibility(View.GONE);
+                    errorpage.setVisibility(View.VISIBLE);
+                }
+
     }
 
     @Override
@@ -249,13 +251,14 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                 String gender = preferences.getString("preferred", "not selected");
                 if (people.getGender().equals(gender)){
                     name.setText(people.getFirst_name());
-                Glide.with(getContext()).load(people.getProfile_url()).centerCrop()
+                    holder.setVisibility(View.VISIBLE);
+                    if (pbar.isShown()) {
+                        pbar.setVisibility(View.GONE);
+                    }
+                    Glide.with(getContext()).load(people.getProfile_url()).centerCrop()
                         .crossFade()
                         .into(profile_pic);
-                holder.setVisibility(View.VISIBLE);
-                if (pbar.isShown()) {
-                    pbar.setVisibility(View.GONE);
-                }
+
                     createSpotLight();
                 }else{
                     lastPosition++;
@@ -287,6 +290,24 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
             animation =  AnimationUtils.loadAnimation(getContext(), R.anim.move_left);
         else
             animation = AnimationUtils.loadAnimation(getContext(), R.anim.move_right);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                user_instance.getInformation(peoples.get(lastPosition).getId(), peoples.get(lastPosition).getGender());
+                holder.setVisibility(View.GONE);
+                pbar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
         return animation;
     }
 
@@ -321,17 +342,18 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onRefresh() {
-        if(holder.getVisibility()!=View.VISIBLE) {
+        if(errorpage.getVisibility()==View.VISIBLE) {
             if (ConnectivityReceiver.isConnected())
                 getPeopleFromServer();
             else {
                 errorpage.setVisibility(View.GONE);
                 Utils.startFragmentWithoutAnimation(new NetworkErrorPageFragment(), getFragmentManager());
                 swipeRefreshLayout.setRefreshing(false);
+                Log.e("num","2");
             }
-        }else{
+        }else {
             swipeRefreshLayout.setRefreshing(false);
+            Log.e("num","3");
         }
-
     }
 }
