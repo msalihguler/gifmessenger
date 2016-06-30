@@ -14,6 +14,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.teamspeaghetti.www.gifster.R;
 import com.teamspeaghetti.www.gifster.interiorapplication.activities.ChatActivity;
 import com.teamspeaghetti.www.gifster.interiorapplication.activities.MainActivity;
+import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +27,7 @@ public class FirebaseMessageService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
         Log.d("From", "From: " + remoteMessage.getFrom());
-        Log.d("Body", "Notification Message Body: " + remoteMessage.getNotification().getBody());
+        Log.d("Body", "Notification sent: " + remoteMessage.getSentTime());
         if(ChatActivity.active) {
             try {
                 Intent intent = new Intent();
@@ -38,7 +39,7 @@ public class FirebaseMessageService extends FirebaseMessagingService {
             }
         }
         else
-        sendNotification(remoteMessage.getNotification().getBody());
+        sendNotification(remoteMessage.getData().get("detail"));
     }
 
     @Override
@@ -47,6 +48,8 @@ public class FirebaseMessageService extends FirebaseMessagingService {
     }
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, MainActivity.class);
+        String type = Utils.checkNotificationType(messageBody);
+        intent.putExtra("type",type);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);

@@ -57,4 +57,25 @@ public class Utils {
                 .usageId(key)
                 .show();
     }
+    public static String checkNotificationType(String s){
+        if(s.equals("Bir mesajınız var!"))
+            return "message";
+        else if(s.equals("Tienes un mensaje!"))
+            return "message";
+        else if(s.equals("You have a message!"))
+            return "message";
+        else if(s.equals("Bir eşleşmemiz var!"))
+            return "match";
+        else if(s.equals("Tienes un partido!"))
+            return "match";
+        else if(s.equals("You have a match!"))
+            return "match";
+        else if(s.equals("Birisi sizinle profilini paylaştı!"))
+            return "reveal";
+        else if(s.equals("Alguien reveló un perfil!"))
+            return "reveal";
+        else if(s.equals("Someone revealed a profile to you!"))
+            return "reveal";
+        return null;
+    }
 }

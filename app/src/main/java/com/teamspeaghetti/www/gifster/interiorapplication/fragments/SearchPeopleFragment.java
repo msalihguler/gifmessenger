@@ -209,7 +209,6 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
         String gender = null;
         try {
             gender = getActivity().getIntent().getExtras().getString("gender");
-            Log.e("gen",gender);
             if(preferences.getString("preferred","not selected").equals("not selected")){
                 if(gender.equals("male"))
                     preferences.edit().putString("preferred","female").commit();
@@ -255,6 +254,8 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                     if (pbar.isShown()) {
                         pbar.setVisibility(View.GONE);
                     }
+                    if(errorpage.getVisibility()==View.VISIBLE)
+                        errorpage.setVisibility(View.GONE);
                     Glide.with(getContext()).load(people.getProfile_url()).centerCrop()
                         .crossFade()
                         .into(profile_pic);
@@ -349,11 +350,9 @@ public class SearchPeopleFragment extends Fragment implements View.OnClickListen
                 errorpage.setVisibility(View.GONE);
                 Utils.startFragmentWithoutAnimation(new NetworkErrorPageFragment(), getFragmentManager());
                 swipeRefreshLayout.setRefreshing(false);
-                Log.e("num","2");
             }
         }else {
             swipeRefreshLayout.setRefreshing(false);
-            Log.e("num","3");
         }
     }
 }

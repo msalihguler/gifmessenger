@@ -14,8 +14,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 import com.teamspeaghetti.www.gifster.interiorapplication.commonclasses.CircleTransform;
@@ -48,13 +51,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initViews();
-        if(ConnectivityReceiver.isConnected()) {
-            navigationView.setCheckedItem(R.id.nav_searchpeople);
-            Utils.startFragment(new SearchPeopleFragment(), getSupportFragmentManager());
-        }else{
-            Utils.startFragment(new NetworkErrorPageFragment(),getSupportFragmentManager());
+
+        if(!(FacebookSdk.isInitialized())){
+            FacebookSdk.sdkInitialize(getApplicationContext());
+            AppEventsLogger.activateApp(this);
         }
+
+        initViews();
+        initializeTab();
+
     }
     @Override
     protected void onResume() {
@@ -168,16 +173,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    ProfileTracker tracker = new ProfileTracker() {
-        @Override
-        protected void onCurrentProfileChanged(Profile profile, Profile profile1) {
-            if(profile1!=null) {
-                String imageUrl = "https://graph.facebook.com/" + profile1.getId() + "/picture?type=large";
-                Picasso.with(MainActivity.this).load(imageUrl).transform(new CircleTransform()).into(profile_picture);
-                details.setText(profile1.getFirstName());
-            }
-        }
-    };
+
 
     @Override
     public void notifyActivitySelected(int pos) {
@@ -207,5 +203,47 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 e.printStackTrace();
             }
         }
+    }
+    public void initializeTab(){
+        if(getIntent().hasExtra("type")){
+            String type = getIntent().getExtras().getString("type");
+            if(type.equals("match")){
+                if(ConnectivityReceiver.isConnected()) {
+                    navigationView.setCheckedItem(R.id.nav_messages);
+                    Utils.startFragment(new MessageFragment(), getSupportFragmentManager());
+                }else{
+                    Utils.startFragment(new NetworkErrorPageFragment(),getSupportFragmentManager());
+                }
+            }else if(type.equals("reveal")){
+                if(ConnectivityReceiver.isConnected()) {
+                    navigationView.setCheckedItem(R.id.nav_profile);
+                    Utils.startFragment(new ProfileFragment(), getSupportFragmentManager());
+                }else{
+                    Utils.startFragment(new NetworkErrorPageFragment(),getSupportFragmentManager());
+                }
+            }else if(type.equals("message")){
+                if(ConnectivityReceiver.isConnected()) {
+                    navigationView.setCheckedItem(R.id.nav_messages);
+                    Utils.startFragment(new MessageFragment(), getSupportFragmentManager());
+                }else{
+                    Utils.startFragment(new NetworkErrorPageFragment(),getSupportFragmentManager());
+                }
+            }else{
+                if(ConnectivityReceiver.isConnected()) {
+                    navigationView.setCheckedItem(R.id.nav_searchpeople);
+                    Utils.startFragment(new SearchPeopleFragment(), getSupportFragmentManager());
+                }else{
+                    Utils.startFragment(new NetworkErrorPageFragment(),getSupportFragmentManager());
+                }
+            }
+        }else{
+            if(ConnectivityReceiver.isConnected()) {
+                navigationView.setCheckedItem(R.id.nav_searchpeople);
+                Utils.startFragment(new SearchPeopleFragment(), getSupportFragmentManager());
+            }else{
+                Utils.startFragment(new NetworkErrorPageFragment(),getSupportFragmentManager());
+            }
+        }
+
     }
 }
