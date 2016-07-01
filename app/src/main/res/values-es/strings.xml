@@ -22,7 +22,7 @@
     <string name="nogifs">No tenemos nada para mostrar.\n Pero puedes buscarlo abajo.</string>
     <string name="nokeyboard">Tu GIFboard está vacío. \nHaga click aquí para añadir alguno.</string>
     <string name="nomatches">Sin emparejamientos todavía.\n¡Sigue intentando!</string>
-    <string name="noonefound">Ninguna nueva persona.\n Pero puedes intentarlo de nuevo pronto.</string>
+    <string name="noonefound">Ninguna nueva persona.\n Haga clic aquí para volver a intentarlo.</string>
     <string name="norevealed">Nadie ha hecho público su perfil aún. \n¡Sigue intentando!</string>
     <string name="notifications">NOTIFICASIONES</string>
     <string name="profile">Perfil</string>
